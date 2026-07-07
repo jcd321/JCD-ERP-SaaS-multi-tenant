@@ -2,10 +2,12 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import {
   AuthSession,
+  ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  ResetPasswordRequest,
 } from '../../core/auth/auth.models';
 
 export const AuthActions = createActionGroup({
@@ -26,6 +28,14 @@ export const AuthActions = createActionGroup({
     'Refresh Token': emptyProps(),
     'Refresh Token Success': props<{ accessToken: string; refreshToken: string }>(),
     'Refresh Token Failure': props<{ error: string }>(),
+
+    'Forgot Password': props<{ request: ForgotPasswordRequest }>(),
+    'Forgot Password Success': emptyProps(),
+    'Forgot Password Failure': props<{ error: string }>(),
+
+    'Reset Password': props<{ request: ResetPasswordRequest }>(),
+    'Reset Password Success': emptyProps(),
+    'Reset Password Failure': props<{ error: string }>(),
 
     'Clear Auth': emptyProps(),
   },

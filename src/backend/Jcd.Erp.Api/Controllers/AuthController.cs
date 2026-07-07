@@ -1,8 +1,10 @@
 using Jcd.Erp.Application.Auth.Commands.ChangePassword;
+using Jcd.Erp.Application.Auth.Commands.ForgotPassword;
 using Jcd.Erp.Application.Auth.Commands.Login;
 using Jcd.Erp.Application.Auth.Commands.Logout;
 using Jcd.Erp.Application.Auth.Commands.RefreshToken;
 using Jcd.Erp.Application.Auth.Commands.RegisterTenant;
+using Jcd.Erp.Application.Auth.Commands.ResetPassword;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +57,22 @@ public class AuthController : ControllerBase
     [HttpPost("change-password")]
     [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
+    }
+
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
+    }
+
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
     {
         var result = await _mediator.Send(command);
         return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });

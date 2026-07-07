@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import {
+  ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
   LogoutRequest,
@@ -11,6 +12,7 @@ import {
   RefreshTokenResponse,
   RegisterRequest,
   RegisterResponse,
+  ResetPasswordRequest,
 } from './auth.models';
 
 @Injectable({ providedIn: 'root' })
@@ -34,5 +36,13 @@ export class AuthApiService {
   logout(refreshToken: string | null): Observable<void> {
     const body: LogoutRequest = { refreshToken };
     return this.http.post<void>(`${this.apiUrl}/logout`, body);
+  }
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/forgot-password`, request);
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/reset-password`, request);
   }
 }

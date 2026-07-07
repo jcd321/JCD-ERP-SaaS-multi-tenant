@@ -333,6 +333,18 @@
   color: var(--color-text-muted);
 }
 
+.form-field__link {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .checkbox {
   display: inline-flex;
   align-items: center;
@@ -439,6 +451,12 @@
   background: var(--color-error-soft);
   color: var(--color-error);
   border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.alert--success {
+  background: var(--color-success-soft, #ecfdf5);
+  color: var(--color-success, #047857);
+  border: 1px solid rgba(4, 120, 87, 0.15);
 }
 
 // ─── Auth card ─────────────────────────────────────────────────

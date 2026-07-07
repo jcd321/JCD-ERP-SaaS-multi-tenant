@@ -4,7 +4,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
 
-import { LoginRequest, RegisterRequest } from '../../core/auth/auth.models';
+import { LoginRequest, RegisterRequest, ForgotPasswordRequest, ResetPasswordRequest } from '../../core/auth/auth.models';
 import { AuthActions } from './auth.actions';
 import {
   selectAccessToken,
@@ -35,6 +35,14 @@ export class AuthFacade {
 
   logout(): void {
     this.store.dispatch(AuthActions.logout());
+  }
+
+  forgotPassword(request: ForgotPasswordRequest): void {
+    this.store.dispatch(AuthActions.forgotPassword({ request }));
+  }
+
+  resetPassword(request: ResetPasswordRequest): void {
+    this.store.dispatch(AuthActions.resetPassword({ request }));
   }
 
   clearAuth(): void {

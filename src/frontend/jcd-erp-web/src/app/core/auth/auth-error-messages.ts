@@ -6,6 +6,9 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
   'Auth.TenantInactive': 'La empresa está inactiva. Contacta al administrador.',
   'Auth.LoginFailed': 'No se pudo iniciar sesión. Intenta de nuevo.',
   'Auth.RegisterFailed': 'No se pudo completar el registro. Intenta de nuevo.',
+  'Auth.ForgotPasswordFailed': 'No se pudo enviar el enlace de recuperación. Intenta de nuevo.',
+  'Auth.ResetPasswordFailed': 'No se pudo restablecer la contraseña. Intenta de nuevo.',
+  'Auth.InvalidResetToken': 'El enlace de recuperación no es válido o ya expiró. Solicita uno nuevo.',
   'Tenant.SlugAlreadyExists': 'Ese slug de empresa ya existe. Usa otro nombre o slug.',
 };
 

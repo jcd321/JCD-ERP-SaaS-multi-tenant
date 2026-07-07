@@ -46,6 +46,17 @@ export interface LogoutRequest {
   refreshToken: string | null;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+  tenantSlug: string | null;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  email: string;
+  newPassword: string;
+}
+
 export interface AuthSession {
   tenantId: string;
   tenantSlug: string;

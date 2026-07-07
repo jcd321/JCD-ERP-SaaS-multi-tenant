@@ -1,6 +1,7 @@
 using System.Text;
 using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Infrastructure.Auth;
+using Jcd.Erp.Infrastructure.Email;
 using Jcd.Erp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ public static class DependencyInjection
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IDateTimeService, DateTimeService>();
+        services.AddSingleton<IAppSettings, AppSettings>();
+        services.AddScoped<IEmailService, ConsoleEmailService>();
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();

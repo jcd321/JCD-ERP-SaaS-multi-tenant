@@ -38,6 +38,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
     public DbSet<UserSession> UserSessions => Set<UserSession>();
     public DbSet<TenantSetting> TenantSettings => Set<TenantSetting>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();

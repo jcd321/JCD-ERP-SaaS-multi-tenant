@@ -30,7 +30,7 @@ function clearStorage(): void {
 export const authReducer = createReducer(
   initialAuthState,
 
-  on(AuthActions.login, AuthActions.register, (state) => ({
+  on(AuthActions.login, AuthActions.register, AuthActions.forgotPassword, AuthActions.resetPassword, (state) => ({
     ...state,
     status: 'loading' as const,
     error: null,
@@ -71,10 +71,16 @@ export const authReducer = createReducer(
     };
   }),
 
-  on(AuthActions.loginFailure, AuthActions.registerFailure, (state, { error }) => ({
+  on(AuthActions.loginFailure, AuthActions.registerFailure, AuthActions.forgotPasswordFailure, AuthActions.resetPasswordFailure, (state, { error }) => ({
     ...state,
     status: 'error' as const,
     error,
+  })),
+
+  on(AuthActions.forgotPasswordSuccess, AuthActions.resetPasswordSuccess, (state) => ({
+    ...state,
+    status: 'idle' as const,
+    error: null,
   })),
 
   on(AuthActions.refreshTokenSuccess, (state, { accessToken, refreshToken }) => {

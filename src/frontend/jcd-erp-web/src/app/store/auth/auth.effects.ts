@@ -119,4 +119,36 @@ export class AuthEffects {
       }),
     ),
   );
+
+  readonly forgotPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.forgotPassword),
+      exhaustMap(({ request }) =>
+        this.authApi.forgotPassword(request).pipe(
+          map(() => AuthActions.forgotPasswordSuccess()),
+          catchError((error) =>
+            of(AuthActions.forgotPasswordFailure({
+              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.ForgotPasswordFailed'),
+            })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.resetPassword),
+      exhaustMap(({ request }) =>
+        this.authApi.resetPassword(request).pipe(
+          map(() => AuthActions.resetPasswordSuccess()),
+          catchError((error) =>
+            of(AuthActions.resetPasswordFailure({
+              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.ResetPasswordFailed'),
+            })),
+          ),
+        ),
+      ),
+    ),
+  );
 }
