@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Settings.Commands.UpdateTenantSetting;
 using Jcd.Erp.Application.Settings.Queries.GetTenantSettings;
 using MediatR;
@@ -34,5 +35,3 @@ public class SettingsController : ControllerBase
         return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateSettingRequest(string Value);

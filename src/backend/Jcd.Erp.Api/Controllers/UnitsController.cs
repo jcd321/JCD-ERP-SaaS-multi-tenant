@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Units.Commands.CreateUnit;
 using Jcd.Erp.Application.Units.Commands.DeleteUnit;
 using Jcd.Erp.Application.Units.Commands.UpdateUnit;
@@ -59,9 +60,3 @@ public class UnitsController : ControllerBase
         return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateUnitRequest(
-    string Code,
-    string Name,
-    string? Symbol,
-    bool IsActive);

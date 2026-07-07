@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Roles.Commands.CreateRole;
 using Jcd.Erp.Application.Roles.Commands.DeleteRole;
 using Jcd.Erp.Application.Roles.Commands.UpdateRole;
@@ -64,8 +65,3 @@ public class RolesController : ControllerBase
         return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateRoleRequest(
-    string Name,
-    string? Description,
-    IReadOnlyList<string> PermissionCodes);

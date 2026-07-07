@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Brands.Commands.CreateBrand;
 using Jcd.Erp.Application.Brands.Commands.DeleteBrand;
 using Jcd.Erp.Application.Brands.Commands.UpdateBrand;
@@ -59,9 +60,3 @@ public class BrandsController : ControllerBase
         return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateBrandRequest(
-    string Code,
-    string Name,
-    string? Description,
-    bool IsActive);

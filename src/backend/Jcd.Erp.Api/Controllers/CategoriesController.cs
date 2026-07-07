@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Categories.Commands.CreateCategory;
 using Jcd.Erp.Application.Categories.Commands.DeleteCategory;
 using Jcd.Erp.Application.Categories.Commands.UpdateCategory;
@@ -74,9 +75,3 @@ public class CategoriesController : ControllerBase
         return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateCategoryRequest(
-    string Name,
-    string? Description,
-    Guid? ParentId,
-    bool IsActive);

@@ -1,3 +1,4 @@
+using Jcd.Erp.Api.Requests;
 using Jcd.Erp.Application.Users.Commands.CreateUser;
 using Jcd.Erp.Application.Users.Commands.DeleteUser;
 using Jcd.Erp.Application.Users.Commands.UpdateUser;
@@ -61,9 +62,3 @@ public class UsersController : ControllerBase
         return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
-
-public record UpdateUserRequest(
-    string FirstName,
-    string LastName,
-    bool IsActive,
-    IReadOnlyList<Guid> RoleIds);
