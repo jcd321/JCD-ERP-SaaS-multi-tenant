@@ -9,6 +9,7 @@ interface NavItem {
   label: string;
   route: string;
   icon: SafeHtml;
+  permission?: string;
 }
 
 @Component({
@@ -36,7 +37,7 @@ export class MainLayoutComponent {
       .join('');
   });
 
-  readonly navItems: NavItem[] = [
+  private readonly allNavItems: NavItem[] = [
     {
       label: 'Dashboard',
       route: '/',
@@ -47,6 +48,7 @@ export class MainLayoutComponent {
     {
       label: 'Usuarios',
       route: '/users',
+      permission: 'users.view',
       icon: this.icon(
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>',
       ),
@@ -54,6 +56,7 @@ export class MainLayoutComponent {
     {
       label: 'Roles',
       route: '/roles',
+      permission: 'roles.view',
       icon: this.icon(
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4z"/></svg>',
       ),
@@ -61,11 +64,19 @@ export class MainLayoutComponent {
     {
       label: 'Configuración',
       route: '/settings',
+      permission: 'settings.view',
       icon: this.icon(
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
       ),
     },
   ];
+
+  readonly navItems = computed(() => {
+    const permissions = new Set(this.session()?.permissions ?? []);
+    return this.allNavItems.filter(
+      (item) => !item.permission || permissions.has(item.permission),
+    );
+  });
 
   toggleTheme(): void {
     this.themeService.toggle();

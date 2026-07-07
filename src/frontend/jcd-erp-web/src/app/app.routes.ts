@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { authGuard } from './core/auth/auth.guard';
+import { permissionGuard } from './core/auth/permission.guard';
 
 export const routes: Routes = [
   {
@@ -27,16 +28,19 @@ export const routes: Routes = [
       },
       {
         path: 'users',
+        canActivate: [permissionGuard('users.view')],
         loadChildren: () =>
           import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
       },
       {
         path: 'roles',
+        canActivate: [permissionGuard('roles.view')],
         loadChildren: () =>
           import('./features/roles/roles.routes').then((m) => m.ROLES_ROUTES),
       },
       {
         path: 'settings',
+        canActivate: [permissionGuard('settings.view')],
         loadChildren: () =>
           import('./features/settings/settings.routes').then((m) => m.SETTINGS_ROUTES),
       },

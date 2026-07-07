@@ -28,3 +28,6 @@ export const selectUserPermissions = createSelector(
   selectAuthSession,
   (session) => session?.permissions ?? [],
 );
+
+export const selectHasPermission = (permission: string) =>
+  createSelector(selectUserPermissions, (permissions) => permissions.includes(permission));
