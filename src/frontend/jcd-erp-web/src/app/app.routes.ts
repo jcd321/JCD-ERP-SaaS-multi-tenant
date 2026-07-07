@@ -68,6 +68,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/products/products.routes').then((m) => m.PRODUCTS_ROUTES),
       },
+      {
+        path: 'customers',
+        canActivate: [permissionGuard('customers.view')],
+        loadChildren: () =>
+          import('./features/customers/customers.routes').then((m) => m.CUSTOMERS_ROUTES),
+      },
     ],
   },
   {

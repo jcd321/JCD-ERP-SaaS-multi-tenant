@@ -11,6 +11,8 @@ import { brandsReducer } from './brands/brands.reducer';
 import { BrandsEffects } from './brands/brands.effects';
 import { productsReducer } from './products/products.reducer';
 import { ProductsEffects } from './products/products.effects';
+import { customersReducer } from './customers/customers.reducer';
+import { CustomersEffects } from './customers/customers.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -31,7 +33,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('categories', categoriesReducer),
     provideState('brands', brandsReducer),
     provideState('products', productsReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects),
+    provideState('customers', customersReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

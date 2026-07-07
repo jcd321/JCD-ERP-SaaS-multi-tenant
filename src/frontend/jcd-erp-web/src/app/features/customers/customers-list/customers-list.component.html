@@ -1,0 +1,239 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'customers.title' | translate }}</h1>
+      <p>{{ 'customers.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'customers.newCustomer' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="code">{{ 'customers.code' | translate }}</label>
+          <input id="code" type="text" formControlName="code" [placeholder]="'customers.codePlaceholder' | translate" />
+        </div>
+        <div class="form-field">
+          <label for="taxId">{{ 'customers.taxId' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="taxId" type="text" formControlName="taxId" [placeholder]="'customers.taxIdPlaceholder' | translate" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="legalName">{{ 'customers.legalName' | translate }}</label>
+        <input id="legalName" type="text" formControlName="legalName" />
+      </div>
+
+      <div class="form-field">
+        <label for="tradeName">{{ 'customers.tradeName' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="tradeName" type="text" formControlName="tradeName" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="email">{{ 'customers.email' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="email" type="email" formControlName="email" />
+        </div>
+        <div class="form-field">
+          <label for="phone">{{ 'customers.phone' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="phone" type="text" formControlName="phone" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="mobilePhone">{{ 'customers.mobilePhone' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="mobilePhone" type="text" formControlName="mobilePhone" />
+        </div>
+        <div class="form-field">
+          <label for="countryCode">{{ 'customers.countryCode' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="countryCode" type="text" formControlName="countryCode" maxlength="2" [placeholder]="'customers.countryCodePlaceholder' | translate" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="addressLine1">{{ 'customers.address' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="addressLine1" type="text" formControlName="addressLine1" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="city">{{ 'customers.city' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="city" type="text" formControlName="city" />
+        </div>
+        <div class="form-field">
+          <label for="stateOrProvince">{{ 'customers.stateOrProvince' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="stateOrProvince" type="text" formControlName="stateOrProvince" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="notes">{{ 'customers.notes' | translate }} ({{ 'common.optional' | translate }})</label>
+        <textarea id="notes" rows="3" formControlName="notes"></textarea>
+      </div>
+
+      @if (formMode === 'edit') {
+        <label class="checkbox">
+          <input type="checkbox" formControlName="isActive" />
+          {{ 'customers.isActive' | translate }}
+        </label>
+      }
+    </form>
+  </app-form-modal>
+
+  <app-confirm-dialog
+    [open]="!!customerToDelete"
+    [title]="'customers.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+  @if (loading()) {
+    <p class="page__status">{{ 'customers.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applySearch()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'customers.searchPlaceholder' | translate"
+              [attr.aria-label]="'customers.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button
+                type="button"
+                class="search-bar__clear"
+                (click)="clearSearch()"
+                [attr.aria-label]="'customers.clearSearchAria' | translate"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            }
+            <button type="submit" class="search-bar__submit">
+              {{ 'customers.search' | translate }}
+            </button>
+          </form>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button
+                type="button"
+                class="search-chip__clear"
+                (click)="clearSearch()"
+                [attr.aria-label]="'customers.clearSearchAria' | translate"
+              >
+                ×
+              </button>
+            </span>
+          }
+        </div>
+
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'customers.tableCode' | translate }}</th>
+              <th>{{ 'customers.tableLegalName' | translate }}</th>
+              <th>{{ 'customers.tableTaxId' | translate }}</th>
+              <th>{{ 'customers.tableEmail' | translate }}</th>
+              <th>{{ 'customers.tablePhone' | translate }}</th>
+              <th>{{ 'customers.tableStatus' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (customer of customers(); track customer.id) {
+              <tr>
+                <td><code>{{ customer.code }}</code></td>
+                <td>
+                  <div>{{ customer.legalName }}</div>
+                  @if (customer.tradeName) {
+                    <small class="text-muted">{{ customer.tradeName }}</small>
+                  }
+                </td>
+                <td>{{ customer.taxId || ('common.empty' | translate) }}</td>
+                <td>{{ customer.email || ('common.empty' | translate) }}</td>
+                <td>{{ customer.phone || customer.mobilePhone || ('common.empty' | translate) }}</td>
+                <td>
+                  <span class="badge" [class.badge--info]="customer.isActive" [class.badge--muted]="!customer.isActive">
+                    {{ customer.isActive ? ('common.active' | translate) : ('common.inactive' | translate) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(customer)">
+                      {{ 'common.edit' | translate }}
+                    </button>
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(customer)">
+                      {{ 'common.delete' | translate }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="data-table__empty">{{ 'customers.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button
+          type="button"
+          class="btn btn--secondary btn--sm"
+          [disabled]="page() <= 1"
+          (click)="goToPage(page() - 1)"
+        >
+          {{ 'customers.prevPage' | translate }}
+        </button>
+        <span class="pagination__info">{{ pageInfoLabel }}</span>
+        <button
+          type="button"
+          class="btn btn--secondary btn--sm"
+          [disabled]="page() >= totalPages()"
+          (click)="goToPage(page() + 1)"
+        >
+          {{ 'customers.nextPage' | translate }}
+        </button>
+      </div>
+    }
+  }
+</section>

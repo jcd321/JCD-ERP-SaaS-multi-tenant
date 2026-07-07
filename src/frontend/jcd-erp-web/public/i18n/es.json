@@ -39,7 +39,8 @@
     "units": "Unidades de medida",
     "categories": "Categorías",
     "brands": "Marcas",
-    "products": "Productos"
+    "products": "Productos",
+    "customers": "Clientes"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -301,6 +302,48 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "customers": {
+    "title": "Clientes",
+    "subtitle": "Administra el directorio de clientes de tu empresa.",
+    "newCustomer": "Nuevo cliente",
+    "createTitle": "Crear cliente",
+    "editTitle": "Editar cliente",
+    "deleteTitle": "Eliminar cliente",
+    "deleteMessage": "¿Eliminar el cliente \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando clientes...",
+    "code": "Código",
+    "codePlaceholder": "ej. CLI-001",
+    "legalName": "Razón social",
+    "tradeName": "Nombre comercial",
+    "taxId": "Identificación fiscal",
+    "taxIdPlaceholder": "RUC, NIT, RFC...",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "mobilePhone": "Celular",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "stateOrProvince": "Departamento / Estado",
+    "countryCode": "País",
+    "countryCodePlaceholder": "PE, CO, MX...",
+    "notes": "Notas",
+    "isActive": "Activo",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por código, razón social, NIT, correo o teléfono...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableCode": "Código",
+    "tableLegalName": "Razón social",
+    "tableTaxId": "ID fiscal",
+    "tableEmail": "Correo",
+    "tablePhone": "Teléfono",
+    "tableStatus": "Estado",
+    "empty": "No hay clientes registrados.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
@@ -310,7 +353,8 @@
       "units": "Unidades de medida",
       "categories": "Categorías",
       "brands": "Marcas",
-      "products": "Productos"
+      "products": "Productos",
+      "customers": "Clientes"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -339,7 +383,11 @@
       "products.view": "Ver productos",
       "products.create": "Crear productos",
       "products.update": "Editar productos",
-      "products.delete": "Eliminar productos"
+      "products.delete": "Eliminar productos",
+      "customers.view": "Ver clientes",
+      "customers.create": "Crear clientes",
+      "customers.update": "Editar clientes",
+      "customers.delete": "Eliminar clientes"
     }
   },
   "errors": {
@@ -404,6 +452,15 @@
     "productBrandNotFound": "La marca no existe o está inactiva.",
     "productUnitRequired": "La unidad de medida es obligatoria.",
     "productUnitNotFound": "La unidad de medida no existe o está inactiva.",
+    "customersLoadFailed": "No se pudieron cargar los clientes.",
+    "customersCreateFailed": "No se pudo crear el cliente.",
+    "customersUpdateFailed": "No se pudo actualizar el cliente.",
+    "customersDeleteFailed": "No se pudo eliminar el cliente.",
+    "customerNotFound": "Cliente no encontrado.",
+    "customerCodeAlreadyExists": "Ya existe un cliente con ese código.",
+    "customerTaxIdAlreadyExists": "Ya existe un cliente con esa identificación fiscal.",
+    "customerCodeRequired": "El código del cliente es obligatorio.",
+    "customerLegalNameRequired": "La razón social es obligatoria.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

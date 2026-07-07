@@ -39,7 +39,8 @@
     "units": "Units of measure",
     "categories": "Categories",
     "brands": "Brands",
-    "products": "Products"
+    "products": "Products",
+    "customers": "Customers"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -301,6 +302,48 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "customers": {
+    "title": "Customers",
+    "subtitle": "Manage your company's customer directory.",
+    "newCustomer": "New customer",
+    "createTitle": "Create customer",
+    "editTitle": "Edit customer",
+    "deleteTitle": "Delete customer",
+    "deleteMessage": "Delete customer \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading customers...",
+    "code": "Code",
+    "codePlaceholder": "e.g. CUST-001",
+    "legalName": "Legal name",
+    "tradeName": "Trade name",
+    "taxId": "Tax ID",
+    "taxIdPlaceholder": "RUC, NIT, RFC...",
+    "email": "Email",
+    "phone": "Phone",
+    "mobilePhone": "Mobile",
+    "address": "Address",
+    "city": "City",
+    "stateOrProvince": "State / Province",
+    "countryCode": "Country",
+    "countryCodePlaceholder": "PE, CO, MX...",
+    "notes": "Notes",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by code, legal name, tax ID, email or phone...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableCode": "Code",
+    "tableLegalName": "Legal name",
+    "tableTaxId": "Tax ID",
+    "tableEmail": "Email",
+    "tablePhone": "Phone",
+    "tableStatus": "Status",
+    "empty": "No customers registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
@@ -310,7 +353,8 @@
       "units": "Units of measure",
       "categories": "Categories",
       "brands": "Brands",
-      "products": "Products"
+      "products": "Products",
+      "customers": "Customers"
     },
     "codes": {
       "users.view": "View users",
@@ -339,7 +383,11 @@
       "products.view": "View products",
       "products.create": "Create products",
       "products.update": "Edit products",
-      "products.delete": "Delete products"
+      "products.delete": "Delete products",
+      "customers.view": "View customers",
+      "customers.create": "Create customers",
+      "customers.update": "Edit customers",
+      "customers.delete": "Delete customers"
     }
   },
   "errors": {
@@ -404,6 +452,15 @@
     "productBrandNotFound": "Brand does not exist or is inactive.",
     "productUnitRequired": "Unit of measure is required.",
     "productUnitNotFound": "Unit of measure does not exist or is inactive.",
+    "customersLoadFailed": "Could not load customers.",
+    "customersCreateFailed": "Could not create the customer.",
+    "customersUpdateFailed": "Could not update the customer.",
+    "customersDeleteFailed": "Could not delete the customer.",
+    "customerNotFound": "Customer not found.",
+    "customerCodeAlreadyExists": "A customer with this code already exists.",
+    "customerTaxIdAlreadyExists": "A customer with this tax ID already exists.",
+    "customerCodeRequired": "Customer code is required.",
+    "customerLegalNameRequired": "Legal name is required.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

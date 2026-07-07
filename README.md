@@ -248,6 +248,10 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `POST` | `/api/v1/products` | Yes | `products.create` | Create product |
 | `PUT` | `/api/v1/products/{id}` | Yes | `products.update` | Update product |
 | `DELETE` | `/api/v1/products/{id}` | Yes | `products.delete` | Soft-delete product |
+| `GET` | `/api/v1/customers` | Yes | `customers.view` | List customers (paginated, search) |
+| `POST` | `/api/v1/customers` | Yes | `customers.create` | Create customer |
+| `PUT` | `/api/v1/customers/{id}` | Yes | `customers.update` | Update customer |
+| `DELETE` | `/api/v1/customers/{id}` | Yes | `customers.delete` | Soft-delete customer |
 
 ---
 
@@ -257,7 +261,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (units, categories, brands, products, customers, suppliers) | **In progress** — Catalog modules done; customers & suppliers next |
+| **2** | Master data (units, categories, brands, products, customers, suppliers) | **In progress** — Customers done; suppliers next |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
@@ -292,10 +296,11 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Product categories | CRUD + parent hierarchy | List panel + modal CRUD (NgRx) |
 | Brands | CRUD + pagination | List panel + modal CRUD (NgRx) |
 | Products | CRUD + lookups endpoint | List panel + modal CRUD with category/brand/unit selects (NgRx) |
+| Customers | CRUD + tax ID uniqueness per tenant | List panel + modal CRUD with contact/address fields (NgRx) |
 
 **API convention:** `PUT` endpoints use request DTOs in `Jcd.Erp.Api/Requests/` (`Update*Request`), mapped to Application commands in controllers.
 
-**Next in Phase 2:** Customers, Suppliers.
+**Next in Phase 2:** Suppliers.
 
 ---
 

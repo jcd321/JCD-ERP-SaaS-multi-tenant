@@ -6,6 +6,7 @@ using Jcd.Erp.Domain.Catalog.Products;
 using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
+using Jcd.Erp.Domain.Partners.Customers;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
 using Jcd.Erp.Persistence.Interceptors;
@@ -58,6 +59,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
 
         services.AddScoped<DatabaseSeeder>();
 

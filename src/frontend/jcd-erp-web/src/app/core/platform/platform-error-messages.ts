@@ -28,7 +28,10 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Products.CreateFailed': 'errors.productsCreateFailed',
   'Products.UpdateFailed': 'errors.productsUpdateFailed',
   'Products.DeleteFailed': 'errors.productsDeleteFailed',
-  'User.EmailAlreadyExists': 'errors.userEmailAlreadyExists',
+  'Customers.LoadFailed': 'errors.customersLoadFailed',
+  'Customers.CreateFailed': 'errors.customersCreateFailed',
+  'Customers.UpdateFailed': 'errors.customersUpdateFailed',
+  'Customers.DeleteFailed': 'errors.customersDeleteFailed',
   'User.NotFound': 'errors.userNotFound',
   'User.CannotDeleteSelf': 'errors.userCannotDeleteSelf',
   'Role.NotFound': 'errors.roleNotFound',
@@ -58,6 +61,11 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Product.BrandNotFound': 'errors.productBrandNotFound',
   'Product.UnitRequired': 'errors.productUnitRequired',
   'Product.UnitNotFound': 'errors.productUnitNotFound',
+  'Customer.NotFound': 'errors.customerNotFound',
+  'Customer.CodeAlreadyExists': 'errors.customerCodeAlreadyExists',
+  'Customer.TaxIdAlreadyExists': 'errors.customerTaxIdAlreadyExists',
+  'Customer.CodeRequired': 'errors.customerCodeRequired',
+  'Customer.LegalNameRequired': 'errors.customerLegalNameRequired',
   'Permission.NotFound': 'errors.permissionNotFound',
   'Auth.TenantRequired': 'errors.tenantRequired',
 };
@@ -90,6 +98,10 @@ const FALLBACK_KEYS: Record<string, string> = {
   'Products.CreateFailed': 'errors.productsCreateFailed',
   'Products.UpdateFailed': 'errors.productsUpdateFailed',
   'Products.DeleteFailed': 'errors.productsDeleteFailed',
+  'Customers.LoadFailed': 'errors.customersLoadFailed',
+  'Customers.CreateFailed': 'errors.customersCreateFailed',
+  'Customers.UpdateFailed': 'errors.customersUpdateFailed',
+  'Customers.DeleteFailed': 'errors.customersDeleteFailed',
 };
 
 export function resolvePlatformErrorMessage(

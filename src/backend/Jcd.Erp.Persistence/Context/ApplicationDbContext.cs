@@ -7,6 +7,7 @@ using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Common;
 using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
+using Jcd.Erp.Domain.Partners.Customers;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
     public DbSet<Brand> Brands => Set<Brand>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<Customer> Customers => Set<Customer>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
