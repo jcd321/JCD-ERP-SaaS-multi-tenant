@@ -1,3 +1,4 @@
+using Jcd.Erp.Application.Audit;
 using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Domain.Common;
 using Jcd.Erp.Domain.Identity;
@@ -17,6 +18,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTime;
     private readonly ITenantScope _tenantScope;
+    private readonly IAuthAuditService _authAuditService;
 
     public LoginHandler(
         IUserRepository userRepository,
@@ -27,7 +29,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
         IDateTimeService dateTime,
-        ITenantScope tenantScope)
+        ITenantScope tenantScope,
+        IAuthAuditService authAuditService)
     {
         _userRepository = userRepository;
         _tenantRepository = tenantRepository;
@@ -38,6 +41,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
         _tenantScope = tenantScope;
+        _authAuditService = authAuditService;
     }
 
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -84,6 +88,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         await _refreshTokenRepository.AddAsync(
             Domain.Identity.RefreshToken.Create(tenant.Id, user.Id, refreshTokenHash, refreshExpires),
             cancellationToken);
+
+        await _authAuditService.RecordLoginAsync(tenant.Id, user.Id, refreshExpires, cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

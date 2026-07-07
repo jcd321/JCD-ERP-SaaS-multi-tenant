@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, ConsoleEmailService>();
 
         services.AddHttpContextAccessor();
+        services.AddScoped<IClientInfoService, ClientInfoService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<ICurrentTenantService, CurrentTenantService>();
 

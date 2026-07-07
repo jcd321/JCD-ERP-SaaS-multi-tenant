@@ -25,4 +25,27 @@ public class AuditLog : BaseEntity, ITenantEntity
     public string? IpAddress { get; set; }
     public string? UserAgent { get; set; }
     public DateTime Timestamp { get; set; }
+
+    private AuditLog() { }
+
+    public static AuditLog CreateAuthEvent(
+        Guid tenantId,
+        Guid userId,
+        AuditAction action,
+        DateTime timestamp,
+        string? ipAddress = null,
+        string? userAgent = null)
+    {
+        return new AuditLog
+        {
+            TenantId = tenantId,
+            UserId = userId,
+            Action = action,
+            EntityName = nameof(User),
+            EntityId = userId,
+            IpAddress = ipAddress,
+            UserAgent = userAgent,
+            Timestamp = timestamp
+        };
+    }
 }
