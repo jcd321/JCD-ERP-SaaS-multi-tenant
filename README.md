@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 in progress (~85%) — Auth (incl. forgot/reset password), multi-tenancy, users, roles, tenant settings, permission guards, and UI design system are functional.  
+> **Status:** Phase 1 in progress (~90%) — Auth (incl. forgot/reset password), multi-tenancy, users, roles, tenant settings, permission guards, integration tests, and CI are functional.  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -57,7 +57,7 @@
 | Technology | Purpose |
 |------------|---------|
 | Docker Compose | Local PostgreSQL + Redis |
-| GitHub Actions | CI/CD (planned) |
+| GitHub Actions | CI/CD (build + test on push/PR) |
 
 ---
 
@@ -172,7 +172,21 @@ npm start
 > **Tip:** If `dotnet run` fails with *"file is locked by Jcd.Erp.Api"*, stop the running instance first:
 > `Get-Process -Name "Jcd.Erp.Api" -ErrorAction SilentlyContinue | Stop-Process -Force`
 
-### 4. Test registration (API)
+### 4. Run tests
+
+Requires Docker (PostgreSQL on port **5433** and Redis on **6379**):
+
+```bash
+# Create isolated test database (first time only)
+psql -h localhost -p 5433 -U postgres -c "CREATE DATABASE jcd_erp_test;"
+
+cd src/backend
+dotnet test Jcd.Erp.sln
+```
+
+Integration tests use `appsettings.Testing.json` and database `jcd_erp_test` so your dev data stays untouched.
+
+### 5. Test registration (API)
 
 ```bash
 curl -X POST http://localhost:5000/api/v1/auth/register \
@@ -218,7 +232,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
-| **1** | Auth, multi-tenant, users, roles, settings | **~85%** — see below |
+| **1** | Auth, multi-tenant, users, roles, settings | **~90%** — see below |
 | **2** | Master data (products, customers, suppliers) | Planned |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
@@ -242,8 +256,8 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 
 | Item | Status |
 |------|--------|
-| Integration tests (tenant isolation) | Pending |
-| GitHub Actions CI | Pending |
+| Integration tests (tenant isolation) | Done |
+| GitHub Actions CI | Done |
 | Login/logout audit trail | Pending |
 | i18n ES/EN | Pending |
 | Redis integrated in code | Pending |
