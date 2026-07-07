@@ -1,0 +1,80 @@
+<div class="auth-card">
+  <header class="auth-card__header">
+    <h2>Create account</h2>
+    <p>Register your company and admin user.</p>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-field">
+      <label for="companyName">Company name</label>
+      <input id="companyName" type="text" formControlName="companyName" />
+      @if (form.controls.companyName.touched && form.controls.companyName.invalid) {
+        <span class="form-field__error">Company name is required.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="slug">Tenant slug <span class="optional">(optional)</span></label>
+      <input id="slug" type="text" formControlName="slug" />
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="adminFirstName">First name</label>
+        <input id="adminFirstName" type="text" formControlName="adminFirstName" />
+      </div>
+
+      <div class="form-field">
+        <label for="adminLastName">Last name</label>
+        <input id="adminLastName" type="text" formControlName="adminLastName" />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="adminEmail">Admin email</label>
+      <input id="adminEmail" type="email" formControlName="adminEmail" autocomplete="email" />
+      @if (form.controls.adminEmail.touched && form.controls.adminEmail.invalid) {
+        <span class="form-field__error">Enter a valid email address.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="adminPassword">Password</label>
+      <input
+        id="adminPassword"
+        type="password"
+        formControlName="adminPassword"
+        autocomplete="new-password"
+      />
+      @if (form.controls.adminPassword.touched && form.controls.adminPassword.invalid) {
+        <span class="form-field__error">Password must be at least 8 characters.</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="confirmPassword">Confirm password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        autocomplete="new-password"
+      />
+      @if (form.touched && form.errors?.['passwordMismatch']) {
+        <span class="form-field__error">Passwords do not match.</span>
+      }
+    </div>
+
+    <button class="btn btn--primary btn--block" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Creating account...' : 'Create account' }}
+    </button>
+  </form>
+
+  <p class="auth-card__footer">
+    Already have an account?
+    <a routerLink="/auth/login">Sign in</a>
+  </p>
+</div>

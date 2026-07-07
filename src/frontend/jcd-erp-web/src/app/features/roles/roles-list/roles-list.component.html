@@ -1,0 +1,43 @@
+<section class="page">
+  <header class="page__header">
+    <h1>Roles</h1>
+    <p>Review role definitions and assigned permissions.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="page__status">Loading roles...</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Permissions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (role of roles(); track role.id) {
+            <tr>
+              <td>{{ role.name }}</td>
+              <td>{{ role.description || '—' }}</td>
+              <td>
+                <span class="badge" [class.badge--info]="role.isSystem" [class.badge--muted]="!role.isSystem">
+                  {{ role.isSystem ? 'System' : 'Custom' }}
+                </span>
+              </td>
+              <td>{{ role.permissions.length }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="data-table__empty">No roles found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

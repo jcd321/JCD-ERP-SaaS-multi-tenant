@@ -1,0 +1,27 @@
+using Jcd.Erp.Application.Roles.Queries.GetRoles;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Jcd.Erp.Api.Controllers;
+
+[ApiController]
+[Route("api/v1/roles")]
+[Authorize]
+public class RolesController : ControllerBase
+{
+    private readonly ISender _mediator;
+
+    public RolesController(ISender mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpGet]
+    [Authorize(Policy = "roles.view")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _mediator.Send(new GetRolesQuery());
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
+    }
+}

@@ -1,0 +1,43 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Node
+node_modules/
+dist/
+.angular/
+
+## Environment
+.env
+*.local
+
+## IDE
+.idea/
+*.swp
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Logs
+logs/
+*.log
+
+## Docker
+docker-data/
+
+## Build outputs
+*.db
+*.sqlite
+
+## Secrets — never commit
+appsettings.Production.json
+appsettings.*.local.json
+secrets.json
+*.pfx
+
+## Documentación interna (no compartir en repositorio)
+docs/

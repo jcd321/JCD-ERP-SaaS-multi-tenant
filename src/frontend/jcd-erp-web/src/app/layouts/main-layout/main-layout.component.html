@@ -1,0 +1,42 @@
+<div class="main-layout">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__logo">JCD</span>
+      <span class="sidebar__title">JCD ERP</span>
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (item of navItems; track item.route) {
+        <a
+          class="sidebar__link"
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__link--active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+        >
+          <span class="sidebar__icon" aria-hidden="true">{{ item.icon }}</span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <div class="main-layout__body">
+    <header class="header">
+      <div class="header__info">
+        <p class="header__tenant">{{ session()?.tenantSlug }}</p>
+        <p class="header__user">{{ session()?.fullName }}</p>
+      </div>
+
+      <div class="header__actions">
+        <button type="button" class="btn btn--ghost" (click)="toggleTheme()">
+          {{ theme() === 'light' ? 'Dark mode' : 'Light mode' }}
+        </button>
+        <button type="button" class="btn btn--ghost" (click)="logout()">Sign out</button>
+      </div>
+    </header>
+
+    <main class="main-layout__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
