@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 
 import { RolesService } from '../../features/roles/roles.service';
 import { RolesActions } from './roles.actions';
@@ -21,6 +21,73 @@ export class RolesEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  readonly loadPermissions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.loadPermissions),
+      exhaustMap(() =>
+        this.rolesService.getPermissions().pipe(
+          map((permissions) => RolesActions.loadPermissionsSuccess({ permissions })),
+          catchError((error) =>
+            of(
+              RolesActions.loadPermissionsFailure({
+                error: error.error?.error ?? 'Roles.PermissionsLoadFailed',
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly createRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.createRole),
+      exhaustMap(({ request }) =>
+        this.rolesService.createRole(request).pipe(
+          map(() => RolesActions.createRoleSuccess()),
+          catchError((error) =>
+            of(RolesActions.createRoleFailure({ error: error.error?.error ?? 'Roles.CreateFailed' })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly updateRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.updateRole),
+      exhaustMap(({ roleId, request }) =>
+        this.rolesService.updateRole(roleId, request).pipe(
+          map(() => RolesActions.updateRoleSuccess()),
+          catchError((error) =>
+            of(RolesActions.updateRoleFailure({ error: error.error?.error ?? 'Roles.UpdateFailed' })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly deleteRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.deleteRole),
+      exhaustMap(({ roleId }) =>
+        this.rolesService.deleteRole(roleId).pipe(
+          map(() => RolesActions.deleteRoleSuccess()),
+          catchError((error) =>
+            of(RolesActions.deleteRoleFailure({ error: error.error?.error ?? 'Roles.DeleteFailed' })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly reloadAfterMutation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.createRoleSuccess, RolesActions.updateRoleSuccess, RolesActions.deleteRoleSuccess),
+      switchMap(() => [RolesActions.loadRoles(), RolesActions.loadPermissions()]),
     ),
   );
 }

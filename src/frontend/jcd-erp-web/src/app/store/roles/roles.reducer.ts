@@ -24,4 +24,37 @@ export const rolesReducer = createReducer(
     loading: false,
     error,
   })),
+
+  on(RolesActions.loadPermissionsSuccess, (state, { permissions }) => ({
+    ...state,
+    permissions,
+  })),
+
+  on(RolesActions.createRole, RolesActions.updateRole, RolesActions.deleteRole, (state) => ({
+    ...state,
+    saving: true,
+    error: null,
+  })),
+
+  on(
+    RolesActions.createRoleSuccess,
+    RolesActions.updateRoleSuccess,
+    RolesActions.deleteRoleSuccess,
+    (state) => ({
+      ...state,
+      saving: false,
+      error: null,
+    }),
+  ),
+
+  on(
+    RolesActions.createRoleFailure,
+    RolesActions.updateRoleFailure,
+    RolesActions.deleteRoleFailure,
+    (state, { error }) => ({
+      ...state,
+      saving: false,
+      error,
+    }),
+  ),
 );

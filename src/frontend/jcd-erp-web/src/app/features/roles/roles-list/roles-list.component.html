@@ -1,22 +1,81 @@
 <section class="page">
-  <header class="page__header">
-    <h1>Roles</h1>
-    <p>Review role definitions and assigned permissions.</p>
-  </header>
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>Roles</h1>
+      <p>Define roles personalizados y asigna permisos de acceso al sistema.</p>
+    </header>
+
+    @if (!formMode) {
+      <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo rol</button>
+    }
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (formMode) {
+    <div class="panel-form">
+      <h2 class="panel-form__title">
+        {{ formMode === 'create' ? 'Crear rol' : 'Editar rol' }}
+      </h2>
+
+      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-field">
+          <label for="name">Nombre del rol</label>
+          <input id="name" type="text" formControlName="name" />
+        </div>
+
+        <div class="form-field">
+          <label for="description">Descripción</label>
+          <input id="description" type="text" formControlName="description" />
+        </div>
+
+        <div class="form-field">
+          <label>Permisos</label>
+          @for (group of permissionsByModule(); track group.module) {
+            <div class="permission-group">
+              <h3 class="permission-group__title">{{ moduleLabel(group.module) }}</h3>
+              <div class="role-checklist">
+                @for (permission of group.items; track permission.id) {
+                  <label class="checkbox">
+                    <input
+                      type="checkbox"
+                      [checked]="isPermissionSelected(permission.code)"
+                      (change)="togglePermission(permission.code, $any($event.target).checked)"
+                    />
+                    {{ permissionLabel(permission) }}
+                  </label>
+                }
+              </div>
+            </div>
+          } @empty {
+            <span class="form-field__hint">Cargando permisos...</span>
+          }
+        </div>
+
+        <div class="panel-form__actions">
+          <button type="button" class="btn btn--ghost" (click)="closeForm()">Cancelar</button>
+          <button type="submit" class="btn btn--primary" [disabled]="saving()">
+            {{ saving() ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
 
   @if (loading()) {
-    <p class="page__status">Loading roles...</p>
-  } @else if (errorMessage()) {
-    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+    <p class="page__status">Cargando roles...</p>
   } @else {
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Permissions</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Tipo</th>
+            <th>Permisos</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -26,14 +85,26 @@
               <td>{{ role.description || '—' }}</td>
               <td>
                 <span class="badge" [class.badge--info]="role.isSystem" [class.badge--muted]="!role.isSystem">
-                  {{ role.isSystem ? 'System' : 'Custom' }}
+                  {{ role.isSystem ? 'Sistema' : 'Personalizado' }}
                 </span>
               </td>
               <td>{{ role.permissions.length }}</td>
+              <td>
+                @if (!role.isSystem) {
+                  <div class="table-actions">
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(role)">
+                      Editar
+                    </button>
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="confirmDelete(role)">
+                      Eliminar
+                    </button>
+                  </div>
+                }
+              </td>
             </tr>
           } @empty {
             <tr>
-              <td colspan="4" class="data-table__empty">No roles found.</td>
+              <td colspan="5" class="data-table__empty">No hay roles registrados.</td>
             </tr>
           }
         </tbody>

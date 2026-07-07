@@ -1,3 +1,7 @@
+using Jcd.Erp.Application.Roles.Commands.CreateRole;
+using Jcd.Erp.Application.Roles.Commands.DeleteRole;
+using Jcd.Erp.Application.Roles.Commands.UpdateRole;
+using Jcd.Erp.Application.Roles.Queries.GetPermissions;
 using Jcd.Erp.Application.Roles.Queries.GetRoles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,4 +28,44 @@ public class RolesController : ControllerBase
         var result = await _mediator.Send(new GetRolesQuery());
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
+
+    [HttpGet("permissions")]
+    [Authorize(Policy = "roles.view")]
+    public async Task<IActionResult> GetPermissions()
+    {
+        var result = await _mediator.Send(new GetPermissionsQuery());
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
+    }
+
+    [HttpPost]
+    [Authorize(Policy = "roles.create")]
+    public async Task<IActionResult> Create([FromBody] CreateRoleCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetAll), new { id = result.Value }, new { id = result.Value })
+            : BadRequest(new { error = result.Error });
+    }
+
+    [HttpPut("{id:guid}")]
+    [Authorize(Policy = "roles.update")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoleRequest request)
+    {
+        var command = new UpdateRoleCommand(id, request.Name, request.Description, request.PermissionCodes);
+        var result = await _mediator.Send(command);
+        return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
+    }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "roles.delete")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteRoleCommand(id));
+        return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
+    }
 }
+
+public record UpdateRoleRequest(
+    string Name,
+    string? Description,
+    IReadOnlyList<string> PermissionCodes);

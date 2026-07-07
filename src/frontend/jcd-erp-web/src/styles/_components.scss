@@ -50,6 +50,17 @@
   overflow-y: auto;
 }
 
+.permission-group {
+  margin-bottom: var(--space-4);
+
+  &__title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-2);
+  }
+}
+
 .table-actions {
   display: flex;
   gap: var(--space-2);

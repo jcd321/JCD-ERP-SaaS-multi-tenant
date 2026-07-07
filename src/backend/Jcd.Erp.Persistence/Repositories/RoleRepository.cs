@@ -16,6 +16,15 @@ public sealed class RoleRepository : IRoleRepository
     public Task<Role?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         _context.Roles.FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
 
+    public Task<Role?> GetByIdWithPermissionsAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Roles
+            .Include(r => r.RolePermissions)
+            .ThenInclude(rp => rp.Permission)
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+
+    public Task<bool> HasAssignedUsersAsync(Guid roleId, CancellationToken cancellationToken = default) =>
+        _context.UserRoles.AnyAsync(ur => ur.RoleId == roleId, cancellationToken);
+
     public Task<Role?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
         var normalizedName = name.Trim();
