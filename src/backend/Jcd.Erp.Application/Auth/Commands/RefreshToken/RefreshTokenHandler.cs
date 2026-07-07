@@ -9,28 +9,28 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IRoleRepository _roleRepository;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTime;
     private readonly ITenantScope _tenantScope;
+    private readonly IUserPermissionService _userPermissions;
 
     public RefreshTokenHandler(
         IRefreshTokenRepository refreshTokenRepository,
         IUserRepository userRepository,
-        IRoleRepository roleRepository,
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
         IDateTimeService dateTime,
-        ITenantScope tenantScope)
+        ITenantScope tenantScope,
+        IUserPermissionService userPermissions)
     {
         _refreshTokenRepository = refreshTokenRepository;
         _userRepository = userRepository;
-        _roleRepository = roleRepository;
         _jwtTokenService = jwtTokenService;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
         _tenantScope = tenantScope;
+        _userPermissions = userPermissions;
     }
 
     public async Task<Result<RefreshTokenResponse>> Handle(
@@ -49,7 +49,10 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
         if (user is null || !user.IsActive)
             return Result.Failure<RefreshTokenResponse>("Auth.InvalidRefreshToken");
 
-        var permissions = await _roleRepository.GetUserPermissionCodesAsync(user.Id, cancellationToken);
+        var permissions = await _userPermissions.GetPermissionCodesAsync(
+            storedToken.TenantId,
+            user.Id,
+            cancellationToken);
         var accessExpires = _dateTime.UtcNow.AddMinutes(15);
         var refreshExpires = _dateTime.UtcNow.AddDays(7);
 

@@ -1,12 +1,14 @@
 using System.Text;
 using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Infrastructure.Auth;
+using Jcd.Erp.Infrastructure.Cache;
 using Jcd.Erp.Infrastructure.Email;
 using Jcd.Erp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 namespace Jcd.Erp.Infrastructure;
 
@@ -29,6 +31,18 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeService, DateTimeService>();
         services.AddSingleton<IAppSettings, AppSettings>();
         services.AddScoped<IEmailService, ConsoleEmailService>();
+
+        var redisConnection = configuration.GetConnectionString("Redis") ?? "localhost:6379";
+        var redisInstanceName = "jcd_erp:";
+
+        services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(redisConnection));
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisConnection;
+            options.InstanceName = redisInstanceName;
+        });
+        services.AddSingleton(new RedisCacheOptions { InstanceName = redisInstanceName });
+        services.AddSingleton<ICacheService, RedisCacheService>();
 
         services.AddHttpContextAccessor();
         services.AddScoped<IClientInfoService, ClientInfoService>();

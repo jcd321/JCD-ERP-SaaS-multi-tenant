@@ -1,6 +1,8 @@
 using FluentValidation;
 using Jcd.Erp.Application.Audit;
 using Jcd.Erp.Application.Common.Behaviors;
+using Jcd.Erp.Application.Common.Interfaces;
+using Jcd.Erp.Application.Common.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jcd.Erp.Application;
@@ -21,6 +23,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(assembly);
         services.AddAutoMapper(assembly);
         services.AddScoped<IAuthAuditService, AuthAuditService>();
+        services.AddScoped<IUserPermissionService, UserPermissionService>();
 
         return services;
     }

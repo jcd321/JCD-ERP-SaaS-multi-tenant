@@ -11,7 +11,6 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly ITenantRepository _tenantRepository;
-    private readonly IRoleRepository _roleRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtTokenService _jwtTokenService;
@@ -19,22 +18,22 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
     private readonly IDateTimeService _dateTime;
     private readonly ITenantScope _tenantScope;
     private readonly IAuthAuditService _authAuditService;
+    private readonly IUserPermissionService _userPermissions;
 
     public LoginHandler(
         IUserRepository userRepository,
         ITenantRepository tenantRepository,
-        IRoleRepository roleRepository,
         IRefreshTokenRepository refreshTokenRepository,
         IPasswordHasher passwordHasher,
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
         IDateTimeService dateTime,
         ITenantScope tenantScope,
-        IAuthAuditService authAuditService)
+        IAuthAuditService authAuditService,
+        IUserPermissionService userPermissions)
     {
         _userRepository = userRepository;
         _tenantRepository = tenantRepository;
-        _roleRepository = roleRepository;
         _refreshTokenRepository = refreshTokenRepository;
         _passwordHasher = passwordHasher;
         _jwtTokenService = jwtTokenService;
@@ -42,6 +41,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         _dateTime = dateTime;
         _tenantScope = tenantScope;
         _authAuditService = authAuditService;
+        _userPermissions = userPermissions;
     }
 
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -73,7 +73,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 
         _tenantScope.SetTenant(tenant.Id);
 
-        var permissions = await _roleRepository.GetUserPermissionCodesAsync(user.Id, cancellationToken);
+        var permissions = await _userPermissions.GetPermissionCodesAsync(tenant.Id, user.Id, cancellationToken);
         var accessExpires = _dateTime.UtcNow.AddMinutes(15);
         var refreshExpires = request.RememberMe
             ? _dateTime.UtcNow.AddDays(30)

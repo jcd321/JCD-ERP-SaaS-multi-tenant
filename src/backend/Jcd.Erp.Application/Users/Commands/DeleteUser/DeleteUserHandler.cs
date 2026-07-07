@@ -12,19 +12,22 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Result>
     private readonly ICurrentUserService _currentUser;
     private readonly ICurrentTenantService _tenant;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserPermissionService _userPermissions;
 
     public DeleteUserHandler(
         IUserRepository userRepository,
         IRefreshTokenRepository refreshTokenRepository,
         ICurrentUserService currentUser,
         ICurrentTenantService tenant,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserPermissionService userPermissions)
     {
         _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
         _currentUser = currentUser;
         _tenant = tenant;
         _unitOfWork = unitOfWork;
+        _userPermissions = userPermissions;
     }
 
     public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
@@ -42,6 +45,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Result>
         _userRepository.Delete(user);
         await _refreshTokenRepository.RevokeAllForUserAsync(user.Id, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _userPermissions.InvalidateUserAsync(user.TenantId, user.Id, cancellationToken);
 
         return Result.Success();
     }

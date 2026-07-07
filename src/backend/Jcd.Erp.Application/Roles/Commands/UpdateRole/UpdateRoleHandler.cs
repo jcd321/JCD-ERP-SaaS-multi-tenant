@@ -11,17 +11,20 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, Result>
     private readonly IPermissionRepository _permissionRepository;
     private readonly ICurrentTenantService _tenant;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserPermissionService _userPermissions;
 
     public UpdateRoleHandler(
         IRoleRepository roleRepository,
         IPermissionRepository permissionRepository,
         ICurrentTenantService tenant,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserPermissionService userPermissions)
     {
         _roleRepository = roleRepository;
         _permissionRepository = permissionRepository;
         _tenant = tenant;
         _unitOfWork = unitOfWork;
+        _userPermissions = userPermissions;
     }
 
     public async Task<Result> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
@@ -55,6 +58,7 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, Result>
 
         _roleRepository.Update(role);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _userPermissions.InvalidateTenantAsync(_tenant.TenantId, cancellationToken);
 
         return Result.Success();
     }

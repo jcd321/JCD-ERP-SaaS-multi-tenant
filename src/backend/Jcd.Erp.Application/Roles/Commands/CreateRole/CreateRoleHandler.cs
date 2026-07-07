@@ -11,17 +11,20 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, Result<Guid>
     private readonly IPermissionRepository _permissionRepository;
     private readonly ICurrentTenantService _tenant;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserPermissionService _userPermissions;
 
     public CreateRoleHandler(
         IRoleRepository roleRepository,
         IPermissionRepository permissionRepository,
         ICurrentTenantService tenant,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserPermissionService userPermissions)
     {
         _roleRepository = roleRepository;
         _permissionRepository = permissionRepository;
         _tenant = tenant;
         _unitOfWork = unitOfWork;
+        _userPermissions = userPermissions;
     }
 
     public async Task<Result<Guid>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
@@ -51,6 +54,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, Result<Guid>
 
         await _roleRepository.AddAsync(role, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _userPermissions.InvalidateTenantAsync(tenantId, cancellationToken);
 
         return Result.Success(role.Id);
     }

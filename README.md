@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 in progress (~98%) — Platform core is functional: auth, multi-tenancy, full users/roles CRUD, settings, permission guards, i18n (ES/EN), audit, tests, and CI.  
+> **Status:** Phase 1 **complete** — Platform core: auth, multi-tenancy, full users/roles CRUD, settings, permission guards, i18n (ES/EN), audit, Redis cache, tests, and CI.  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -21,7 +21,7 @@
 | **Modern frontend** | Angular 21 standalone components, NgRx Store + Effects + Facades |
 | **Secure auth** | JWT + refresh tokens, BCrypt, forgot/reset password, role-based permissions |
 | **Tenant isolation** | EF Core global query filters per request + tenant resolution middleware |
-| **Production-ready foundations** | Serilog, Swagger, health checks, rate limiting, Docker Compose |
+| **Production-ready foundations** | Serilog, Swagger, health checks, rate limiting, Docker Compose, Redis cache |
 
 ---
 
@@ -34,7 +34,7 @@
 | ASP.NET Core 9 / .NET 9 | REST API |
 | Entity Framework Core 9 | ORM & migrations |
 | PostgreSQL 16 | Transactional database |
-| Redis 7 | Cache / sessions (prepared) |
+| Redis 7 | Cache (permissions, tenant settings) |
 | MediatR | CQRS commands & queries |
 | FluentValidation | Input validation |
 | AutoMapper | DTO mapping |
@@ -233,7 +233,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
-| **1** | Auth, multi-tenant, users, roles, settings | **~98%** — see below |
+| **1** | Auth, multi-tenant, users, roles, settings | **Done** |
 | **2** | Master data (products, customers, suppliers) | Planned |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
@@ -251,19 +251,15 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Roles | Full CRUD with permission assignment |
 | Settings | List + update |
 | Frontend | Design system, dark/light theme, permission guard, sidebar by role |
-| DevOps | Docker Compose (PostgreSQL + Redis) |
+| DevOps | Docker Compose (PostgreSQL + Redis), GitHub Actions CI |
+| Cache | Redis — user permissions (30 min TTL), tenant settings (1 h TTL) |
 
-### Phase 1 — remaining
+### Phase 1 — remaining (non-blocking)
 
 | Item | Status |
 |------|--------|
-| Integration tests (tenant isolation) | Done |
-| GitHub Actions CI | Done |
-| Login/logout audit trail | Done |
-| i18n ES/EN | Done |
-| Users delete (frontend + API) | Done |
-| Redis integrated in code | Pending (Phase 2 prep) |
-| Push to GitHub / verify CI | Pending |
+| SMTP email for production | Pending |
+| API container in Docker Compose | Pending |
 
 ---
 
@@ -277,6 +273,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 - Granular permissions: `users.view`, `roles.create`, `settings.update`, etc.
 - Frontend `permissionGuard` protects routes; sidebar hides unauthorized modules
 - Rate limiting, CORS, structured logging, health checks
+- Redis cache for user permissions (30 min) and tenant settings (1 h), with invalidation on CRUD
 
 ---
 
