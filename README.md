@@ -234,6 +234,11 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `POST` | `/api/v1/units` | Yes | `units.create` | Create unit of measure |
 | `PUT` | `/api/v1/units/{id}` | Yes | `units.update` | Update unit |
 | `DELETE` | `/api/v1/units/{id}` | Yes | `units.delete` | Soft-delete unit |
+| `GET` | `/api/v1/categories` | Yes | `categories.view` | List categories (paginated, search) |
+| `GET` | `/api/v1/categories/parent-options` | Yes | `categories.view` | Parent category options for forms |
+| `POST` | `/api/v1/categories` | Yes | `categories.create` | Create category |
+| `PUT` | `/api/v1/categories/{id}` | Yes | `categories.update` | Update category |
+| `DELETE` | `/api/v1/categories/{id}` | Yes | `categories.delete` | Soft-delete category |
 
 ---
 
@@ -243,7 +248,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (products, customers, suppliers) | **In progress** — Units of measure done |
+| **2** | Master data (products, customers, suppliers) | **In progress** — Units & categories done |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |

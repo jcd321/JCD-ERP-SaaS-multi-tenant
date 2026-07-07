@@ -36,7 +36,8 @@
     "users": "Usuarios",
     "roles": "Roles",
     "settings": "Configuración",
-    "units": "Unidades de medida"
+    "units": "Unidades de medida",
+    "categories": "Categorías"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -203,13 +204,43 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "categories": {
+    "title": "Categorías",
+    "subtitle": "Organiza tus productos en categorías y subcategorías.",
+    "newCategory": "Nueva categoría",
+    "createTitle": "Crear categoría",
+    "editTitle": "Editar categoría",
+    "deleteTitle": "Eliminar categoría",
+    "deleteMessage": "¿Eliminar la categoría \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando categorías...",
+    "name": "Nombre",
+    "description": "Descripción",
+    "parent": "Categoría padre",
+    "noParent": "Sin categoría padre",
+    "isActive": "Activa",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre, descripción o padre...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableName": "Nombre",
+    "tableParent": "Padre",
+    "tableDescription": "Descripción",
+    "tableStatus": "Estado",
+    "empty": "No hay categorías registradas.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
       "roles": "Roles",
       "settings": "Configuración",
       "audit": "Auditoría",
-      "units": "Unidades de medida"
+      "units": "Unidades de medida",
+      "categories": "Categorías"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -226,7 +257,11 @@
       "units.view": "Ver unidades de medida",
       "units.create": "Crear unidades de medida",
       "units.update": "Editar unidades de medida",
-      "units.delete": "Eliminar unidades de medida"
+      "units.delete": "Eliminar unidades de medida",
+      "categories.view": "Ver categorías",
+      "categories.create": "Crear categorías",
+      "categories.update": "Editar categorías",
+      "categories.delete": "Eliminar categorías"
     }
   },
   "errors": {
@@ -258,6 +293,17 @@
     "unitCodeAlreadyExists": "Ya existe una unidad con ese código en tu empresa.",
     "unitCodeRequired": "El código de la unidad es obligatorio.",
     "unitNameRequired": "El nombre de la unidad es obligatorio.",
+    "categoriesLoadFailed": "No se pudieron cargar las categorías.",
+    "categoriesCreateFailed": "No se pudo crear la categoría.",
+    "categoriesUpdateFailed": "No se pudo actualizar la categoría.",
+    "categoriesDeleteFailed": "No se pudo eliminar la categoría.",
+    "categoriesParentOptionsLoadFailed": "No se pudieron cargar las categorías padre.",
+    "categoryNotFound": "Categoría no encontrada.",
+    "categoryNameAlreadyExists": "Ya existe una categoría con ese nombre en el mismo nivel.",
+    "categoryNameRequired": "El nombre de la categoría es obligatorio.",
+    "categoryParentNotFound": "La categoría padre no existe.",
+    "categoryCannotBeOwnParent": "Una categoría no puede ser padre de sí misma.",
+    "categoryHasChildren": "No se puede eliminar una categoría que tiene subcategorías.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

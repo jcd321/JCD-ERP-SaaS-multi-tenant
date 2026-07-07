@@ -14,6 +14,11 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Units.CreateFailed': 'errors.unitsCreateFailed',
   'Units.UpdateFailed': 'errors.unitsUpdateFailed',
   'Units.DeleteFailed': 'errors.unitsDeleteFailed',
+  'Categories.LoadFailed': 'errors.categoriesLoadFailed',
+  'Categories.CreateFailed': 'errors.categoriesCreateFailed',
+  'Categories.UpdateFailed': 'errors.categoriesUpdateFailed',
+  'Categories.DeleteFailed': 'errors.categoriesDeleteFailed',
+  'Categories.ParentOptionsLoadFailed': 'errors.categoriesParentOptionsLoadFailed',
   'User.EmailAlreadyExists': 'errors.userEmailAlreadyExists',
   'User.NotFound': 'errors.userNotFound',
   'User.CannotDeleteSelf': 'errors.userCannotDeleteSelf',
@@ -25,6 +30,12 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Unit.CodeAlreadyExists': 'errors.unitCodeAlreadyExists',
   'Unit.CodeRequired': 'errors.unitCodeRequired',
   'Unit.NameRequired': 'errors.unitNameRequired',
+  'Category.NotFound': 'errors.categoryNotFound',
+  'Category.NameAlreadyExists': 'errors.categoryNameAlreadyExists',
+  'Category.NameRequired': 'errors.categoryNameRequired',
+  'Category.ParentNotFound': 'errors.categoryParentNotFound',
+  'Category.CannotBeOwnParent': 'errors.categoryCannotBeOwnParent',
+  'Category.HasChildren': 'errors.categoryHasChildren',
   'Permission.NotFound': 'errors.permissionNotFound',
   'Auth.TenantRequired': 'errors.tenantRequired',
 };
@@ -43,6 +54,11 @@ const FALLBACK_KEYS: Record<string, string> = {
   'Units.CreateFailed': 'errors.unitsCreateFailed',
   'Units.UpdateFailed': 'errors.unitsUpdateFailed',
   'Units.DeleteFailed': 'errors.unitsDeleteFailed',
+  'Categories.LoadFailed': 'errors.categoriesLoadFailed',
+  'Categories.CreateFailed': 'errors.categoriesCreateFailed',
+  'Categories.UpdateFailed': 'errors.categoriesUpdateFailed',
+  'Categories.DeleteFailed': 'errors.categoriesDeleteFailed',
+  'Categories.ParentOptionsLoadFailed': 'errors.categoriesParentOptionsLoadFailed',
 };
 
 export function resolvePlatformErrorMessage(

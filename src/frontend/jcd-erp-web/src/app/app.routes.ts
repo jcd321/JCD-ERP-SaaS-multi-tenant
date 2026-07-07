@@ -50,6 +50,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/units/units.routes').then((m) => m.UNITS_ROUTES),
       },
+      {
+        path: 'categories',
+        canActivate: [permissionGuard('categories.view')],
+        loadChildren: () =>
+          import('./features/categories/categories.routes').then((m) => m.CATEGORIES_ROUTES),
+      },
     ],
   },
   {

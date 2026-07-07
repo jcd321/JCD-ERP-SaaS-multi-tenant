@@ -36,7 +36,8 @@
     "users": "Users",
     "roles": "Roles",
     "settings": "Settings",
-    "units": "Units of measure"
+    "units": "Units of measure",
+    "categories": "Categories"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -203,13 +204,43 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Organize your products into categories and subcategories.",
+    "newCategory": "New category",
+    "createTitle": "Create category",
+    "editTitle": "Edit category",
+    "deleteTitle": "Delete category",
+    "deleteMessage": "Delete category \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading categories...",
+    "name": "Name",
+    "description": "Description",
+    "parent": "Parent category",
+    "noParent": "No parent category",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by name, description or parent...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableName": "Name",
+    "tableParent": "Parent",
+    "tableDescription": "Description",
+    "tableStatus": "Status",
+    "empty": "No categories registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
       "roles": "Roles",
       "settings": "Settings",
       "audit": "Audit",
-      "units": "Units of measure"
+      "units": "Units of measure",
+      "categories": "Categories"
     },
     "codes": {
       "users.view": "View users",
@@ -226,7 +257,11 @@
       "units.view": "View units of measure",
       "units.create": "Create units of measure",
       "units.update": "Edit units of measure",
-      "units.delete": "Delete units of measure"
+      "units.delete": "Delete units of measure",
+      "categories.view": "View categories",
+      "categories.create": "Create categories",
+      "categories.update": "Edit categories",
+      "categories.delete": "Delete categories"
     }
   },
   "errors": {
@@ -258,6 +293,17 @@
     "unitCodeAlreadyExists": "A unit with that code already exists in your company.",
     "unitCodeRequired": "Unit code is required.",
     "unitNameRequired": "Unit name is required.",
+    "categoriesLoadFailed": "Could not load categories.",
+    "categoriesCreateFailed": "Could not create the category.",
+    "categoriesUpdateFailed": "Could not update the category.",
+    "categoriesDeleteFailed": "Could not delete the category.",
+    "categoriesParentOptionsLoadFailed": "Could not load parent categories.",
+    "categoryNotFound": "Category not found.",
+    "categoryNameAlreadyExists": "A category with that name already exists at the same level.",
+    "categoryNameRequired": "Category name is required.",
+    "categoryParentNotFound": "Parent category does not exist.",
+    "categoryCannotBeOwnParent": "A category cannot be its own parent.",
+    "categoryHasChildren": "Cannot delete a category that has subcategories.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }
