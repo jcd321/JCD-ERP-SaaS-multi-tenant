@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 
 import { UsersService } from '../../features/users/users.service';
 import { UsersActions } from './users.actions';
@@ -21,6 +21,41 @@ export class UsersEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  readonly createUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.createUser),
+      exhaustMap(({ request }) =>
+        this.usersService.createUser(request).pipe(
+          map(() => UsersActions.createUserSuccess()),
+          catchError((error) =>
+            of(UsersActions.createUserFailure({ error: error.error?.error ?? 'Users.CreateFailed' })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.updateUser),
+      exhaustMap(({ userId, request }) =>
+        this.usersService.updateUser(userId, request).pipe(
+          map(() => UsersActions.updateUserSuccess()),
+          catchError((error) =>
+            of(UsersActions.updateUserFailure({ error: error.error?.error ?? 'Users.UpdateFailed' })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  readonly reloadAfterMutation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.createUserSuccess, UsersActions.updateUserSuccess),
+      map(() => UsersActions.loadUsers()),
     ),
   );
 }

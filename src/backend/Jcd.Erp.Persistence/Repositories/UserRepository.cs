@@ -17,6 +17,12 @@ public sealed class UserRepository : IUserRepository
     public Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
+    public Task<User?> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+
     public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var normalizedEmail = email.Trim().ToLowerInvariant();

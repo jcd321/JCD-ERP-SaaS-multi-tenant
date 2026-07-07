@@ -24,4 +24,22 @@ export const usersReducer = createReducer(
     loading: false,
     error,
   })),
+
+  on(UsersActions.createUser, UsersActions.updateUser, (state) => ({
+    ...state,
+    saving: true,
+    error: null,
+  })),
+
+  on(UsersActions.createUserSuccess, UsersActions.updateUserSuccess, (state) => ({
+    ...state,
+    saving: false,
+    error: null,
+  })),
+
+  on(UsersActions.createUserFailure, UsersActions.updateUserFailure, (state, { error }) => ({
+    ...state,
+    saving: false,
+    error,
+  })),
 );

@@ -8,4 +8,6 @@ export const selectAllUsers = createSelector(selectUsersState, (state) => state.
 
 export const selectUsersLoading = createSelector(selectUsersState, (state) => state.loading);
 
+export const selectUsersSaving = createSelector(selectUsersState, (state) => state.saving);
+
 export const selectUsersError = createSelector(selectUsersState, (state) => state.error);
