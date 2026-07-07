@@ -18,7 +18,7 @@
   },
   "layout": {
     "brandSubtitle": "Enterprise Suite",
-    "phase": "v0.1 · Fase 1",
+    "phase": "v0.2 · Fase 2",
     "mainNav": "Navegación principal",
     "darkMode": "Oscuro",
     "lightMode": "Claro",
@@ -35,7 +35,8 @@
     "dashboard": "Dashboard",
     "users": "Usuarios",
     "roles": "Roles",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "units": "Unidades de medida"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -173,12 +174,42 @@
     "value": "Valor",
     "empty": "No hay configuración registrada."
   },
+  "units": {
+    "title": "Unidades de medida",
+    "subtitle": "Catálogo de unidades para productos e inventario (UND, KG, LT, etc.).",
+    "newUnit": "Nueva unidad",
+    "createTitle": "Crear unidad",
+    "editTitle": "Editar unidad",
+    "deleteTitle": "Eliminar unidad",
+    "deleteMessage": "¿Eliminar la unidad \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando unidades...",
+    "code": "Código",
+    "codePlaceholder": "ej. UND",
+    "name": "Nombre",
+    "symbol": "Símbolo",
+    "isActive": "Activa",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por código, nombre o símbolo...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableCode": "Código",
+    "tableName": "Nombre",
+    "tableSymbol": "Símbolo",
+    "tableStatus": "Estado",
+    "empty": "No hay unidades registradas.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
       "roles": "Roles",
       "settings": "Configuración",
-      "audit": "Auditoría"
+      "audit": "Auditoría",
+      "units": "Unidades de medida"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -191,7 +222,11 @@
       "roles.delete": "Eliminar roles",
       "settings.view": "Ver configuración",
       "settings.update": "Editar configuración",
-      "audit.view": "Ver auditoría"
+      "audit.view": "Ver auditoría",
+      "units.view": "Ver unidades de medida",
+      "units.create": "Crear unidades de medida",
+      "units.update": "Editar unidades de medida",
+      "units.delete": "Eliminar unidades de medida"
     }
   },
   "errors": {
@@ -215,6 +250,14 @@
     "roleNameAlreadyExists": "Ya existe un rol con ese nombre en tu empresa.",
     "roleIsSystem": "Los roles de sistema no se pueden modificar ni eliminar.",
     "roleHasUsers": "No se puede eliminar un rol que tiene usuarios asignados.",
+    "unitsLoadFailed": "No se pudieron cargar las unidades de medida.",
+    "unitsCreateFailed": "No se pudo crear la unidad de medida.",
+    "unitsUpdateFailed": "No se pudo actualizar la unidad de medida.",
+    "unitsDeleteFailed": "No se pudo eliminar la unidad de medida.",
+    "unitNotFound": "Unidad de medida no encontrada.",
+    "unitCodeAlreadyExists": "Ya existe una unidad con ese código en tu empresa.",
+    "unitCodeRequired": "El código de la unidad es obligatorio.",
+    "unitNameRequired": "El nombre de la unidad es obligatorio.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

@@ -1,5 +1,6 @@
 using System.Reflection;
 using Jcd.Erp.Domain.Audit;
+using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Common;
 using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
@@ -42,6 +43,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<UserSession> UserSessions => Set<UserSession>();
     public DbSet<TenantSetting> TenantSettings => Set<TenantSetting>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<UnitOfMeasure> UnitsOfMeasure => Set<UnitOfMeasure>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -19,6 +19,10 @@ public static class PermissionCatalog
         ("settings", "view", "View tenant settings"),
         ("settings", "update", "Update tenant settings"),
         ("audit", "view", "View audit logs"),
+        ("units", "view", "View units of measure"),
+        ("units", "create", "Create units of measure"),
+        ("units", "update", "Update units of measure"),
+        ("units", "delete", "Delete units of measure"),
     ];
 
     public static IEnumerable<Permission> CreatePermissions() =>

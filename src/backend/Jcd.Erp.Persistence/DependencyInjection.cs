@@ -1,5 +1,6 @@
 using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Domain.Audit;
+using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
 using Jcd.Erp.Domain.Tenancy;
@@ -50,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<ITenantSettingRepository, TenantSettingRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+        services.AddScoped<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
 
         services.AddScoped<DatabaseSeeder>();
 

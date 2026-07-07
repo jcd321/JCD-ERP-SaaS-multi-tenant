@@ -10,6 +10,10 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Roles.UpdateFailed': 'errors.rolesUpdateFailed',
   'Roles.DeleteFailed': 'errors.rolesDeleteFailed',
   'Roles.PermissionsLoadFailed': 'errors.rolesPermissionsLoadFailed',
+  'Units.LoadFailed': 'errors.unitsLoadFailed',
+  'Units.CreateFailed': 'errors.unitsCreateFailed',
+  'Units.UpdateFailed': 'errors.unitsUpdateFailed',
+  'Units.DeleteFailed': 'errors.unitsDeleteFailed',
   'User.EmailAlreadyExists': 'errors.userEmailAlreadyExists',
   'User.NotFound': 'errors.userNotFound',
   'User.CannotDeleteSelf': 'errors.userCannotDeleteSelf',
@@ -17,6 +21,10 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Role.NameAlreadyExists': 'errors.roleNameAlreadyExists',
   'Role.IsSystem': 'errors.roleIsSystem',
   'Role.HasUsers': 'errors.roleHasUsers',
+  'Unit.NotFound': 'errors.unitNotFound',
+  'Unit.CodeAlreadyExists': 'errors.unitCodeAlreadyExists',
+  'Unit.CodeRequired': 'errors.unitCodeRequired',
+  'Unit.NameRequired': 'errors.unitNameRequired',
   'Permission.NotFound': 'errors.permissionNotFound',
   'Auth.TenantRequired': 'errors.tenantRequired',
 };
@@ -31,6 +39,10 @@ const FALLBACK_KEYS: Record<string, string> = {
   'Roles.UpdateFailed': 'errors.rolesUpdateFailed',
   'Roles.DeleteFailed': 'errors.rolesDeleteFailed',
   'Roles.PermissionsLoadFailed': 'errors.rolesPermissionsLoadFailed',
+  'Units.LoadFailed': 'errors.unitsLoadFailed',
+  'Units.CreateFailed': 'errors.unitsCreateFailed',
+  'Units.UpdateFailed': 'errors.unitsUpdateFailed',
+  'Units.DeleteFailed': 'errors.unitsDeleteFailed',
 };
 
 export function resolvePlatformErrorMessage(

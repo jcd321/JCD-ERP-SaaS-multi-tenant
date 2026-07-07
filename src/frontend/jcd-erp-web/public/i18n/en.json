@@ -18,7 +18,7 @@
   },
   "layout": {
     "brandSubtitle": "Enterprise Suite",
-    "phase": "v0.1 · Phase 1",
+    "phase": "v0.2 · Phase 2",
     "mainNav": "Main navigation",
     "darkMode": "Dark",
     "lightMode": "Light",
@@ -35,7 +35,8 @@
     "dashboard": "Dashboard",
     "users": "Users",
     "roles": "Roles",
-    "settings": "Settings"
+    "settings": "Settings",
+    "units": "Units of measure"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -173,12 +174,42 @@
     "value": "Value",
     "empty": "No settings found."
   },
+  "units": {
+    "title": "Units of measure",
+    "subtitle": "Catalog of units for products and inventory (EA, KG, LT, etc.).",
+    "newUnit": "New unit",
+    "createTitle": "Create unit",
+    "editTitle": "Edit unit",
+    "deleteTitle": "Delete unit",
+    "deleteMessage": "Delete unit \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading units...",
+    "code": "Code",
+    "codePlaceholder": "e.g. EA",
+    "name": "Name",
+    "symbol": "Symbol",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by code, name or symbol...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableCode": "Code",
+    "tableName": "Name",
+    "tableSymbol": "Symbol",
+    "tableStatus": "Status",
+    "empty": "No units registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
       "roles": "Roles",
       "settings": "Settings",
-      "audit": "Audit"
+      "audit": "Audit",
+      "units": "Units of measure"
     },
     "codes": {
       "users.view": "View users",
@@ -191,7 +222,11 @@
       "roles.delete": "Delete roles",
       "settings.view": "View settings",
       "settings.update": "Edit settings",
-      "audit.view": "View audit log"
+      "audit.view": "View audit log",
+      "units.view": "View units of measure",
+      "units.create": "Create units of measure",
+      "units.update": "Edit units of measure",
+      "units.delete": "Delete units of measure"
     }
   },
   "errors": {
@@ -215,6 +250,14 @@
     "roleNameAlreadyExists": "A role with that name already exists in your company.",
     "roleIsSystem": "System roles cannot be modified or deleted.",
     "roleHasUsers": "Cannot delete a role that has assigned users.",
+    "unitsLoadFailed": "Could not load units of measure.",
+    "unitsCreateFailed": "Could not create the unit of measure.",
+    "unitsUpdateFailed": "Could not update the unit of measure.",
+    "unitsDeleteFailed": "Could not delete the unit of measure.",
+    "unitNotFound": "Unit of measure not found.",
+    "unitCodeAlreadyExists": "A unit with that code already exists in your company.",
+    "unitCodeRequired": "Unit code is required.",
+    "unitNameRequired": "Unit name is required.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

@@ -44,6 +44,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/settings/settings.routes').then((m) => m.SETTINGS_ROUTES),
       },
+      {
+        path: 'units',
+        canActivate: [permissionGuard('units.view')],
+        loadChildren: () =>
+          import('./features/units/units.routes').then((m) => m.UNITS_ROUTES),
+      },
     ],
   },
   {

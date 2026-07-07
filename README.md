@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 **complete** — Platform core: auth, multi-tenancy, full users/roles CRUD, settings, permission guards, i18n (ES/EN), audit, Redis cache, tests, and CI.  
+> **Status:** Phase 2 in progress — Master data catalogs. Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -226,6 +226,15 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `GET` | `/api/v1/settings` | Yes | `settings.view` | Tenant settings |
 | `PUT` | `/api/v1/settings/{key}` | Yes | `settings.update` | Update setting |
 
+### Catalogs (Phase 2)
+
+| Method | Endpoint | Auth | Permission | Description |
+|--------|----------|------|------------|-------------|
+| `GET` | `/api/v1/units` | Yes | `units.view` | List units (paginated, search) |
+| `POST` | `/api/v1/units` | Yes | `units.create` | Create unit of measure |
+| `PUT` | `/api/v1/units/{id}` | Yes | `units.update` | Update unit |
+| `DELETE` | `/api/v1/units/{id}` | Yes | `units.delete` | Soft-delete unit |
+
 ---
 
 ## Roadmap
@@ -234,7 +243,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (products, customers, suppliers) | Planned |
+| **2** | Master data (products, customers, suppliers) | **In progress** — Units of measure done |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
