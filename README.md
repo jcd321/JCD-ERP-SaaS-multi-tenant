@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 in progress (~65%) — Auth, multi-tenancy, users, roles, and tenant settings are functional.  
+> **Status:** Phase 1 in progress (~85%) — Auth (incl. forgot/reset password), multi-tenancy, users, roles, tenant settings, permission guards, and UI design system are functional.  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -19,7 +19,8 @@
 | **Multi-tenant SaaS** | Shared database with strict `TenantId` isolation and global query filters |
 | **Enterprise backend** | ASP.NET Core 9, CQRS with MediatR, FluentValidation, Result Pattern |
 | **Modern frontend** | Angular 21 standalone components, NgRx Store + Effects + Facades |
-| **Secure auth** | JWT + refresh tokens, BCrypt password hashing, role-based permissions |
+| **Secure auth** | JWT + refresh tokens, BCrypt, forgot/reset password, role-based permissions |
+| **Tenant isolation** | EF Core global query filters per request + tenant resolution middleware |
 | **Production-ready foundations** | Serilog, Swagger, health checks, rate limiting, Docker Compose |
 
 ---
@@ -166,6 +167,10 @@ npm start
 | Web UI | http://localhost:4200 |
 | Register | http://localhost:4200/auth/register |
 | Login | http://localhost:4200/auth/login |
+| Forgot password | http://localhost:4200/auth/forgot-password |
+
+> **Tip:** If `dotnet run` fails with *"file is locked by Jcd.Erp.Api"*, stop the running instance first:
+> `Get-Process -Name "Jcd.Erp.Api" -ErrorAction SilentlyContinue | Stop-Process -Force`
 
 ### 4. Test registration (API)
 
@@ -179,17 +184,32 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 
 ## API endpoints (Phase 1)
 
+### Auth
+
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
 | `POST` | `/api/v1/auth/register` | No | Register company + admin user |
 | `POST` | `/api/v1/auth/login` | No | Sign in |
 | `POST` | `/api/v1/auth/refresh` | No | Refresh access token |
 | `POST` | `/api/v1/auth/logout` | Yes | Sign out |
-| `POST` | `/api/v1/auth/change-password` | Yes | Change password |
-| `GET` | `/api/v1/users` | Yes | List tenant users |
-| `GET` | `/api/v1/roles` | Yes | List tenant roles |
-| `GET` | `/api/v1/settings` | Yes | Tenant settings |
-| `PUT` | `/api/v1/settings/{key}` | Yes | Update setting |
+| `POST` | `/api/v1/auth/change-password` | Yes | Change password (authenticated) |
+| `POST` | `/api/v1/auth/forgot-password` | No | Request password reset link |
+| `POST` | `/api/v1/auth/reset-password` | No | Set new password with reset token |
+
+### Platform
+
+| Method | Endpoint | Auth | Permission | Description |
+|--------|----------|------|------------|-------------|
+| `GET` | `/api/v1/users` | Yes | `users.view` | List tenant users |
+| `POST` | `/api/v1/users` | Yes | `users.create` | Create user |
+| `PUT` | `/api/v1/users/{id}` | Yes | `users.update` | Update user |
+| `GET` | `/api/v1/roles` | Yes | `roles.view` | List tenant roles |
+| `GET` | `/api/v1/roles/permissions` | Yes | `roles.view` | List available permissions |
+| `POST` | `/api/v1/roles` | Yes | `roles.create` | Create role |
+| `PUT` | `/api/v1/roles/{id}` | Yes | `roles.update` | Update role |
+| `DELETE` | `/api/v1/roles/{id}` | Yes | `roles.delete` | Delete role |
+| `GET` | `/api/v1/settings` | Yes | `settings.view` | Tenant settings |
+| `PUT` | `/api/v1/settings/{key}` | Yes | `settings.update` | Update setting |
 
 ---
 
@@ -198,7 +218,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
-| **1** | Auth, multi-tenant, users, roles, settings | In progress |
+| **1** | Auth, multi-tenant, users, roles, settings | **~85%** — see below |
 | **2** | Master data (products, customers, suppliers) | Planned |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
@@ -206,14 +226,39 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | **6** | Finance (cash, banks) | Planned |
 | **7** | Dashboard, reports, CI/CD | Planned |
 
+### Phase 1 — delivered so far
+
+| Area | Done |
+|------|------|
+| Auth | Register, login, refresh, logout, change/forgot/reset password |
+| Multi-tenant | Global query filters, tenant middleware, JWT `tenant_id` claim |
+| Users | List, create, update (modal UI + NgRx) |
+| Roles | Full CRUD with permission assignment |
+| Settings | List + update |
+| Frontend | Design system, dark/light theme, permission guard, sidebar by role |
+| DevOps | Docker Compose (PostgreSQL + Redis) |
+
+### Phase 1 — remaining
+
+| Item | Status |
+|------|--------|
+| Integration tests (tenant isolation) | Pending |
+| GitHub Actions CI | Pending |
+| Login/logout audit trail | Pending |
+| i18n ES/EN | Pending |
+| Redis integrated in code | Pending |
+
 ---
 
 ## Security & multi-tenancy
 
 - Every business table includes `tenant_id`
-- EF Core global query filters enforce tenant isolation
-- JWT access tokens (15 min) + refresh tokens (7 days)
+- EF Core global query filters bind `CurrentTenantId` per request (fail-closed when tenant is missing)
+- `TenantResolutionMiddleware` resolves tenant from JWT or authenticated user
+- JWT access tokens (15 min) + refresh tokens (7–30 days)
+- Password reset tokens (60 min, hashed in DB)
 - Granular permissions: `users.view`, `roles.create`, `settings.update`, etc.
+- Frontend `permissionGuard` protects routes; sidebar hides unauthorized modules
 - Rate limiting, CORS, structured logging, health checks
 
 ---
