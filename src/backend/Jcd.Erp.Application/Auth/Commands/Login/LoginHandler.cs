@@ -42,7 +42,19 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         var email = request.Email.Trim().ToLowerInvariant();
         var user = await _userRepository.GetByEmailForLoginAsync(email, request.TenantSlug, cancellationToken);
 
-        if (user is null || !user.IsActive)
+        if (user is null)
+        {
+            if (string.IsNullOrWhiteSpace(request.TenantSlug))
+            {
+                var matches = await _userRepository.GetLoginMatchesByEmailAsync(email, cancellationToken);
+                if (matches.Count > 1)
+                    return Result.Failure<LoginResponse>("Auth.TenantSlugRequired");
+            }
+
+            return Result.Failure<LoginResponse>("Auth.InvalidCredentials");
+        }
+
+        if (!user.IsActive)
             return Result.Failure<LoginResponse>("Auth.InvalidCredentials");
 
         if (!_passwordHasher.Verify(request.Password, user.PasswordHash))

@@ -1,11 +1,14 @@
 <div class="main-layout">
   <aside class="sidebar">
     <div class="sidebar__brand">
-      <span class="sidebar__logo">JCD</span>
-      <span class="sidebar__title">JCD ERP</span>
+      <span class="sidebar__logo" aria-hidden="true">JCD</span>
+      <div class="sidebar__brand-text">
+        <span class="sidebar__title">JCD ERP</span>
+        <span class="sidebar__subtitle">Enterprise Suite</span>
+      </div>
     </div>
 
-    <nav class="sidebar__nav">
+    <nav class="sidebar__nav" aria-label="Main navigation">
       @for (item of navItems; track item.route) {
         <a
           class="sidebar__link"
@@ -13,25 +16,38 @@
           routerLinkActive="sidebar__link--active"
           [routerLinkActiveOptions]="{ exact: item.route === '/' }"
         >
-          <span class="sidebar__icon" aria-hidden="true">{{ item.icon }}</span>
+          <span class="sidebar__icon" [innerHTML]="item.icon" aria-hidden="true"></span>
           {{ item.label }}
         </a>
       }
     </nav>
+
+    <div class="sidebar__footer">
+      <p class="sidebar__version">v0.1 · Fase 1</p>
+    </div>
   </aside>
 
   <div class="main-layout__body">
     <header class="header">
-      <div class="header__info">
-        <p class="header__tenant">{{ session()?.tenantSlug }}</p>
-        <p class="header__user">{{ session()?.fullName }}</p>
+      <div class="header__left">
+        <div class="header__user-block">
+          <span class="avatar">{{ userInitials() }}</span>
+          <div class="header__info">
+            <p class="header__user">{{ session()?.fullName }}</p>
+            <p class="header__tenant">{{ session()?.tenantSlug }}</p>
+          </div>
+        </div>
       </div>
 
       <div class="header__actions">
-        <button type="button" class="btn btn--ghost" (click)="toggleTheme()">
-          {{ theme() === 'light' ? 'Dark mode' : 'Light mode' }}
+        <button type="button" class="btn btn--ghost" (click)="toggleTheme()" [attr.aria-label]="theme() === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'">
+          @if (theme() === 'light') {
+            <span aria-hidden="true">◐</span> Oscuro
+          } @else {
+            <span aria-hidden="true">◑</span> Claro
+          }
         </button>
-        <button type="button" class="btn btn--ghost" (click)="logout()">Sign out</button>
+        <button type="button" class="btn btn--secondary" (click)="logout()">Cerrar sesión</button>
       </div>
     </header>
 

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
 import { AuthApiService } from '../../core/auth/auth-api.service';
+import { resolveAuthErrorMessage } from '../../core/auth/auth-error-messages';
 import { AuthActions } from './auth.actions';
 
 @Injectable()
@@ -21,7 +22,9 @@ export class AuthEffects {
         this.authApi.login(request).pipe(
           map((response) => AuthActions.loginSuccess({ response })),
           catchError((error) =>
-            of(AuthActions.loginFailure({ error: error.error?.error ?? 'Auth.LoginFailed' })),
+            of(AuthActions.loginFailure({
+              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.LoginFailed'),
+            })),
           ),
         ),
       ),
@@ -58,7 +61,7 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.registerFailure({
-                error: error.error?.error ?? 'Auth.RegisterFailed',
+                error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.RegisterFailed'),
               }),
             ),
           ),

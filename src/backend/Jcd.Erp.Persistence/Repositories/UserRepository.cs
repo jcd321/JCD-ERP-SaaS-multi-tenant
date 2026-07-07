@@ -59,6 +59,18 @@ public sealed class UserRepository : IUserRepository
         };
     }
 
+    public async Task<IReadOnlyList<User>> GetLoginMatchesByEmailAsync(
+        string email,
+        CancellationToken cancellationToken = default)
+    {
+        var normalizedEmail = email.Trim().ToLowerInvariant();
+
+        return await _context.Users
+            .IgnoreQueryFilters()
+            .Where(u => u.Email == normalizedEmail && !u.IsDeleted && u.IsActive)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var normalizedEmail = email.Trim().ToLowerInvariant();
