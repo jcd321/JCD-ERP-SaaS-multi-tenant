@@ -63,8 +63,24 @@ export class UsersEffects {
 
   readonly reloadAfterMutation$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UsersActions.createUserSuccess, UsersActions.updateUserSuccess),
+      ofType(UsersActions.createUserSuccess, UsersActions.updateUserSuccess, UsersActions.deleteUserSuccess),
       map(() => UsersActions.loadUsers()),
+    ),
+  );
+
+  readonly deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.deleteUser),
+      exhaustMap(({ userId }) =>
+        this.usersService.deleteUser(userId).pipe(
+          map(() => UsersActions.deleteUserSuccess()),
+          catchError((error) =>
+            of(UsersActions.deleteUserFailure({
+              error: resolvePlatformErrorMessage(error, 'Users.DeleteFailed', (key) => this.locale.t(key)),
+            })),
+          ),
+        ),
+      ),
     ),
   );
 }

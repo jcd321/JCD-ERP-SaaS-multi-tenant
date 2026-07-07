@@ -140,7 +140,9 @@
     "tableEmail": "Email",
     "tableRoles": "Roles",
     "tableStatus": "Status",
-    "empty": "No users registered."
+    "empty": "No users registered.",
+    "deleteTitle": "Delete user",
+    "deleteMessage": "Delete user \"{{name}}\"? This action cannot be undone."
   },
   "roles": {
     "title": "Roles",
@@ -200,6 +202,7 @@
     "usersLoadFailed": "Could not load users.",
     "usersCreateFailed": "Could not create the user.",
     "usersUpdateFailed": "Could not update the user.",
+    "usersDeleteFailed": "Could not delete the user.",
     "rolesLoadFailed": "Could not load roles.",
     "rolesCreateFailed": "Could not create the role.",
     "rolesUpdateFailed": "Could not update the role.",
@@ -207,6 +210,7 @@
     "rolesPermissionsLoadFailed": "Could not load permissions.",
     "userEmailAlreadyExists": "A user with that email already exists in your company.",
     "userNotFound": "User not found.",
+    "userCannotDeleteSelf": "You cannot delete your own account.",
     "roleNotFound": "Role not found.",
     "roleNameAlreadyExists": "A role with that name already exists in your company.",
     "roleIsSystem": "System roles cannot be modified or deleted.",

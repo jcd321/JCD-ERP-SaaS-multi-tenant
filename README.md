@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 in progress (~95%) — Auth, multi-tenancy, users, roles, settings, permission guards, i18n (ES/EN), integration tests, and CI are functional.  
+> **Status:** Phase 1 in progress (~98%) — Platform core is functional: auth, multi-tenancy, full users/roles CRUD, settings, permission guards, i18n (ES/EN), audit, tests, and CI.  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -217,6 +217,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `GET` | `/api/v1/users` | Yes | `users.view` | List tenant users |
 | `POST` | `/api/v1/users` | Yes | `users.create` | Create user |
 | `PUT` | `/api/v1/users/{id}` | Yes | `users.update` | Update user |
+| `DELETE` | `/api/v1/users/{id}` | Yes | `users.delete` | Soft-delete user |
 | `GET` | `/api/v1/roles` | Yes | `roles.view` | List tenant roles |
 | `GET` | `/api/v1/roles/permissions` | Yes | `roles.view` | List available permissions |
 | `POST` | `/api/v1/roles` | Yes | `roles.create` | Create role |
@@ -232,7 +233,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
-| **1** | Auth, multi-tenant, users, roles, settings | **~95%** — see below |
+| **1** | Auth, multi-tenant, users, roles, settings | **~98%** — see below |
 | **2** | Master data (products, customers, suppliers) | Planned |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
@@ -246,7 +247,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |------|------|
 | Auth | Register, login, refresh, logout, change/forgot/reset password |
 | Multi-tenant | Global query filters, tenant middleware, JWT `tenant_id` claim |
-| Users | List, create, update (modal UI + NgRx) |
+| Users | Full CRUD with roles (modal UI + NgRx) |
 | Roles | Full CRUD with permission assignment |
 | Settings | List + update |
 | Frontend | Design system, dark/light theme, permission guard, sidebar by role |
@@ -260,7 +261,9 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | GitHub Actions CI | Done |
 | Login/logout audit trail | Done |
 | i18n ES/EN | Done |
-| Redis integrated in code | Pending |
+| Users delete (frontend + API) | Done |
+| Redis integrated in code | Pending (Phase 2 prep) |
+| Push to GitHub / verify CI | Pending |
 
 ---
 

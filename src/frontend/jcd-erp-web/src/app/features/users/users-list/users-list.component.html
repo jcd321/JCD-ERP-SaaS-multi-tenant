@@ -73,6 +73,16 @@
     </form>
   </app-form-modal>
 
+  <app-confirm-dialog
+    [open]="!!userToDelete"
+    [title]="'users.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
   @if (loading()) {
     <p class="page__status">{{ 'users.loading' | translate }}</p>
   } @else {
@@ -103,6 +113,11 @@
                   <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(user)">
                     {{ 'common.edit' | translate }}
                   </button>
+                  @if (canDeleteUser(user)) {
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(user)">
+                      {{ 'common.delete' | translate }}
+                    </button>
+                  }
                 </div>
               </td>
             </tr>

@@ -73,4 +73,12 @@ public class User : BaseAuditableEntity
         IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    public void SoftDelete()
+    {
+        IsDeleted = true;
+        DeletedAt = DateTime.UtcNow;
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

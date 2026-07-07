@@ -1,4 +1,5 @@
 using Jcd.Erp.Application.Users.Commands.CreateUser;
+using Jcd.Erp.Application.Users.Commands.DeleteUser;
 using Jcd.Erp.Application.Users.Commands.UpdateUser;
 using Jcd.Erp.Application.Users.Queries.GetUsers;
 using MediatR;
@@ -50,6 +51,14 @@ public class UsersController : ControllerBase
 
         var result = await _mediator.Send(command);
         return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
+    }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "users.delete")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteUserCommand(id));
+        return result.IsSuccess ? NoContent() : BadRequest(new { error = result.Error });
     }
 }
 

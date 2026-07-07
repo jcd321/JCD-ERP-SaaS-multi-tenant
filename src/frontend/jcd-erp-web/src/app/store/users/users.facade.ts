@@ -26,4 +26,8 @@ export class UsersFacade {
   updateUser(userId: string, request: UpdateUserRequest): void {
     this.store.dispatch(UsersActions.updateUser({ userId, request }));
   }
+
+  deleteUser(userId: string): void {
+    this.store.dispatch(UsersActions.deleteUser({ userId }));
+  }
 }

@@ -140,7 +140,9 @@
     "tableEmail": "Correo",
     "tableRoles": "Roles",
     "tableStatus": "Estado",
-    "empty": "No hay usuarios registrados."
+    "empty": "No hay usuarios registrados.",
+    "deleteTitle": "Eliminar usuario",
+    "deleteMessage": "¿Eliminar al usuario \"{{name}}\"? Esta acción no se puede deshacer."
   },
   "roles": {
     "title": "Roles",
@@ -200,6 +202,7 @@
     "usersLoadFailed": "No se pudieron cargar los usuarios.",
     "usersCreateFailed": "No se pudo crear el usuario.",
     "usersUpdateFailed": "No se pudo actualizar el usuario.",
+    "usersDeleteFailed": "No se pudo eliminar el usuario.",
     "rolesLoadFailed": "No se pudieron cargar los roles.",
     "rolesCreateFailed": "No se pudo crear el rol.",
     "rolesUpdateFailed": "No se pudo actualizar el rol.",
@@ -207,6 +210,7 @@
     "rolesPermissionsLoadFailed": "No se pudieron cargar los permisos.",
     "userEmailAlreadyExists": "Ya existe un usuario con ese correo en tu empresa.",
     "userNotFound": "Usuario no encontrado.",
+    "userCannotDeleteSelf": "No puedes eliminar tu propia cuenta.",
     "roleNotFound": "Rol no encontrado.",
     "roleNameAlreadyExists": "Ya existe un rol con ese nombre en tu empresa.",
     "roleIsSystem": "Los roles de sistema no se pueden modificar ni eliminar.",

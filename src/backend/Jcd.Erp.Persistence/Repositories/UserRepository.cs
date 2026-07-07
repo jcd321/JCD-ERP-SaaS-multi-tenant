@@ -99,4 +99,10 @@ public sealed class UserRepository : IUserRepository
         await _context.Users.AddAsync(user, cancellationToken);
 
     public void Update(User user) => _context.Users.Update(user);
+
+    public void Delete(User user)
+    {
+        user.SoftDelete();
+        _context.Users.Update(user);
+    }
 }

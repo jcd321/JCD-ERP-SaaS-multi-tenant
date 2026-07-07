@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   NonNullableFormBuilder,
@@ -7,8 +7,10 @@ import {
 } from '@angular/forms';
 import { Actions, ofType } from '@ngrx/effects';
 
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { FormModalComponent } from '../../../shared/components/form-modal/form-modal.component';
 import { LocaleService, TranslatePipe } from '../../../core/i18n';
+import { AuthFacade } from '../../../store/auth/auth.facade';
 import { RolesFacade } from '../../../store/roles/roles.facade';
 import { UsersActions } from '../../../store/users/users.actions';
 import { UsersFacade } from '../../../store/users/users.facade';
@@ -17,7 +19,7 @@ import { User, UserFormMode } from '../users.models';
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [ReactiveFormsModule, FormModalComponent, TranslatePipe],
+  imports: [ReactiveFormsModule, FormModalComponent, ConfirmDialogComponent, TranslatePipe],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
@@ -25,6 +27,7 @@ export class UsersListComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly usersFacade = inject(UsersFacade);
   private readonly rolesFacade = inject(RolesFacade);
+  private readonly authFacade = inject(AuthFacade);
   private readonly actions$ = inject(Actions);
   private readonly locale = inject(LocaleService);
 
@@ -34,8 +37,13 @@ export class UsersListComponent implements OnInit {
   readonly saving = this.usersFacade.saving;
   readonly errorMessage = this.usersFacade.error;
 
+  readonly canDelete = computed(() =>
+    (this.authFacade.session()?.permissions ?? []).includes('users.delete'),
+  );
+
   formMode: UserFormMode = null;
   editingUserId: string | null = null;
+  userToDelete: User | null = null;
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -49,10 +57,13 @@ export class UsersListComponent implements OnInit {
   constructor() {
     this.actions$
       .pipe(
-        ofType(UsersActions.createUserSuccess, UsersActions.updateUserSuccess),
+        ofType(UsersActions.createUserSuccess, UsersActions.updateUserSuccess, UsersActions.deleteUserSuccess),
         takeUntilDestroyed(),
       )
-      .subscribe(() => this.closeForm());
+      .subscribe(() => {
+        this.closeForm();
+        this.userToDelete = null;
+      });
   }
 
   ngOnInit(): void {
@@ -64,6 +75,18 @@ export class UsersListComponent implements OnInit {
     return this.formMode === 'create'
       ? this.locale.t('users.createTitle')
       : this.locale.t('users.editTitle');
+  }
+
+  get deleteMessage(): string {
+    if (!this.userToDelete) {
+      return '';
+    }
+
+    return this.locale.t('users.deleteMessage', { name: this.userToDelete.fullName });
+  }
+
+  canDeleteUser(user: User): boolean {
+    return this.canDelete() && user.id !== this.authFacade.session()?.userId;
   }
 
   openCreateForm(): void {
@@ -108,6 +131,26 @@ export class UsersListComponent implements OnInit {
     this.formMode = null;
     this.editingUserId = null;
     this.form.controls.email.enable();
+  }
+
+  openDeleteDialog(user: User): void {
+    if (!this.canDeleteUser(user)) {
+      return;
+    }
+
+    this.userToDelete = user;
+  }
+
+  closeDeleteDialog(): void {
+    this.userToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.userToDelete) {
+      return;
+    }
+
+    this.usersFacade.deleteUser(this.userToDelete.id);
   }
 
   toggleRole(roleId: string, checked: boolean): void {
