@@ -1,6 +1,8 @@
 using System.Text.Json;
 using FluentValidation;
 using Jcd.Erp.Domain.Common;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Jcd.Erp.Api.Middleware;
 
@@ -40,6 +42,21 @@ public class ExceptionHandlingMiddleware
                 traceId = context.TraceIdentifier
             }));
         }
+        catch (DbUpdateException ex) when (TryMapUniqueConstraint(ex, out var domainError))
+        {
+            _logger.LogWarning(ex, "Unique constraint violation: {Error}", domainError);
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "application/problem+json";
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+            {
+                type = "https://tools.ietf.org/html/rfc7807",
+                title = "Conflict",
+                status = 400,
+                error = domainError,
+                traceId = context.TraceIdentifier
+            }));
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception");
@@ -54,5 +71,22 @@ public class ExceptionHandlingMiddleware
                 traceId = context.TraceIdentifier
             }));
         }
+    }
+
+    private static bool TryMapUniqueConstraint(DbUpdateException exception, out string domainError)
+    {
+        domainError = string.Empty;
+
+        if (exception.InnerException is not PostgresException { SqlState: PostgresErrorCodes.UniqueViolation } postgres)
+            return false;
+
+        domainError = postgres.ConstraintName switch
+        {
+            "ix_roles_tenant_id_name" => "Role.NameAlreadyExists",
+            "ix_users_tenant_id_email" => "User.EmailAlreadyExists",
+            _ => string.Empty
+        };
+
+        return domainError != string.Empty;
     }
 }

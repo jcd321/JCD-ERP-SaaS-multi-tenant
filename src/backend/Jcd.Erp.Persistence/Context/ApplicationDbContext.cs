@@ -1,4 +1,4 @@
-using System.Linq.Expressions;
+using System.Reflection;
 using Jcd.Erp.Domain.Audit;
 using Jcd.Erp.Domain.Common;
 using Jcd.Erp.Domain.Configuration;
@@ -19,6 +19,16 @@ public sealed class ApplicationDbContext : DbContext
         : base(options)
     {
         _tenantContext = tenantContext;
+    }
+
+    /// <summary>
+    /// Must be a property on <see cref="DbContext"/> so EF Core binds the filter per request instance.
+  /// Referencing <see cref="ITenantContext"/> directly in expression trees freezes the startup scope instance.
+    /// </summary>
+    public Guid? CurrentTenantId
+    {
+        get => _tenantContext.TenantId;
+        set => _tenantContext.TenantId = value;
     }
 
     public DbSet<Tenant> Tenants => Set<Tenant>();
@@ -63,40 +73,29 @@ public sealed class ApplicationDbContext : DbContext
 
     private void ApplyAuditableTenantFilter(ModelBuilder modelBuilder, Type entityType)
     {
-        var parameter = Expression.Parameter(entityType, "e");
-        var tenantIdProperty = Expression.Property(parameter, nameof(BaseAuditableEntity.TenantId));
-        var isDeletedProperty = Expression.Property(parameter, nameof(BaseAuditableEntity.IsDeleted));
+        var method = typeof(ApplicationDbContext)
+            .GetMethod(nameof(ConfigureAuditableTenantFilter), BindingFlags.NonPublic | BindingFlags.Instance)!
+            .MakeGenericMethod(entityType);
 
-        var contextTenantId = Expression.Property(
-            Expression.Constant(_tenantContext),
-            nameof(ITenantContext.TenantId));
-
-        var hasTenant = Expression.NotEqual(contextTenantId, Expression.Constant(null, typeof(Guid?)));
-        var tenantMatches = Expression.Equal(tenantIdProperty, Expression.Convert(contextTenantId, typeof(Guid)));
-        var notDeleted = Expression.Not(isDeletedProperty);
-
-        var filterBody = Expression.AndAlso(
-            hasTenant,
-            Expression.AndAlso(tenantMatches, notDeleted));
-
-        var lambda = Expression.Lambda(filterBody, parameter);
-        modelBuilder.Entity(entityType).HasQueryFilter(lambda);
+        method.Invoke(this, [modelBuilder]);
     }
 
     private void ApplyTenantOnlyFilter(ModelBuilder modelBuilder, Type entityType)
     {
-        var parameter = Expression.Parameter(entityType, "e");
-        var tenantIdProperty = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
+        var method = typeof(ApplicationDbContext)
+            .GetMethod(nameof(ConfigureTenantOnlyFilter), BindingFlags.NonPublic | BindingFlags.Instance)!
+            .MakeGenericMethod(entityType);
 
-        var contextTenantId = Expression.Property(
-            Expression.Constant(_tenantContext),
-            nameof(ITenantContext.TenantId));
-
-        var hasTenant = Expression.NotEqual(contextTenantId, Expression.Constant(null, typeof(Guid?)));
-        var tenantMatches = Expression.Equal(tenantIdProperty, Expression.Convert(contextTenantId, typeof(Guid)));
-
-        var filterBody = Expression.AndAlso(hasTenant, tenantMatches);
-        var lambda = Expression.Lambda(filterBody, parameter);
-        modelBuilder.Entity(entityType).HasQueryFilter(lambda);
+        method.Invoke(this, [modelBuilder]);
     }
+
+    private void ConfigureAuditableTenantFilter<TEntity>(ModelBuilder modelBuilder)
+        where TEntity : BaseAuditableEntity =>
+        modelBuilder.Entity<TEntity>().HasQueryFilter(e =>
+            CurrentTenantId != null && e.TenantId == CurrentTenantId.Value && !e.IsDeleted);
+
+    private void ConfigureTenantOnlyFilter<TEntity>(ModelBuilder modelBuilder)
+        where TEntity : class, ITenantEntity =>
+        modelBuilder.Entity<TEntity>().HasQueryFilter(e =>
+            CurrentTenantId != null && e.TenantId == CurrentTenantId.Value);
 }

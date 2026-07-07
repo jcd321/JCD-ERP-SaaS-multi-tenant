@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Infrastructure.Auth;
@@ -18,7 +19,15 @@ public class CurrentTenantService : ICurrentTenantService
     {
         get
         {
-            var value = _httpContextAccessor.HttpContext?.User.FindFirstValue(JwtClaimTypes.TenantId);
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user is null)
+                return Guid.Empty;
+
+            var value = user.FindFirstValue(JwtClaimTypes.TenantId)
+                ?? user.Claims.FirstOrDefault(c =>
+                    c.Type.Equals(JwtClaimTypes.TenantId, StringComparison.OrdinalIgnoreCase)
+                    || c.Type.EndsWith("/tenant_id", StringComparison.OrdinalIgnoreCase))?.Value;
+
             return Guid.TryParse(value, out var id) ? id : Guid.Empty;
         }
     }

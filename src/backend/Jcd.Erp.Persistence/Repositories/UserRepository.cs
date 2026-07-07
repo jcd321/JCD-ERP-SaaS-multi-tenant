@@ -17,6 +17,11 @@ public sealed class UserRepository : IUserRepository
     public Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
+    public Task<User?> GetByIdIgnoringFiltersAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Users
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted, cancellationToken);
+
     public Task<User?> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default) =>
         _context.Users
             .Include(u => u.UserRoles)
