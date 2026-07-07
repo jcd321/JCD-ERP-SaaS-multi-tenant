@@ -1,24 +1,22 @@
-import { MODULE_LABELS, PERMISSION_LABELS } from '../constants/permission-labels';
-
-export interface GroupablePermission {
-  id: string;
-  code: string;
-  module: string;
-  description: string | null;
+export function getPermissionLabel(
+  permission: { code: string; description: string | null },
+  translate: (key: string) => string,
+): string {
+  const key = `permissions.codes.${permission.code}`;
+  const translated = translate(key);
+  return translated !== key ? translated : (permission.description ?? permission.code);
 }
 
-export function getPermissionLabel(permission: GroupablePermission): string {
-  return PERMISSION_LABELS[permission.code] ?? permission.description ?? permission.code;
+export function getModuleLabel(module: string, translate: (key: string) => string): string {
+  const key = `permissions.modules.${module}`;
+  const translated = translate(key);
+  return translated !== key ? translated : module;
 }
 
-export function getModuleLabel(module: string): string {
-  return MODULE_LABELS[module] ?? module;
-}
-
-export function groupPermissionsByModule(
-  permissions: GroupablePermission[],
-): { module: string; items: GroupablePermission[] }[] {
-  const grouped = new Map<string, GroupablePermission[]>();
+export function groupPermissionsByModule<T extends { module: string }>(
+  permissions: T[],
+): { module: string; items: T[] }[] {
+  const grouped = new Map<string, T[]>();
 
   for (const permission of permissions) {
     const list = grouped.get(permission.module) ?? [];

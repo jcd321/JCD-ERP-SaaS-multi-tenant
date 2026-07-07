@@ -1,11 +1,13 @@
 <section class="page">
   <div class="page-header-row">
     <header class="page__header">
-      <h1>Usuarios</h1>
-      <p>Gestiona el equipo de tu empresa y sus roles de acceso.</p>
+      <h1>{{ 'users.title' | translate }}</h1>
+      <p>{{ 'users.subtitle' | translate }}</p>
     </header>
 
-    <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo usuario</button>
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'users.newUser' | translate }}
+    </button>
   </div>
 
   @if (errorMessage()) {
@@ -22,37 +24,37 @@
     <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-row">
         <div class="form-field">
-          <label for="firstName">Nombre</label>
+          <label for="firstName">{{ 'users.firstName' | translate }}</label>
           <input id="firstName" type="text" formControlName="firstName" />
         </div>
         <div class="form-field">
-          <label for="lastName">Apellido</label>
+          <label for="lastName">{{ 'users.lastName' | translate }}</label>
           <input id="lastName" type="text" formControlName="lastName" />
         </div>
       </div>
 
       <div class="form-field">
-        <label for="email">Correo electrónico</label>
+        <label for="email">{{ 'users.email' | translate }}</label>
         <input id="email" type="email" formControlName="email" autocomplete="off" />
       </div>
 
       @if (formMode === 'create') {
         <div class="form-field">
-          <label for="password">Contraseña temporal</label>
+          <label for="password">{{ 'users.tempPassword' | translate }}</label>
           <input id="password" type="password" formControlName="password" autocomplete="new-password" />
-          <span class="form-field__hint">Mínimo 8 caracteres. El usuario podrá cambiarla después.</span>
+          <span class="form-field__hint">{{ 'users.tempPasswordHint' | translate }}</span>
         </div>
       }
 
       @if (formMode === 'edit') {
         <label class="checkbox">
           <input type="checkbox" formControlName="isActive" />
-          Usuario activo
+          {{ 'users.activeUser' | translate }}
         </label>
       }
 
       <div class="form-field">
-        <label>Roles</label>
+        <label>{{ 'users.roles' | translate }}</label>
         <div class="role-checklist">
           @for (role of roles(); track role.id) {
             <label class="checkbox">
@@ -64,7 +66,7 @@
               {{ role.name }}
             </label>
           } @empty {
-            <span class="form-field__hint">No hay roles disponibles.</span>
+            <span class="form-field__hint">{{ 'users.noRoles' | translate }}</span>
           }
         </div>
       </div>
@@ -72,16 +74,16 @@
   </app-form-modal>
 
   @if (loading()) {
-    <p class="page__status">Cargando usuarios...</p>
+    <p class="page__status">{{ 'users.loading' | translate }}</p>
   } @else {
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Roles</th>
-            <th>Estado</th>
+            <th>{{ 'users.tableName' | translate }}</th>
+            <th>{{ 'users.tableEmail' | translate }}</th>
+            <th>{{ 'users.tableRoles' | translate }}</th>
+            <th>{{ 'users.tableStatus' | translate }}</th>
             <th></th>
           </tr>
         </thead>
@@ -90,23 +92,23 @@
             <tr>
               <td>{{ user.fullName }}</td>
               <td>{{ user.email }}</td>
-              <td>{{ user.roles.join(', ') || '—' }}</td>
+              <td>{{ user.roles.join(', ') || ('common.empty' | translate) }}</td>
               <td>
                 <span class="badge" [class.badge--success]="user.isActive" [class.badge--muted]="!user.isActive">
-                  {{ user.isActive ? 'Activo' : 'Inactivo' }}
+                  {{ user.isActive ? ('common.active' | translate) : ('common.inactive' | translate) }}
                 </span>
               </td>
               <td>
                 <div class="table-actions">
                   <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(user)">
-                    Editar
+                    {{ 'common.edit' | translate }}
                   </button>
                 </div>
               </td>
             </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="data-table__empty">No hay usuarios registrados.</td>
+              <td colspan="5" class="data-table__empty">{{ 'users.empty' | translate }}</td>
             </tr>
           }
         </tbody>

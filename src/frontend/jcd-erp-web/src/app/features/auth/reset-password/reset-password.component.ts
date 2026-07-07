@@ -8,12 +8,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { TranslatePipe } from '../../../core/i18n';
 import { AuthFacade } from '../../../store/auth/auth.facade';
 import { AuthActions } from '../../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
 })

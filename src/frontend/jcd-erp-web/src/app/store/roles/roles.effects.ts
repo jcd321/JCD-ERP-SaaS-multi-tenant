@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 
 import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
+import { LocaleService } from '../../core/i18n';
 import { RolesService } from '../../features/roles/roles.service';
 import { RolesActions } from './roles.actions';
 
@@ -10,6 +11,7 @@ import { RolesActions } from './roles.actions';
 export class RolesEffects {
   private readonly actions$ = inject(Actions);
   private readonly rolesService = inject(RolesService);
+  private readonly locale = inject(LocaleService);
 
   readonly loadRoles$ = createEffect(() =>
     this.actions$.pipe(
@@ -19,7 +21,7 @@ export class RolesEffects {
           map((roles) => RolesActions.loadRolesSuccess({ roles })),
           catchError((error) =>
             of(RolesActions.loadRolesFailure({
-              error: resolvePlatformErrorMessage(error, 'Roles.LoadFailed'),
+              error: resolvePlatformErrorMessage(error, 'Roles.LoadFailed', (key) => this.locale.t(key)),
             })),
           ),
         ),
@@ -35,7 +37,7 @@ export class RolesEffects {
           map((permissions) => RolesActions.loadPermissionsSuccess({ permissions })),
           catchError((error) =>
             of(RolesActions.loadPermissionsFailure({
-              error: resolvePlatformErrorMessage(error, 'Roles.PermissionsLoadFailed'),
+              error: resolvePlatformErrorMessage(error, 'Roles.PermissionsLoadFailed', (key) => this.locale.t(key)),
             })),
           ),
         ),
@@ -51,7 +53,7 @@ export class RolesEffects {
           map(() => RolesActions.createRoleSuccess()),
           catchError((error) =>
             of(RolesActions.createRoleFailure({
-              error: resolvePlatformErrorMessage(error, 'Roles.CreateFailed'),
+              error: resolvePlatformErrorMessage(error, 'Roles.CreateFailed', (key) => this.locale.t(key)),
             })),
           ),
         ),
@@ -67,7 +69,7 @@ export class RolesEffects {
           map(() => RolesActions.updateRoleSuccess()),
           catchError((error) =>
             of(RolesActions.updateRoleFailure({
-              error: resolvePlatformErrorMessage(error, 'Roles.UpdateFailed'),
+              error: resolvePlatformErrorMessage(error, 'Roles.UpdateFailed', (key) => this.locale.t(key)),
             })),
           ),
         ),
@@ -83,7 +85,7 @@ export class RolesEffects {
           map(() => RolesActions.deleteRoleSuccess()),
           catchError((error) =>
             of(RolesActions.deleteRoleFailure({
-              error: resolvePlatformErrorMessage(error, 'Roles.DeleteFailed'),
+              error: resolvePlatformErrorMessage(error, 'Roles.DeleteFailed', (key) => this.locale.t(key)),
             })),
           ),
         ),

@@ -1,7 +1,7 @@
 <div class="auth-card">
   <header class="auth-card__header">
-    <h2>Crear cuenta</h2>
-    <p>Registra tu empresa y el usuario administrador.</p>
+    <h2>{{ 'auth.register.title' | translate }}</h2>
+    <p>{{ 'auth.register.subtitle' | translate }}</p>
   </header>
 
   @if (errorMessage()) {
@@ -10,41 +10,49 @@
 
   <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-field">
-      <label for="companyName">Nombre de la empresa</label>
+      <label for="companyName">{{ 'auth.register.companyName' | translate }}</label>
       <input id="companyName" type="text" formControlName="companyName" />
       @if (form.controls.companyName.touched && form.controls.companyName.invalid) {
-        <span class="form-field__error">El nombre de la empresa es obligatorio.</span>
+        <span class="form-field__error">{{ 'validation.companyRequired' | translate }}</span>
       }
     </div>
 
     <div class="form-field">
-      <label for="slug">Slug de empresa <span class="optional">(opcional)</span></label>
-      <input id="slug" type="text" formControlName="slug" placeholder="se genera automáticamente" />
-      <span class="form-field__hint">Se usa para iniciar sesión. Ej: mi-empresa</span>
+      <label for="slug">
+        {{ 'auth.register.slug' | translate }}
+        <span class="optional">({{ 'common.optional' | translate }})</span>
+      </label>
+      <input
+        id="slug"
+        type="text"
+        formControlName="slug"
+        [placeholder]="'auth.register.slugPlaceholder' | translate"
+      />
+      <span class="form-field__hint">{{ 'auth.register.slugHint' | translate }}</span>
     </div>
 
     <div class="form-row">
       <div class="form-field">
-        <label for="adminFirstName">Nombre</label>
+        <label for="adminFirstName">{{ 'auth.register.firstName' | translate }}</label>
         <input id="adminFirstName" type="text" formControlName="adminFirstName" />
       </div>
 
       <div class="form-field">
-        <label for="adminLastName">Apellido</label>
+        <label for="adminLastName">{{ 'auth.register.lastName' | translate }}</label>
         <input id="adminLastName" type="text" formControlName="adminLastName" />
       </div>
     </div>
 
     <div class="form-field">
-      <label for="adminEmail">Correo del administrador</label>
+      <label for="adminEmail">{{ 'auth.register.adminEmail' | translate }}</label>
       <input id="adminEmail" type="email" formControlName="adminEmail" autocomplete="email" />
       @if (form.controls.adminEmail.touched && form.controls.adminEmail.invalid) {
-        <span class="form-field__error">Ingresa un correo válido.</span>
+        <span class="form-field__error">{{ 'validation.email' | translate }}</span>
       }
     </div>
 
     <div class="form-field">
-      <label for="adminPassword">Contraseña</label>
+      <label for="adminPassword">{{ 'auth.register.password' | translate }}</label>
       <input
         id="adminPassword"
         type="password"
@@ -52,12 +60,12 @@
         autocomplete="new-password"
       />
       @if (form.controls.adminPassword.touched && form.controls.adminPassword.invalid) {
-        <span class="form-field__error">Mínimo 8 caracteres.</span>
+        <span class="form-field__error">{{ 'validation.passwordMin' | translate }}</span>
       }
     </div>
 
     <div class="form-field">
-      <label for="confirmPassword">Confirmar contraseña</label>
+      <label for="confirmPassword">{{ 'auth.register.confirmPassword' | translate }}</label>
       <input
         id="confirmPassword"
         type="password"
@@ -65,17 +73,17 @@
         autocomplete="new-password"
       />
       @if (form.touched && form.errors?.['passwordMismatch']) {
-        <span class="form-field__error">Las contraseñas no coinciden.</span>
+        <span class="form-field__error">{{ 'validation.passwordMismatch' | translate }}</span>
       }
     </div>
 
     <button class="btn btn--primary btn--block" type="submit" [disabled]="loading()">
-      {{ loading() ? 'Creando cuenta...' : 'Crear cuenta' }}
+      {{ loading() ? ('auth.register.submitting' | translate) : ('auth.register.submit' | translate) }}
     </button>
   </form>
 
   <p class="auth-card__footer">
-    ¿Ya tienes cuenta?
-    <a routerLink="/auth/login">Iniciar sesión</a>
+    {{ 'auth.login.hasAccount' | translate }}
+    <a routerLink="/auth/login">{{ 'auth.register.goToLogin' | translate }}</a>
   </p>
 </div>

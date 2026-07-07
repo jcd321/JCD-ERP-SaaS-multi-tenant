@@ -5,9 +5,10 @@ import { Actions, ofType } from '@ngrx/effects';
 
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { FormModalComponent } from '../../../shared/components/form-modal/form-modal.component';
+import { LocaleService, TranslatePipe } from '../../../core/i18n';
 import {
-  getModuleLabel,
-  getPermissionLabel,
+  getModuleLabel as resolveModuleLabel,
+  getPermissionLabel as resolvePermissionLabel,
   groupPermissionsByModule,
 } from '../../../shared/utils/permission-group.util';
 import { RolesActions } from '../../../store/roles/roles.actions';
@@ -17,7 +18,7 @@ import { Role, RoleFormMode } from '../roles.models';
 @Component({
   selector: 'app-roles-list',
   standalone: true,
-  imports: [ReactiveFormsModule, FormModalComponent, ConfirmDialogComponent],
+  imports: [ReactiveFormsModule, FormModalComponent, ConfirmDialogComponent, TranslatePipe],
   templateUrl: './roles-list.component.html',
   styleUrl: './roles-list.component.scss',
 })
@@ -25,6 +26,7 @@ export class RolesListComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly rolesFacade = inject(RolesFacade);
   private readonly actions$ = inject(Actions);
+  private readonly locale = inject(LocaleService);
 
   readonly roles = this.rolesFacade.roles;
   readonly permissions = this.rolesFacade.permissions;
@@ -32,9 +34,11 @@ export class RolesListComponent implements OnInit {
   readonly saving = this.rolesFacade.saving;
   readonly errorMessage = this.rolesFacade.error;
 
-  readonly getPermissionLabel = getPermissionLabel;
-  readonly getModuleLabel = getModuleLabel;
   readonly groupPermissionsByModule = groupPermissionsByModule;
+  readonly getPermissionLabel = (permission: Parameters<typeof resolvePermissionLabel>[0]) =>
+    resolvePermissionLabel(permission, (key) => this.locale.t(key));
+  readonly getModuleLabel = (module: string) =>
+    resolveModuleLabel(module, (key) => this.locale.t(key));
 
   formMode: RoleFormMode = null;
   editingRoleId: string | null = null;
@@ -64,7 +68,9 @@ export class RolesListComponent implements OnInit {
   }
 
   get modalTitle(): string {
-    return this.formMode === 'create' ? 'Crear rol' : 'Editar rol';
+    return this.formMode === 'create'
+      ? this.locale.t('roles.createTitle')
+      : this.locale.t('roles.editTitle');
   }
 
   get deleteMessage(): string {
@@ -72,7 +78,7 @@ export class RolesListComponent implements OnInit {
       return '';
     }
 
-    return `¿Eliminar el rol "${this.roleToDelete.name}"? Esta acción no se puede deshacer.`;
+    return this.locale.t('roles.deleteMessage', { name: this.roleToDelete.name });
   }
 
   openCreateForm(): void {

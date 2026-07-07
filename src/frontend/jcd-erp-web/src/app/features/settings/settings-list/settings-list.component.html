@@ -1,11 +1,11 @@
 <section class="page">
   <header class="page__header">
-    <h1>Settings</h1>
-    <p>Tenant configuration values for your organization.</p>
+    <h1>{{ 'settings.title' | translate }}</h1>
+    <p>{{ 'settings.subtitle' | translate }}</p>
   </header>
 
   @if (loading()) {
-    <p class="page__status">Loading settings...</p>
+    <p class="page__status">{{ 'settings.loading' | translate }}</p>
   } @else if (errorMessage()) {
     <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
   } @else {
@@ -13,8 +13,8 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Key</th>
-            <th>Value</th>
+            <th>{{ 'settings.key' | translate }}</th>
+            <th>{{ 'settings.value' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -25,7 +25,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="2" class="data-table__empty">No settings found.</td>
+              <td colspan="2" class="data-table__empty">{{ 'settings.empty' | translate }}</td>
             </tr>
           }
         </tbody>

@@ -2,11 +2,13 @@ import { Component, computed, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
+import { TranslatePipe } from '../../core/i18n';
 import { AuthFacade } from '../../store/auth/auth.facade';
 import { ThemeService } from '../../core/theme/theme.service';
+import { LanguageSwitcherComponent } from '../../shared/components/language-switcher/language-switcher.component';
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   route: string;
   icon: SafeHtml;
   permission?: string;
@@ -14,7 +16,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, LanguageSwitcherComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
 })
@@ -39,14 +41,14 @@ export class MainLayoutComponent {
 
   private readonly allNavItems: NavItem[] = [
     {
-      label: 'Dashboard',
+      labelKey: 'nav.dashboard',
       route: '/',
       icon: this.icon(
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
       ),
     },
     {
-      label: 'Usuarios',
+      labelKey: 'nav.users',
       route: '/users',
       permission: 'users.view',
       icon: this.icon(
@@ -54,7 +56,7 @@ export class MainLayoutComponent {
       ),
     },
     {
-      label: 'Roles',
+      labelKey: 'nav.roles',
       route: '/roles',
       permission: 'roles.view',
       icon: this.icon(
@@ -62,7 +64,7 @@ export class MainLayoutComponent {
       ),
     },
     {
-      label: 'Configuración',
+      labelKey: 'nav.settings',
       route: '/settings',
       permission: 'settings.view',
       icon: this.icon(

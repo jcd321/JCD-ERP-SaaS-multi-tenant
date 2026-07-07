@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { TranslatePipe } from '../../../core/i18n';
 import { AuthFacade } from '../../../store/auth/auth.facade';
 
 function passwordsMatch(control: AbstractControl): ValidationErrors | null {
@@ -18,7 +19,7 @@ function passwordsMatch(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

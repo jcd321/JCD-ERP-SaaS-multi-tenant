@@ -8,7 +8,7 @@
     <button
       type="button"
       class="modal__backdrop"
-      aria-label="Cerrar"
+      [attr.aria-label]="'common.close' | translate"
       (click)="onBackdropClick()"
     ></button>
 
@@ -22,7 +22,7 @@
         <button
           type="button"
           class="modal__close"
-          aria-label="Cerrar"
+          [attr.aria-label]="'common.close' | translate"
           (click)="closed.emit()"
         >
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -43,7 +43,7 @@
 
       <footer class="modal__footer">
         <button type="button" class="btn btn--ghost" (click)="closed.emit()">
-          {{ cancelLabel() }}
+          {{ cancelLabel() || ('common.cancel' | translate) }}
         </button>
         <button
           type="button"
@@ -51,7 +51,7 @@
           [disabled]="saving()"
           (click)="onSubmitClick()"
         >
-          {{ saving() ? 'Guardando...' : submitLabel() }}
+          {{ saving() ? ('common.saving' | translate) : (submitLabel() || ('common.save' | translate)) }}
         </button>
       </footer>
     </div>

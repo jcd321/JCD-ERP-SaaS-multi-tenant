@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 1 in progress (~92%) — Auth (incl. forgot/reset password, login/logout audit), multi-tenancy, users, roles, tenant settings, permission guards, integration tests, and CI are functional.  
+> **Status:** Phase 1 in progress (~95%) — Auth, multi-tenancy, users, roles, settings, permission guards, i18n (ES/EN), integration tests, and CI are functional.  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -232,7 +232,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
-| **1** | Auth, multi-tenant, users, roles, settings | **~92%** — see below |
+| **1** | Auth, multi-tenant, users, roles, settings | **~95%** — see below |
 | **2** | Master data (products, customers, suppliers) | Planned |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
@@ -259,7 +259,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Integration tests (tenant isolation) | Done |
 | GitHub Actions CI | Done |
 | Login/logout audit trail | Done |
-| i18n ES/EN | Pending |
+| i18n ES/EN | Done |
 | Redis integrated in code | Pending |
 
 ---

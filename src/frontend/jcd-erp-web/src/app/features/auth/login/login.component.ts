@@ -6,11 +6,12 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { TranslatePipe } from '../../../core/i18n';
 import { AuthFacade } from '../../../store/auth/auth.facade';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

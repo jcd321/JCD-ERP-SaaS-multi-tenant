@@ -109,6 +109,7 @@
 }
 
 .auth-layout__content {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,4 +117,10 @@
   background:
     radial-gradient(circle at top right, var(--brand-primary-soft) 0, transparent 45%),
     var(--color-bg);
+}
+
+.auth-layout__toolbar {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
 }

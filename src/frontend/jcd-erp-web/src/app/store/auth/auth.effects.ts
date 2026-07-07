@@ -6,6 +6,7 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
 import { AuthApiService } from '../../core/auth/auth-api.service';
 import { resolveAuthErrorMessage } from '../../core/auth/auth-error-messages';
+import { LocaleService } from '../../core/i18n';
 import { AuthActions } from './auth.actions';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class AuthEffects {
   private readonly authApi = inject(AuthApiService);
   private readonly router = inject(Router);
   private readonly store = inject(Store);
+  private readonly locale = inject(LocaleService);
 
   readonly login$ = createEffect(() =>
     this.actions$.pipe(
@@ -23,7 +25,10 @@ export class AuthEffects {
           map((response) => AuthActions.loginSuccess({ response })),
           catchError((error) =>
             of(AuthActions.loginFailure({
-              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.LoginFailed'),
+              error: resolveAuthErrorMessage(
+                error.error?.error ?? 'Auth.LoginFailed',
+                (key) => this.locale.t(key),
+              ),
             })),
           ),
         ),
@@ -61,7 +66,10 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.registerFailure({
-                error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.RegisterFailed'),
+                error: resolveAuthErrorMessage(
+                  error.error?.error ?? 'Auth.RegisterFailed',
+                  (key) => this.locale.t(key),
+                ),
               }),
             ),
           ),
@@ -128,7 +136,10 @@ export class AuthEffects {
           map(() => AuthActions.forgotPasswordSuccess()),
           catchError((error) =>
             of(AuthActions.forgotPasswordFailure({
-              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.ForgotPasswordFailed'),
+              error: resolveAuthErrorMessage(
+                error.error?.error ?? 'Auth.ForgotPasswordFailed',
+                (key) => this.locale.t(key),
+              ),
             })),
           ),
         ),
@@ -144,7 +155,10 @@ export class AuthEffects {
           map(() => AuthActions.resetPasswordSuccess()),
           catchError((error) =>
             of(AuthActions.resetPasswordFailure({
-              error: resolveAuthErrorMessage(error.error?.error ?? 'Auth.ResetPasswordFailed'),
+              error: resolveAuthErrorMessage(
+                error.error?.error ?? 'Auth.ResetPasswordFailed',
+                (key) => this.locale.t(key),
+              ),
             })),
           ),
         ),

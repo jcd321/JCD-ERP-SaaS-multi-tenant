@@ -1,7 +1,7 @@
 <section class="page">
   <header class="page__header">
-    <h1>Dashboard</h1>
-    <p>Bienvenido a JCD ERP. Aquí verás los KPIs ejecutivos y el estado operativo de tu empresa.</p>
+    <h1>{{ 'dashboard.title' | translate }}</h1>
+    <p>{{ 'dashboard.subtitle' | translate }}</p>
   </header>
 
   <div class="kpi-grid">
@@ -11,9 +11,9 @@
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
         </svg>
       </div>
-      <p class="kpi-card__label">Ingresos</p>
-      <p class="kpi-card__value">—</p>
-      <p class="kpi-card__hint">Fase 5 · Ventas</p>
+      <p class="kpi-card__label">{{ 'dashboard.revenue' | translate }}</p>
+      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+      <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
     </article>
 
     <article class="kpi-card">
@@ -22,9 +22,9 @@
           <path d="M6 2h12v6H6zM4 8h16v14H4z" />
         </svg>
       </div>
-      <p class="kpi-card__label">Pedidos</p>
-      <p class="kpi-card__value">—</p>
-      <p class="kpi-card__hint">Fase 5 · Ventas</p>
+      <p class="kpi-card__label">{{ 'dashboard.orders' | translate }}</p>
+      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+      <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
     </article>
 
     <article class="kpi-card">
@@ -33,9 +33,9 @@
           <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
         </svg>
       </div>
-      <p class="kpi-card__label">Inventario</p>
-      <p class="kpi-card__value">—</p>
-      <p class="kpi-card__hint">Fase 3 · Stock</p>
+      <p class="kpi-card__label">{{ 'dashboard.inventory' | translate }}</p>
+      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+      <p class="kpi-card__hint">{{ 'dashboard.phaseStock' | translate }}</p>
     </article>
 
     <article class="kpi-card">
@@ -45,9 +45,9 @@
           <path d="M12 9v4M12 17h.01" />
         </svg>
       </div>
-      <p class="kpi-card__label">Alertas</p>
-      <p class="kpi-card__value">—</p>
-      <p class="kpi-card__hint">Fase 7 · Inteligencia</p>
+      <p class="kpi-card__label">{{ 'dashboard.alerts' | translate }}</p>
+      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+      <p class="kpi-card__hint">{{ 'dashboard.phaseIntelligence' | translate }}</p>
     </article>
   </div>
 </section>

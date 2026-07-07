@@ -9,9 +9,12 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 
+import { TranslatePipe } from '../../../core/i18n';
+
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.scss',
 })
@@ -20,10 +23,10 @@ export class ConfirmDialogComponent {
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly open = input(false);
-  readonly title = input('Confirmar');
+  readonly title = input('');
   readonly message = input.required<string>();
-  readonly confirmLabel = input('Confirmar');
-  readonly cancelLabel = input('Cancelar');
+  readonly confirmLabel = input<string | null>(null);
+  readonly cancelLabel = input<string | null>(null);
   readonly loading = input(false);
   readonly danger = input(true);
 

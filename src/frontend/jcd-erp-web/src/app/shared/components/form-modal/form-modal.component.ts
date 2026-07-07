@@ -9,11 +9,14 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 
+import { TranslatePipe } from '../../../core/i18n';
+
 export type FormModalSize = 'md' | 'lg';
 
 @Component({
   selector: 'app-form-modal',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './form-modal.component.html',
   styleUrl: './form-modal.component.scss',
 })
@@ -24,8 +27,8 @@ export class FormModalComponent {
   readonly open = input(false);
   readonly title = input.required<string>();
   readonly saving = input(false);
-  readonly submitLabel = input('Guardar');
-  readonly cancelLabel = input('Cancelar');
+  readonly submitLabel = input<string | null>(null);
+  readonly cancelLabel = input<string | null>(null);
   readonly size = input<FormModalSize>('md');
 
   readonly closed = output<void>();

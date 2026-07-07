@@ -4,11 +4,11 @@
       <span class="sidebar__logo" aria-hidden="true">JCD</span>
       <div class="sidebar__brand-text">
         <span class="sidebar__title">JCD ERP</span>
-        <span class="sidebar__subtitle">Enterprise Suite</span>
+        <span class="sidebar__subtitle">{{ 'layout.brandSubtitle' | translate }}</span>
       </div>
     </div>
 
-    <nav class="sidebar__nav" aria-label="Main navigation">
+    <nav class="sidebar__nav" [attr.aria-label]="'layout.mainNav' | translate">
       @for (item of navItems(); track item.route) {
         <a
           class="sidebar__link"
@@ -17,13 +17,13 @@
           [routerLinkActiveOptions]="{ exact: item.route === '/' }"
         >
           <span class="sidebar__icon" [innerHTML]="item.icon" aria-hidden="true"></span>
-          {{ item.label }}
+          {{ item.labelKey | translate }}
         </a>
       }
     </nav>
 
     <div class="sidebar__footer">
-      <p class="sidebar__version">v0.1 · Fase 1</p>
+      <p class="sidebar__version">{{ 'layout.phase' | translate }}</p>
     </div>
   </aside>
 
@@ -40,14 +40,22 @@
       </div>
 
       <div class="header__actions">
-        <button type="button" class="btn btn--ghost" (click)="toggleTheme()" [attr.aria-label]="theme() === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'">
+        <app-language-switcher />
+        <button
+          type="button"
+          class="btn btn--ghost"
+          (click)="toggleTheme()"
+          [attr.aria-label]="(theme() === 'light' ? 'layout.activateDarkMode' : 'layout.activateLightMode') | translate"
+        >
           @if (theme() === 'light') {
-            <span aria-hidden="true">◐</span> Oscuro
+            <span aria-hidden="true">◐</span> {{ 'layout.darkMode' | translate }}
           } @else {
-            <span aria-hidden="true">◑</span> Claro
+            <span aria-hidden="true">◑</span> {{ 'layout.lightMode' | translate }}
           }
         </button>
-        <button type="button" class="btn btn--secondary" (click)="logout()">Cerrar sesión</button>
+        <button type="button" class="btn btn--secondary" (click)="logout()">
+          {{ 'layout.logout' | translate }}
+        </button>
       </div>
     </header>
 

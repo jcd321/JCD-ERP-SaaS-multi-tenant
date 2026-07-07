@@ -8,6 +8,7 @@ import {
 import { Actions, ofType } from '@ngrx/effects';
 
 import { FormModalComponent } from '../../../shared/components/form-modal/form-modal.component';
+import { LocaleService, TranslatePipe } from '../../../core/i18n';
 import { RolesFacade } from '../../../store/roles/roles.facade';
 import { UsersActions } from '../../../store/users/users.actions';
 import { UsersFacade } from '../../../store/users/users.facade';
@@ -16,7 +17,7 @@ import { User, UserFormMode } from '../users.models';
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [ReactiveFormsModule, FormModalComponent],
+  imports: [ReactiveFormsModule, FormModalComponent, TranslatePipe],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
@@ -25,6 +26,7 @@ export class UsersListComponent implements OnInit {
   private readonly usersFacade = inject(UsersFacade);
   private readonly rolesFacade = inject(RolesFacade);
   private readonly actions$ = inject(Actions);
+  private readonly locale = inject(LocaleService);
 
   readonly users = this.usersFacade.users;
   readonly roles = this.rolesFacade.roles;
@@ -59,7 +61,9 @@ export class UsersListComponent implements OnInit {
   }
 
   get modalTitle(): string {
-    return this.formMode === 'create' ? 'Crear usuario' : 'Editar usuario';
+    return this.formMode === 'create'
+      ? this.locale.t('users.createTitle')
+      : this.locale.t('users.editTitle');
   }
 
   openCreateForm(): void {

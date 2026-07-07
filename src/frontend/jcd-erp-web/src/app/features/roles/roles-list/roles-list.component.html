@@ -1,11 +1,13 @@
 <section class="page">
   <div class="page-header-row">
     <header class="page__header">
-      <h1>Roles</h1>
-      <p>Define roles personalizados y asigna permisos de acceso al sistema.</p>
+      <h1>{{ 'roles.title' | translate }}</h1>
+      <p>{{ 'roles.subtitle' | translate }}</p>
     </header>
 
-    <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo rol</button>
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'roles.newRole' | translate }}
+    </button>
   </div>
 
   @if (errorMessage()) {
@@ -22,17 +24,17 @@
   >
     <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-field">
-        <label for="name">Nombre del rol</label>
+        <label for="name">{{ 'roles.name' | translate }}</label>
         <input id="name" type="text" formControlName="name" />
       </div>
 
       <div class="form-field">
-        <label for="description">Descripción</label>
+        <label for="description">{{ 'roles.description' | translate }}</label>
         <input id="description" type="text" formControlName="description" />
       </div>
 
       <div class="form-field">
-        <label>Permisos</label>
+        <label>{{ 'roles.permissions' | translate }}</label>
         @for (group of groupPermissionsByModule(permissions()); track group.module) {
           <div class="permission-group">
             <h3 class="permission-group__title">{{ getModuleLabel(group.module) }}</h3>
@@ -50,7 +52,7 @@
             </div>
           </div>
         } @empty {
-          <span class="form-field__hint">Cargando permisos...</span>
+          <span class="form-field__hint">{{ 'roles.loadingPermissions' | translate }}</span>
         }
       </div>
     </form>
@@ -58,25 +60,25 @@
 
   <app-confirm-dialog
     [open]="!!roleToDelete"
-    title="Eliminar rol"
+    [title]="'roles.deleteTitle' | translate"
     [message]="deleteMessage"
-    confirmLabel="Eliminar"
+    [confirmLabel]="'common.delete' | translate"
     [loading]="saving()"
     (confirmed)="confirmDelete()"
     (cancelled)="closeDeleteDialog()"
   />
 
   @if (loading()) {
-    <p class="page__status">Cargando roles...</p>
+    <p class="page__status">{{ 'roles.loading' | translate }}</p>
   } @else {
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Tipo</th>
-            <th>Permisos</th>
+            <th>{{ 'roles.tableName' | translate }}</th>
+            <th>{{ 'roles.tableDescription' | translate }}</th>
+            <th>{{ 'roles.tableType' | translate }}</th>
+            <th>{{ 'roles.tablePermissions' | translate }}</th>
             <th></th>
           </tr>
         </thead>
@@ -84,10 +86,10 @@
           @for (role of roles(); track role.id) {
             <tr>
               <td>{{ role.name }}</td>
-              <td>{{ role.description || '—' }}</td>
+              <td>{{ role.description || ('common.empty' | translate) }}</td>
               <td>
                 <span class="badge" [class.badge--info]="role.isSystem" [class.badge--muted]="!role.isSystem">
-                  {{ role.isSystem ? 'Sistema' : 'Personalizado' }}
+                  {{ role.isSystem ? ('roles.system' | translate) : ('roles.custom' | translate) }}
                 </span>
               </td>
               <td>{{ role.permissions.length }}</td>
@@ -95,10 +97,10 @@
                 @if (!role.isSystem) {
                   <div class="table-actions">
                     <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(role)">
-                      Editar
+                      {{ 'common.edit' | translate }}
                     </button>
                     <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(role)">
-                      Eliminar
+                      {{ 'common.delete' | translate }}
                     </button>
                   </div>
                 }
@@ -106,7 +108,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="data-table__empty">No hay roles registrados.</td>
+              <td colspan="5" class="data-table__empty">{{ 'roles.empty' | translate }}</td>
             </tr>
           }
         </tbody>
