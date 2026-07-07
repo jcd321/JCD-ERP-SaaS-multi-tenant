@@ -20,6 +20,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ITenantContext, TenantContext>();
         services.AddScoped<TenantProvider>();
+        services.AddScoped<ITenantScope, TenantScope>();
         services.AddScoped<AuditableEntityInterceptor>();
 
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>

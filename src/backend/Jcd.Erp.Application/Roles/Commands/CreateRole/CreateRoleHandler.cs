@@ -40,7 +40,12 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, Result<Guid>
             return Result.Failure<Guid>(roleResult.Error);
 
         var role = roleResult.Value;
-        var assignResult = await AssignPermissionsAsync(role, request.PermissionCodes, cancellationToken);
+        var assignResult = await RolePermissionAssigner.AssignAsync(
+            role,
+            request.PermissionCodes,
+            _permissionRepository,
+            cancellationToken);
+
         if (assignResult.IsFailure)
             return Result.Failure<Guid>(assignResult.Error);
 
@@ -48,31 +53,5 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, Result<Guid>
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success(role.Id);
-    }
-
-    private async Task<Result> AssignPermissionsAsync(
-        Role role,
-        IReadOnlyList<string> permissionCodes,
-        CancellationToken cancellationToken)
-    {
-        if (permissionCodes.Count == 0)
-            return Result.Success();
-
-        var allPermissions = await _permissionRepository.GetAllAsync(cancellationToken);
-        var permissionMap = allPermissions.ToDictionary(p => p.Code, StringComparer.OrdinalIgnoreCase);
-
-        foreach (var code in permissionCodes.Distinct(StringComparer.OrdinalIgnoreCase))
-        {
-            if (!permissionMap.TryGetValue(code, out var permission))
-                return Result.Failure("Permission.NotFound");
-
-            role.RolePermissions.Add(new RolePermission
-            {
-                RoleId = role.Id,
-                PermissionId = permission.Id
-            });
-        }
-
-        return Result.Success();
     }
 }

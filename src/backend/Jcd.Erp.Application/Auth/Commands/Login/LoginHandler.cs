@@ -16,6 +16,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTime;
+    private readonly ITenantScope _tenantScope;
 
     public LoginHandler(
         IUserRepository userRepository,
@@ -25,7 +26,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         IPasswordHasher passwordHasher,
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
-        IDateTimeService dateTime)
+        IDateTimeService dateTime,
+        ITenantScope tenantScope)
     {
         _userRepository = userRepository;
         _tenantRepository = tenantRepository;
@@ -35,6 +37,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         _jwtTokenService = jwtTokenService;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
+        _tenantScope = tenantScope;
     }
 
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -63,6 +66,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
         var tenant = await _tenantRepository.GetByIdAsync(user.TenantId, cancellationToken);
         if (tenant is null || !tenant.IsActive)
             return Result.Failure<LoginResponse>("Auth.TenantInactive");
+
+        _tenantScope.SetTenant(tenant.Id);
 
         var permissions = await _roleRepository.GetUserPermissionCodesAsync(user.Id, cancellationToken);
         var accessExpires = _dateTime.UtcNow.AddMinutes(15);

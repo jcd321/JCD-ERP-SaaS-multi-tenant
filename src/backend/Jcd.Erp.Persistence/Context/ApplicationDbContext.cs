@@ -71,12 +71,12 @@ public sealed class ApplicationDbContext : DbContext
             Expression.Constant(_tenantContext),
             nameof(ITenantContext.TenantId));
 
-        var tenantNotSet = Expression.Equal(contextTenantId, Expression.Constant(null, typeof(Guid?)));
+        var hasTenant = Expression.NotEqual(contextTenantId, Expression.Constant(null, typeof(Guid?)));
         var tenantMatches = Expression.Equal(tenantIdProperty, Expression.Convert(contextTenantId, typeof(Guid)));
         var notDeleted = Expression.Not(isDeletedProperty);
 
-        var filterBody = Expression.OrElse(
-            tenantNotSet,
+        var filterBody = Expression.AndAlso(
+            hasTenant,
             Expression.AndAlso(tenantMatches, notDeleted));
 
         var lambda = Expression.Lambda(filterBody, parameter);
@@ -92,10 +92,10 @@ public sealed class ApplicationDbContext : DbContext
             Expression.Constant(_tenantContext),
             nameof(ITenantContext.TenantId));
 
-        var tenantNotSet = Expression.Equal(contextTenantId, Expression.Constant(null, typeof(Guid?)));
+        var hasTenant = Expression.NotEqual(contextTenantId, Expression.Constant(null, typeof(Guid?)));
         var tenantMatches = Expression.Equal(tenantIdProperty, Expression.Convert(contextTenantId, typeof(Guid)));
 
-        var filterBody = Expression.OrElse(tenantNotSet, tenantMatches);
+        var filterBody = Expression.AndAlso(hasTenant, tenantMatches);
         var lambda = Expression.Lambda(filterBody, parameter);
         modelBuilder.Entity(entityType).HasQueryFilter(lambda);
     }

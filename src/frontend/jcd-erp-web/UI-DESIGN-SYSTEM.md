@@ -218,7 +218,8 @@ src/styles.scss       # Entry point (@use)
 
 ## 12. Roadmap UI
 
-- [ ] Componentes shared Angular (DataTable, Modal, Confirm)
+- [ ] Componentes shared Angular (DataTable, Pagination)
+- [x] Modal de formulario (`app-form-modal`) y confirmación (`app-confirm-dialog`)
 - [ ] i18n ES/EN con ngx-translate
 - [ ] Icon set unificado (Lucide o similar)
 - [ ] Skeleton loaders

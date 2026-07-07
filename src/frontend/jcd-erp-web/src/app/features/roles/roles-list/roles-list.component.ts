@@ -3,27 +3,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Actions, ofType } from '@ngrx/effects';
 
-import { Permission, Role, RoleFormMode } from '../roles.models';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { FormModalComponent } from '../../../shared/components/form-modal/form-modal.component';
+import {
+  getModuleLabel,
+  getPermissionLabel,
+  groupPermissionsByModule,
+} from '../../../shared/utils/permission-group.util';
 import { RolesActions } from '../../../store/roles/roles.actions';
 import { RolesFacade } from '../../../store/roles/roles.facade';
-
-const PERMISSION_LABELS: Record<string, string> = {
-  'users.view': 'Ver usuarios',
-  'users.create': 'Crear usuarios',
-  'users.update': 'Editar usuarios',
-  'users.delete': 'Eliminar usuarios',
-  'roles.view': 'Ver roles',
-  'roles.create': 'Crear roles',
-  'roles.update': 'Editar roles',
-  'roles.delete': 'Eliminar roles',
-  'settings.view': 'Ver configuración',
-  'settings.update': 'Editar configuración',
-  'audit.view': 'Ver auditoría',
-};
+import { Role, RoleFormMode } from '../roles.models';
 
 @Component({
   selector: 'app-roles-list',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormModalComponent, ConfirmDialogComponent],
   templateUrl: './roles-list.component.html',
   styleUrl: './roles-list.component.scss',
 })
@@ -38,8 +32,13 @@ export class RolesListComponent implements OnInit {
   readonly saving = this.rolesFacade.saving;
   readonly errorMessage = this.rolesFacade.error;
 
+  readonly getPermissionLabel = getPermissionLabel;
+  readonly getModuleLabel = getModuleLabel;
+  readonly groupPermissionsByModule = groupPermissionsByModule;
+
   formMode: RoleFormMode = null;
   editingRoleId: string | null = null;
+  roleToDelete: Role | null = null;
 
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -50,10 +49,13 @@ export class RolesListComponent implements OnInit {
   constructor() {
     this.actions$
       .pipe(
-        ofType(RolesActions.createRoleSuccess, RolesActions.updateRoleSuccess),
+        ofType(RolesActions.createRoleSuccess, RolesActions.updateRoleSuccess, RolesActions.deleteRoleSuccess),
         takeUntilDestroyed(),
       )
-      .subscribe(() => this.closeForm());
+      .subscribe(() => {
+        this.closeForm();
+        this.roleToDelete = null;
+      });
   }
 
   ngOnInit(): void {
@@ -61,30 +63,16 @@ export class RolesListComponent implements OnInit {
     this.rolesFacade.loadPermissions();
   }
 
-  permissionLabel(permission: Permission): string {
-    return PERMISSION_LABELS[permission.code] ?? permission.description ?? permission.code;
+  get modalTitle(): string {
+    return this.formMode === 'create' ? 'Crear rol' : 'Editar rol';
   }
 
-  permissionsByModule(): { module: string; items: Permission[] }[] {
-    const grouped = new Map<string, Permission[]>();
-
-    for (const permission of this.permissions()) {
-      const list = grouped.get(permission.module) ?? [];
-      list.push(permission);
-      grouped.set(permission.module, list);
+  get deleteMessage(): string {
+    if (!this.roleToDelete) {
+      return '';
     }
 
-    return Array.from(grouped.entries()).map(([module, items]) => ({ module, items }));
-  }
-
-  moduleLabel(module: string): string {
-    const labels: Record<string, string> = {
-      users: 'Usuarios',
-      roles: 'Roles',
-      settings: 'Configuración',
-      audit: 'Auditoría',
-    };
-    return labels[module] ?? module;
+    return `¿Eliminar el rol "${this.roleToDelete.name}"? Esta acción no se puede deshacer.`;
   }
 
   openCreateForm(): void {
@@ -94,7 +82,9 @@ export class RolesListComponent implements OnInit {
   }
 
   openEditForm(role: Role): void {
-    if (role.isSystem) return;
+    if (role.isSystem) {
+      return;
+    }
 
     this.formMode = 'edit';
     this.editingRoleId = role.id;
@@ -143,14 +133,23 @@ export class RolesListComponent implements OnInit {
     }
   }
 
-  confirmDelete(role: Role): void {
-    if (role.isSystem) return;
-
-    const confirmed = window.confirm(
-      `¿Eliminar el rol "${role.name}"? Esta acción no se puede deshacer.`,
-    );
-    if (confirmed) {
-      this.rolesFacade.deleteRole(role.id);
+  openDeleteDialog(role: Role): void {
+    if (role.isSystem) {
+      return;
     }
+
+    this.roleToDelete = role;
+  }
+
+  closeDeleteDialog(): void {
+    this.roleToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.roleToDelete) {
+      return;
+    }
+
+    this.rolesFacade.deleteRole(this.roleToDelete.id);
   }
 }

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 
+import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
 import { RolesService } from '../../features/roles/roles.service';
 import { RolesActions } from './roles.actions';
 
@@ -17,7 +18,9 @@ export class RolesEffects {
         this.rolesService.getRoles().pipe(
           map((roles) => RolesActions.loadRolesSuccess({ roles })),
           catchError((error) =>
-            of(RolesActions.loadRolesFailure({ error: error.error?.error ?? 'Roles.LoadFailed' })),
+            of(RolesActions.loadRolesFailure({
+              error: resolvePlatformErrorMessage(error, 'Roles.LoadFailed'),
+            })),
           ),
         ),
       ),
@@ -31,11 +34,9 @@ export class RolesEffects {
         this.rolesService.getPermissions().pipe(
           map((permissions) => RolesActions.loadPermissionsSuccess({ permissions })),
           catchError((error) =>
-            of(
-              RolesActions.loadPermissionsFailure({
-                error: error.error?.error ?? 'Roles.PermissionsLoadFailed',
-              }),
-            ),
+            of(RolesActions.loadPermissionsFailure({
+              error: resolvePlatformErrorMessage(error, 'Roles.PermissionsLoadFailed'),
+            })),
           ),
         ),
       ),
@@ -49,7 +50,9 @@ export class RolesEffects {
         this.rolesService.createRole(request).pipe(
           map(() => RolesActions.createRoleSuccess()),
           catchError((error) =>
-            of(RolesActions.createRoleFailure({ error: error.error?.error ?? 'Roles.CreateFailed' })),
+            of(RolesActions.createRoleFailure({
+              error: resolvePlatformErrorMessage(error, 'Roles.CreateFailed'),
+            })),
           ),
         ),
       ),
@@ -63,7 +66,9 @@ export class RolesEffects {
         this.rolesService.updateRole(roleId, request).pipe(
           map(() => RolesActions.updateRoleSuccess()),
           catchError((error) =>
-            of(RolesActions.updateRoleFailure({ error: error.error?.error ?? 'Roles.UpdateFailed' })),
+            of(RolesActions.updateRoleFailure({
+              error: resolvePlatformErrorMessage(error, 'Roles.UpdateFailed'),
+            })),
           ),
         ),
       ),
@@ -77,7 +82,9 @@ export class RolesEffects {
         this.rolesService.deleteRole(roleId).pipe(
           map(() => RolesActions.deleteRoleSuccess()),
           catchError((error) =>
-            of(RolesActions.deleteRoleFailure({ error: error.error?.error ?? 'Roles.DeleteFailed' })),
+            of(RolesActions.deleteRoleFailure({
+              error: resolvePlatformErrorMessage(error, 'Roles.DeleteFailed'),
+            })),
           ),
         ),
       ),

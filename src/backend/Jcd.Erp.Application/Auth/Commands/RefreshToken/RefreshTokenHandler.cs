@@ -13,6 +13,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTime;
+    private readonly ITenantScope _tenantScope;
 
     public RefreshTokenHandler(
         IRefreshTokenRepository refreshTokenRepository,
@@ -20,7 +21,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
         IRoleRepository roleRepository,
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
-        IDateTimeService dateTime)
+        IDateTimeService dateTime,
+        ITenantScope tenantScope)
     {
         _refreshTokenRepository = refreshTokenRepository;
         _userRepository = userRepository;
@@ -28,6 +30,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
         _jwtTokenService = jwtTokenService;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
+        _tenantScope = tenantScope;
     }
 
     public async Task<Result<RefreshTokenResponse>> Handle(
@@ -39,6 +42,8 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
 
         if (storedToken is null || !storedToken.IsActive)
             return Result.Failure<RefreshTokenResponse>("Auth.InvalidRefreshToken");
+
+        _tenantScope.SetTenant(storedToken.TenantId);
 
         var user = await _userRepository.GetByIdAsync(storedToken.UserId, cancellationToken);
         if (user is null || !user.IsActive)

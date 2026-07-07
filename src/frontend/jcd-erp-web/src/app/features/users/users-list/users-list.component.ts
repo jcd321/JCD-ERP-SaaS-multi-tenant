@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Actions, ofType } from '@ngrx/effects';
 
+import { FormModalComponent } from '../../../shared/components/form-modal/form-modal.component';
 import { RolesFacade } from '../../../store/roles/roles.facade';
 import { UsersActions } from '../../../store/users/users.actions';
 import { UsersFacade } from '../../../store/users/users.facade';
@@ -14,7 +15,8 @@ import { User, UserFormMode } from '../users.models';
 
 @Component({
   selector: 'app-users-list',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormModalComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
@@ -54,6 +56,10 @@ export class UsersListComponent implements OnInit {
   ngOnInit(): void {
     this.usersFacade.loadUsers();
     this.rolesFacade.loadRoles();
+  }
+
+  get modalTitle(): string {
+    return this.formMode === 'create' ? 'Crear usuario' : 'Editar usuario';
   }
 
   openCreateForm(): void {

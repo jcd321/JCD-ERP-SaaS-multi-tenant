@@ -5,80 +5,71 @@
       <p>Gestiona el equipo de tu empresa y sus roles de acceso.</p>
     </header>
 
-    @if (!formMode) {
-      <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo usuario</button>
-    }
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo usuario</button>
   </div>
 
   @if (errorMessage()) {
     <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
   }
 
-  @if (formMode) {
-    <div class="panel-form">
-      <h2 class="panel-form__title">
-        {{ formMode === 'create' ? 'Crear usuario' : 'Editar usuario' }}
-      </h2>
-
-      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
-        <div class="form-row">
-          <div class="form-field">
-            <label for="firstName">Nombre</label>
-            <input id="firstName" type="text" formControlName="firstName" />
-          </div>
-          <div class="form-field">
-            <label for="lastName">Apellido</label>
-            <input id="lastName" type="text" formControlName="lastName" />
-          </div>
-        </div>
-
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-row">
         <div class="form-field">
-          <label for="email">Correo electrónico</label>
-          <input id="email" type="email" formControlName="email" autocomplete="off" />
+          <label for="firstName">Nombre</label>
+          <input id="firstName" type="text" formControlName="firstName" />
         </div>
-
-        @if (formMode === 'create') {
-          <div class="form-field">
-            <label for="password">Contraseña temporal</label>
-            <input id="password" type="password" formControlName="password" autocomplete="new-password" />
-            <span class="form-field__hint">Mínimo 8 caracteres. El usuario podrá cambiarla después.</span>
-          </div>
-        }
-
-        @if (formMode === 'edit') {
-          <label class="checkbox">
-            <input type="checkbox" formControlName="isActive" />
-            Usuario activo
-          </label>
-        }
-
         <div class="form-field">
-          <label>Roles</label>
-          <div class="role-checklist">
-            @for (role of roles(); track role.id) {
-              <label class="checkbox">
-                <input
-                  type="checkbox"
-                  [checked]="isRoleSelected(role.id)"
-                  (change)="toggleRole(role.id, $any($event.target).checked)"
-                />
-                {{ role.name }}
-              </label>
-            } @empty {
-              <span class="form-field__hint">No hay roles disponibles.</span>
-            }
-          </div>
+          <label for="lastName">Apellido</label>
+          <input id="lastName" type="text" formControlName="lastName" />
         </div>
+      </div>
 
-        <div class="panel-form__actions">
-          <button type="button" class="btn btn--ghost" (click)="closeForm()">Cancelar</button>
-          <button type="submit" class="btn btn--primary" [disabled]="saving()">
-            {{ saving() ? 'Guardando...' : 'Guardar' }}
-          </button>
+      <div class="form-field">
+        <label for="email">Correo electrónico</label>
+        <input id="email" type="email" formControlName="email" autocomplete="off" />
+      </div>
+
+      @if (formMode === 'create') {
+        <div class="form-field">
+          <label for="password">Contraseña temporal</label>
+          <input id="password" type="password" formControlName="password" autocomplete="new-password" />
+          <span class="form-field__hint">Mínimo 8 caracteres. El usuario podrá cambiarla después.</span>
         </div>
-      </form>
-    </div>
-  }
+      }
+
+      @if (formMode === 'edit') {
+        <label class="checkbox">
+          <input type="checkbox" formControlName="isActive" />
+          Usuario activo
+        </label>
+      }
+
+      <div class="form-field">
+        <label>Roles</label>
+        <div class="role-checklist">
+          @for (role of roles(); track role.id) {
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                [checked]="isRoleSelected(role.id)"
+                (change)="toggleRole(role.id, $any($event.target).checked)"
+              />
+              {{ role.name }}
+            </label>
+          } @empty {
+            <span class="form-field__hint">No hay roles disponibles.</span>
+          }
+        </div>
+      </div>
+    </form>
+  </app-form-modal>
 
   @if (loading()) {
     <p class="page__status">Cargando usuarios...</p>

@@ -39,6 +39,107 @@
   }
 }
 
+// ─── Modal ─────────────────────────────────────────────────────
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal, 1000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(15 23 42 / 0.55);
+  cursor: pointer;
+}
+
+.modal__dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 32rem);
+  max-height: min(90vh, 48rem);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+
+  &--sm {
+    width: min(100%, 24rem);
+  }
+
+  &--lg {
+    width: min(100%, 40rem);
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+}
+
+.modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+  }
+}
+
+.modal__body {
+  flex: 1;
+  padding: var(--space-6);
+  overflow-y: auto;
+
+  .role-checklist {
+    max-height: 14rem;
+  }
+}
+
+.modal__message {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+}
+
 .role-checklist {
   display: grid;
   gap: var(--space-2);
@@ -309,6 +410,15 @@
   &:hover:not(:disabled) {
     background: var(--color-surface-hover);
     color: var(--color-text);
+  }
+}
+
+.btn--danger {
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.05);
   }
 }
 

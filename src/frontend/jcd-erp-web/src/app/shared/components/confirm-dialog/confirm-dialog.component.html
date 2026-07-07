@@ -1,0 +1,57 @@
+@if (open()) {
+  <div
+    class="modal"
+    role="alertdialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="titleId"
+  >
+    <button
+      type="button"
+      class="modal__backdrop"
+      aria-label="Cerrar"
+      (click)="onBackdropClick()"
+    ></button>
+
+    <div class="modal__dialog modal__dialog--sm" (click)="$event.stopPropagation()">
+      <header class="modal__header">
+        <h2 class="modal__title" [id]="titleId">{{ title() }}</h2>
+        <button
+          type="button"
+          class="modal__close"
+          aria-label="Cerrar"
+          (click)="cancelled.emit()"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path
+              d="M6 6l12 12M18 6L6 18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal__body">
+        <p class="modal__message">{{ message() }}</p>
+      </div>
+
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost" [disabled]="loading()" (click)="cancelled.emit()">
+          {{ cancelLabel() }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [class.btn--danger]="danger()"
+          [class.btn--primary]="!danger()"
+          [disabled]="loading()"
+          (click)="confirmed.emit()"
+        >
+          {{ loading() ? 'Procesando...' : confirmLabel() }}
+        </button>
+      </footer>
+    </div>
+  </div>
+}

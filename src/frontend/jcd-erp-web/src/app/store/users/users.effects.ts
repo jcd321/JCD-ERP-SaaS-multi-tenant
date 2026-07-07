@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 
+import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
 import { UsersService } from '../../features/users/users.service';
 import { UsersActions } from './users.actions';
 
@@ -17,7 +18,9 @@ export class UsersEffects {
         this.usersService.getUsers().pipe(
           map((users) => UsersActions.loadUsersSuccess({ users })),
           catchError((error) =>
-            of(UsersActions.loadUsersFailure({ error: error.error?.error ?? 'Users.LoadFailed' })),
+            of(UsersActions.loadUsersFailure({
+              error: resolvePlatformErrorMessage(error, 'Users.LoadFailed'),
+            })),
           ),
         ),
       ),
@@ -31,7 +34,9 @@ export class UsersEffects {
         this.usersService.createUser(request).pipe(
           map(() => UsersActions.createUserSuccess()),
           catchError((error) =>
-            of(UsersActions.createUserFailure({ error: error.error?.error ?? 'Users.CreateFailed' })),
+            of(UsersActions.createUserFailure({
+              error: resolvePlatformErrorMessage(error, 'Users.CreateFailed'),
+            })),
           ),
         ),
       ),
@@ -45,7 +50,9 @@ export class UsersEffects {
         this.usersService.updateUser(userId, request).pipe(
           map(() => UsersActions.updateUserSuccess()),
           catchError((error) =>
-            of(UsersActions.updateUserFailure({ error: error.error?.error ?? 'Users.UpdateFailed' })),
+            of(UsersActions.updateUserFailure({
+              error: resolvePlatformErrorMessage(error, 'Users.UpdateFailed'),
+            })),
           ),
         ),
       ),

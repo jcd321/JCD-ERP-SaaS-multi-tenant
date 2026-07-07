@@ -19,6 +19,7 @@ public class RegisterTenantHandler : IRequestHandler<RegisterTenantCommand, Resu
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTime;
+    private readonly ITenantScope _tenantScope;
 
     public RegisterTenantHandler(
         ITenantRepository tenantRepository,
@@ -30,7 +31,8 @@ public class RegisterTenantHandler : IRequestHandler<RegisterTenantCommand, Resu
         IPasswordHasher passwordHasher,
         IJwtTokenService jwtTokenService,
         IUnitOfWork unitOfWork,
-        IDateTimeService dateTime)
+        IDateTimeService dateTime,
+        ITenantScope tenantScope)
     {
         _tenantRepository = tenantRepository;
         _userRepository = userRepository;
@@ -42,6 +44,7 @@ public class RegisterTenantHandler : IRequestHandler<RegisterTenantCommand, Resu
         _jwtTokenService = jwtTokenService;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
+        _tenantScope = tenantScope;
     }
 
     public async Task<Result<RegisterTenantResponse>> Handle(
@@ -55,6 +58,8 @@ public class RegisterTenantHandler : IRequestHandler<RegisterTenantCommand, Resu
         var tenant = tenantResult.Value;
         if (await _tenantRepository.ExistsBySlugAsync(tenant.Slug, cancellationToken))
             return Result.Failure<RegisterTenantResponse>("Tenant.SlugAlreadyExists");
+
+        _tenantScope.SetTenant(tenant.Id);
 
         var passwordHash = _passwordHasher.Hash(request.AdminPassword);
         var userResult = User.Create(

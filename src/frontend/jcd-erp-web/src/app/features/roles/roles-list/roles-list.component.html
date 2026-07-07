@@ -5,64 +5,66 @@
       <p>Define roles personalizados y asigna permisos de acceso al sistema.</p>
     </header>
 
-    @if (!formMode) {
-      <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo rol</button>
-    }
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">Nuevo rol</button>
   </div>
 
   @if (errorMessage()) {
     <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
   }
 
-  @if (formMode) {
-    <div class="panel-form">
-      <h2 class="panel-form__title">
-        {{ formMode === 'create' ? 'Crear rol' : 'Editar rol' }}
-      </h2>
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    size="lg"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-field">
+        <label for="name">Nombre del rol</label>
+        <input id="name" type="text" formControlName="name" />
+      </div>
 
-      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
-        <div class="form-field">
-          <label for="name">Nombre del rol</label>
-          <input id="name" type="text" formControlName="name" />
-        </div>
+      <div class="form-field">
+        <label for="description">Descripción</label>
+        <input id="description" type="text" formControlName="description" />
+      </div>
 
-        <div class="form-field">
-          <label for="description">Descripción</label>
-          <input id="description" type="text" formControlName="description" />
-        </div>
-
-        <div class="form-field">
-          <label>Permisos</label>
-          @for (group of permissionsByModule(); track group.module) {
-            <div class="permission-group">
-              <h3 class="permission-group__title">{{ moduleLabel(group.module) }}</h3>
-              <div class="role-checklist">
-                @for (permission of group.items; track permission.id) {
-                  <label class="checkbox">
-                    <input
-                      type="checkbox"
-                      [checked]="isPermissionSelected(permission.code)"
-                      (change)="togglePermission(permission.code, $any($event.target).checked)"
-                    />
-                    {{ permissionLabel(permission) }}
-                  </label>
-                }
-              </div>
+      <div class="form-field">
+        <label>Permisos</label>
+        @for (group of groupPermissionsByModule(permissions()); track group.module) {
+          <div class="permission-group">
+            <h3 class="permission-group__title">{{ getModuleLabel(group.module) }}</h3>
+            <div class="role-checklist">
+              @for (permission of group.items; track permission.id) {
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    [checked]="isPermissionSelected(permission.code)"
+                    (change)="togglePermission(permission.code, $any($event.target).checked)"
+                  />
+                  {{ getPermissionLabel(permission) }}
+                </label>
+              }
             </div>
-          } @empty {
-            <span class="form-field__hint">Cargando permisos...</span>
-          }
-        </div>
+          </div>
+        } @empty {
+          <span class="form-field__hint">Cargando permisos...</span>
+        }
+      </div>
+    </form>
+  </app-form-modal>
 
-        <div class="panel-form__actions">
-          <button type="button" class="btn btn--ghost" (click)="closeForm()">Cancelar</button>
-          <button type="submit" class="btn btn--primary" [disabled]="saving()">
-            {{ saving() ? 'Guardando...' : 'Guardar' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  }
+  <app-confirm-dialog
+    [open]="!!roleToDelete"
+    title="Eliminar rol"
+    [message]="deleteMessage"
+    confirmLabel="Eliminar"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
 
   @if (loading()) {
     <p class="page__status">Cargando roles...</p>
@@ -95,7 +97,7 @@
                     <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(role)">
                       Editar
                     </button>
-                    <button type="button" class="btn btn--ghost btn--sm" (click)="confirmDelete(role)">
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(role)">
                       Eliminar
                     </button>
                   </div>
