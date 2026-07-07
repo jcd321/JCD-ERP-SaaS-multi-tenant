@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { extractPermissionsFromAccessToken } from '../../core/auth/jwt-permissions';
 import { AuthActions } from './auth.actions';
 import {
   ACCESS_TOKEN_KEY,
@@ -84,11 +85,17 @@ export const authReducer = createReducer(
   })),
 
   on(AuthActions.refreshTokenSuccess, (state, { accessToken, refreshToken }) => {
-    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    const permissions = extractPermissionsFromAccessToken(accessToken);
+    const session =
+      state.session && permissions
+        ? { ...state.session, permissions }
+        : state.session;
+
+    persistAuth(accessToken, refreshToken, session);
 
     return {
       ...state,
+      session,
       accessToken,
       refreshToken,
       status: 'authenticated' as const,

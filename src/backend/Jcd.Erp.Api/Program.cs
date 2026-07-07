@@ -78,7 +78,20 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<Jcd.Erp.Persistence.Context.ApplicationDbContext>();
     await db.Database.MigrateAsync();
-    await scope.ServiceProvider.GetRequiredService<DatabaseSeeder>().SeedAsync();
+
+    var permissionsSeeded = await scope.ServiceProvider
+        .GetRequiredService<DatabaseSeeder>()
+        .SeedAsync();
+
+    if (permissionsSeeded)
+    {
+        var permissionService = scope.ServiceProvider
+            .GetRequiredService<Jcd.Erp.Application.Common.Interfaces.IUserPermissionService>();
+        var tenantIds = await db.Tenants.Select(t => t.Id).ToListAsync();
+
+        foreach (var tenantId in tenantIds)
+            await permissionService.InvalidateTenantAsync(tenantId);
+    }
 }
 
 app.Run();

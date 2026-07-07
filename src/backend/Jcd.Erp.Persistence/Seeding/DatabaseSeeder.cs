@@ -16,7 +16,7 @@ public sealed class DatabaseSeeder
         _logger = logger;
     }
 
-    public async Task SeedAsync(CancellationToken cancellationToken = default)
+    public async Task<bool> SeedAsync(CancellationToken cancellationToken = default)
     {
         var catalogPermissions = PermissionCatalog.CreatePermissions().ToList();
         var existingCodes = await _context.Permissions
@@ -30,7 +30,7 @@ public sealed class DatabaseSeeder
         if (missing.Count == 0)
         {
             _logger.LogDebug("Permissions catalog is up to date.");
-            return;
+            return false;
         }
 
         await _context.Permissions.AddRangeAsync(missing, cancellationToken);
@@ -68,5 +68,7 @@ public sealed class DatabaseSeeder
                 "Assigned new permissions to {Count} system administrator role(s).",
                 systemRoles.Count);
         }
+
+        return true;
     }
 }

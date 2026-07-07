@@ -1,4 +1,5 @@
 import { AuthSession } from '../../core/auth/auth.models';
+import { extractPermissionsFromAccessToken } from '../../core/auth/jwt-permissions';
 
 export const ACCESS_TOKEN_KEY = 'jcd_erp_access_token';
 export const REFRESH_TOKEN_KEY = 'jcd_erp_refresh_token';
@@ -21,7 +22,18 @@ export function loadSessionFromStorage(): AuthSession | null {
   }
 
   try {
-    return JSON.parse(raw) as AuthSession;
+    const session = JSON.parse(raw) as AuthSession;
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    if (!accessToken) {
+      return session;
+    }
+
+    const permissions = extractPermissionsFromAccessToken(accessToken);
+    if (permissions && permissions.length > 0) {
+      return { ...session, permissions };
+    }
+
+    return session;
   } catch {
     return null;
   }
