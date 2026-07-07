@@ -243,6 +243,11 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `POST` | `/api/v1/brands` | Yes | `brands.create` | Create brand |
 | `PUT` | `/api/v1/brands/{id}` | Yes | `brands.update` | Update brand |
 | `DELETE` | `/api/v1/brands/{id}` | Yes | `brands.delete` | Soft-delete brand |
+| `GET` | `/api/v1/products` | Yes | `products.view` | List products (paginated, search) |
+| `GET` | `/api/v1/products/lookups` | Yes | `products.view` | Category, brand and unit options for forms |
+| `POST` | `/api/v1/products` | Yes | `products.create` | Create product |
+| `PUT` | `/api/v1/products/{id}` | Yes | `products.update` | Update product |
+| `DELETE` | `/api/v1/products/{id}` | Yes | `products.delete` | Soft-delete product |
 
 ---
 
@@ -252,7 +257,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (products, customers, suppliers) | **In progress** — Units, categories & brands done |
+| **2** | Master data (units, categories, brands, products, customers, suppliers) | **In progress** — Catalog modules done; customers & suppliers next |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
@@ -279,6 +284,19 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | SMTP email for production | Pending |
 | API container in Docker Compose | Pending |
 
+### Phase 2 — delivered so far
+
+| Module | Backend | Frontend |
+|--------|---------|----------|
+| Units of measure | CRUD + pagination | List panel + modal CRUD (NgRx) |
+| Product categories | CRUD + parent hierarchy | List panel + modal CRUD (NgRx) |
+| Brands | CRUD + pagination | List panel + modal CRUD (NgRx) |
+| Products | CRUD + lookups endpoint | List panel + modal CRUD with category/brand/unit selects (NgRx) |
+
+**API convention:** `PUT` endpoints use request DTOs in `Jcd.Erp.Api/Requests/` (`Update*Request`), mapped to Application commands in controllers.
+
+**Next in Phase 2:** Customers, Suppliers.
+
 ---
 
 ## Security & multi-tenancy
@@ -300,6 +318,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Layer | Namespace / pattern |
 |-------|---------------------|
 | Backend | `Jcd.Erp.*` |
+| API PUT DTOs | `Jcd.Erp.Api.Requests` (`Update*Request` records) |
 | Frontend state | NgRx: Actions → Effects → Services → Reducer → Facade |
 | API versioning | `/api/v1/` |
 | Database | PostgreSQL, snake_case columns |

@@ -38,7 +38,8 @@
     "settings": "Configuración",
     "units": "Unidades de medida",
     "categories": "Categorías",
-    "brands": "Marcas"
+    "brands": "Marcas",
+    "products": "Productos"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -263,6 +264,43 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "products": {
+    "title": "Productos",
+    "subtitle": "Gestiona el catálogo de productos con categoría, marca y unidad de medida.",
+    "newProduct": "Nuevo producto",
+    "createTitle": "Crear producto",
+    "editTitle": "Editar producto",
+    "deleteTitle": "Eliminar producto",
+    "deleteMessage": "¿Eliminar el producto \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando productos...",
+    "sku": "SKU",
+    "skuPlaceholder": "ej. PROD-001",
+    "name": "Nombre",
+    "description": "Descripción",
+    "category": "Categoría",
+    "selectCategory": "Seleccionar categoría",
+    "brand": "Marca",
+    "noBrand": "Sin marca",
+    "unit": "Unidad de medida",
+    "selectUnit": "Seleccionar unidad",
+    "isActive": "Activo",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por SKU, nombre, categoría, marca o unidad...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableSku": "SKU",
+    "tableName": "Nombre",
+    "tableCategory": "Categoría",
+    "tableBrand": "Marca",
+    "tableUnit": "Unidad",
+    "tableStatus": "Estado",
+    "empty": "No hay productos registrados.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
@@ -271,7 +309,8 @@
       "audit": "Auditoría",
       "units": "Unidades de medida",
       "categories": "Categorías",
-      "brands": "Marcas"
+      "brands": "Marcas",
+      "products": "Productos"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -296,7 +335,11 @@
       "brands.view": "Ver marcas",
       "brands.create": "Crear marcas",
       "brands.update": "Editar marcas",
-      "brands.delete": "Eliminar marcas"
+      "brands.delete": "Eliminar marcas",
+      "products.view": "Ver productos",
+      "products.create": "Crear productos",
+      "products.update": "Editar productos",
+      "products.delete": "Eliminar productos"
     }
   },
   "errors": {
@@ -347,6 +390,20 @@
     "brandCodeAlreadyExists": "Ya existe una marca con ese código.",
     "brandCodeRequired": "El código de la marca es obligatorio.",
     "brandNameRequired": "El nombre de la marca es obligatorio.",
+    "productsLoadFailed": "No se pudieron cargar los productos.",
+    "productsLookupsLoadFailed": "No se pudieron cargar las opciones del formulario.",
+    "productsCreateFailed": "No se pudo crear el producto.",
+    "productsUpdateFailed": "No se pudo actualizar el producto.",
+    "productsDeleteFailed": "No se pudo eliminar el producto.",
+    "productNotFound": "Producto no encontrado.",
+    "productSkuAlreadyExists": "Ya existe un producto con ese SKU.",
+    "productSkuRequired": "El SKU del producto es obligatorio.",
+    "productNameRequired": "El nombre del producto es obligatorio.",
+    "productCategoryRequired": "La categoría es obligatoria.",
+    "productCategoryNotFound": "La categoría no existe o está inactiva.",
+    "productBrandNotFound": "La marca no existe o está inactiva.",
+    "productUnitRequired": "La unidad de medida es obligatoria.",
+    "productUnitNotFound": "La unidad de medida no existe o está inactiva.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

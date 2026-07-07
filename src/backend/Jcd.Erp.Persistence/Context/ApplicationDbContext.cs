@@ -2,6 +2,7 @@ using System.Reflection;
 using Jcd.Erp.Domain.Audit;
 using Jcd.Erp.Domain.Catalog.Brands;
 using Jcd.Erp.Domain.Catalog.Categories;
+using Jcd.Erp.Domain.Catalog.Products;
 using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Common;
 using Jcd.Erp.Domain.Configuration;
@@ -48,6 +49,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<UnitOfMeasure> UnitsOfMeasure => Set<UnitOfMeasure>();
     public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
     public DbSet<Brand> Brands => Set<Brand>();
+    public DbSet<Product> Products => Set<Product>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

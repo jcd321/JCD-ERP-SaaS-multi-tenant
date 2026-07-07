@@ -38,7 +38,8 @@
     "settings": "Settings",
     "units": "Units of measure",
     "categories": "Categories",
-    "brands": "Brands"
+    "brands": "Brands",
+    "products": "Products"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -263,6 +264,43 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "products": {
+    "title": "Products",
+    "subtitle": "Manage your product catalog with category, brand and unit of measure.",
+    "newProduct": "New product",
+    "createTitle": "Create product",
+    "editTitle": "Edit product",
+    "deleteTitle": "Delete product",
+    "deleteMessage": "Delete product \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading products...",
+    "sku": "SKU",
+    "skuPlaceholder": "e.g. PROD-001",
+    "name": "Name",
+    "description": "Description",
+    "category": "Category",
+    "selectCategory": "Select category",
+    "brand": "Brand",
+    "noBrand": "No brand",
+    "unit": "Unit of measure",
+    "selectUnit": "Select unit",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by SKU, name, category, brand or unit...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableSku": "SKU",
+    "tableName": "Name",
+    "tableCategory": "Category",
+    "tableBrand": "Brand",
+    "tableUnit": "Unit",
+    "tableStatus": "Status",
+    "empty": "No products registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
@@ -271,7 +309,8 @@
       "audit": "Audit",
       "units": "Units of measure",
       "categories": "Categories",
-      "brands": "Brands"
+      "brands": "Brands",
+      "products": "Products"
     },
     "codes": {
       "users.view": "View users",
@@ -296,7 +335,11 @@
       "brands.view": "View brands",
       "brands.create": "Create brands",
       "brands.update": "Edit brands",
-      "brands.delete": "Delete brands"
+      "brands.delete": "Delete brands",
+      "products.view": "View products",
+      "products.create": "Create products",
+      "products.update": "Edit products",
+      "products.delete": "Delete products"
     }
   },
   "errors": {
@@ -347,6 +390,20 @@
     "brandCodeAlreadyExists": "A brand with that code already exists.",
     "brandCodeRequired": "Brand code is required.",
     "brandNameRequired": "Brand name is required.",
+    "productsLoadFailed": "Could not load products.",
+    "productsLookupsLoadFailed": "Could not load form options.",
+    "productsCreateFailed": "Could not create the product.",
+    "productsUpdateFailed": "Could not update the product.",
+    "productsDeleteFailed": "Could not delete the product.",
+    "productNotFound": "Product not found.",
+    "productSkuAlreadyExists": "A product with that SKU already exists.",
+    "productSkuRequired": "Product SKU is required.",
+    "productNameRequired": "Product name is required.",
+    "productCategoryRequired": "Category is required.",
+    "productCategoryNotFound": "Category does not exist or is inactive.",
+    "productBrandNotFound": "Brand does not exist or is inactive.",
+    "productUnitRequired": "Unit of measure is required.",
+    "productUnitNotFound": "Unit of measure does not exist or is inactive.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

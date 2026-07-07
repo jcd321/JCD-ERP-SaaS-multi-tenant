@@ -2,6 +2,7 @@ using Jcd.Erp.Application.Common.Interfaces;
 using Jcd.Erp.Domain.Audit;
 using Jcd.Erp.Domain.Catalog.Brands;
 using Jcd.Erp.Domain.Catalog.Categories;
+using Jcd.Erp.Domain.Catalog.Products;
 using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
@@ -56,6 +57,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         services.AddScoped<DatabaseSeeder>();
 

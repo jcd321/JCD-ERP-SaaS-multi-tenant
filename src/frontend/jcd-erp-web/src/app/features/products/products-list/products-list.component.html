@@ -1,0 +1,215 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'products.title' | translate }}</h1>
+      <p>{{ 'products.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'products.newProduct' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-field">
+        <label for="sku">{{ 'products.sku' | translate }}</label>
+        <input id="sku" type="text" formControlName="sku" [placeholder]="'products.skuPlaceholder' | translate" />
+      </div>
+
+      <div class="form-field">
+        <label for="name">{{ 'products.name' | translate }}</label>
+        <input id="name" type="text" formControlName="name" />
+      </div>
+
+      <div class="form-field">
+        <label for="description">{{ 'products.description' | translate }} ({{ 'common.optional' | translate }})</label>
+        <textarea id="description" rows="3" formControlName="description"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="categoryId">{{ 'products.category' | translate }}</label>
+        <select id="categoryId" formControlName="categoryId">
+          <option value="">{{ 'products.selectCategory' | translate }}</option>
+          @for (option of lookups().categories; track option.id) {
+            <option [value]="option.id">{{ option.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="brandId">{{ 'products.brand' | translate }} ({{ 'common.optional' | translate }})</label>
+        <select id="brandId" formControlName="brandId">
+          <option value="">{{ 'products.noBrand' | translate }}</option>
+          @for (option of lookups().brands; track option.id) {
+            <option [value]="option.id">{{ option.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="unitId">{{ 'products.unit' | translate }}</label>
+        <select id="unitId" formControlName="unitId">
+          <option value="">{{ 'products.selectUnit' | translate }}</option>
+          @for (option of lookups().units; track option.id) {
+            <option [value]="option.id">{{ option.name }}</option>
+          }
+        </select>
+      </div>
+
+      @if (formMode === 'edit') {
+        <label class="checkbox">
+          <input type="checkbox" formControlName="isActive" />
+          {{ 'products.isActive' | translate }}
+        </label>
+      }
+    </form>
+  </app-form-modal>
+
+  <app-confirm-dialog
+    [open]="!!productToDelete"
+    [title]="'products.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+  @if (loading()) {
+    <p class="page__status">{{ 'products.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applySearch()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'products.searchPlaceholder' | translate"
+              [attr.aria-label]="'products.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button
+                type="button"
+                class="search-bar__clear"
+                (click)="clearSearch()"
+                [attr.aria-label]="'products.clearSearchAria' | translate"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            }
+            <button type="submit" class="search-bar__submit">
+              {{ 'products.search' | translate }}
+            </button>
+          </form>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button
+                type="button"
+                class="search-chip__clear"
+                (click)="clearSearch()"
+                [attr.aria-label]="'products.clearSearchAria' | translate"
+              >
+                ×
+              </button>
+            </span>
+          }
+        </div>
+
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'products.tableSku' | translate }}</th>
+              <th>{{ 'products.tableName' | translate }}</th>
+              <th>{{ 'products.tableCategory' | translate }}</th>
+              <th>{{ 'products.tableBrand' | translate }}</th>
+              <th>{{ 'products.tableUnit' | translate }}</th>
+              <th>{{ 'products.tableStatus' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products(); track product.id) {
+              <tr>
+                <td><code>{{ product.sku }}</code></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.categoryName }}</td>
+                <td>{{ product.brandName || ('common.empty' | translate) }}</td>
+                <td>{{ product.unitName }}</td>
+                <td>
+                  <span class="badge" [class.badge--info]="product.isActive" [class.badge--muted]="!product.isActive">
+                    {{ product.isActive ? ('common.active' | translate) : ('common.inactive' | translate) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(product)">
+                      {{ 'common.edit' | translate }}
+                    </button>
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(product)">
+                      {{ 'common.delete' | translate }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="data-table__empty">{{ 'products.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button
+          type="button"
+          class="btn btn--secondary btn--sm"
+          [disabled]="page() <= 1"
+          (click)="goToPage(page() - 1)"
+        >
+          {{ 'products.prevPage' | translate }}
+        </button>
+        <span class="pagination__info">{{ pageInfoLabel }}</span>
+        <button
+          type="button"
+          class="btn btn--secondary btn--sm"
+          [disabled]="page() >= totalPages()"
+          (click)="goToPage(page() + 1)"
+        >
+          {{ 'products.nextPage' | translate }}
+        </button>
+      </div>
+    }
+  }
+</section>
