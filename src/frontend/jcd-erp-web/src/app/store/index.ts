@@ -7,6 +7,8 @@ import { authReducer } from './auth/auth.reducer';
 import { AuthEffects } from './auth/auth.effects';
 import { rolesReducer } from './roles/roles.reducer';
 import { RolesEffects } from './roles/roles.effects';
+import { brandsReducer } from './brands/brands.reducer';
+import { BrandsEffects } from './brands/brands.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -25,7 +27,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('settings', settingsReducer),
     provideState('units', unitsReducer),
     provideState('categories', categoriesReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects),
+    provideState('brands', brandsReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

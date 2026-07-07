@@ -1,5 +1,6 @@
 using System.Reflection;
 using Jcd.Erp.Domain.Audit;
+using Jcd.Erp.Domain.Catalog.Brands;
 using Jcd.Erp.Domain.Catalog.Categories;
 using Jcd.Erp.Domain.Catalog.Units;
 using Jcd.Erp.Domain.Common;
@@ -46,6 +47,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<UnitOfMeasure> UnitsOfMeasure => Set<UnitOfMeasure>();
     public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
+    public DbSet<Brand> Brands => Set<Brand>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

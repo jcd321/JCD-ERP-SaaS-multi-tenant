@@ -239,6 +239,10 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `POST` | `/api/v1/categories` | Yes | `categories.create` | Create category |
 | `PUT` | `/api/v1/categories/{id}` | Yes | `categories.update` | Update category |
 | `DELETE` | `/api/v1/categories/{id}` | Yes | `categories.delete` | Soft-delete category |
+| `GET` | `/api/v1/brands` | Yes | `brands.view` | List brands (paginated, search) |
+| `POST` | `/api/v1/brands` | Yes | `brands.create` | Create brand |
+| `PUT` | `/api/v1/brands/{id}` | Yes | `brands.update` | Update brand |
+| `DELETE` | `/api/v1/brands/{id}` | Yes | `brands.delete` | Soft-delete brand |
 
 ---
 
@@ -248,7 +252,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (products, customers, suppliers) | **In progress** — Units & categories done |
+| **2** | Master data (products, customers, suppliers) | **In progress** — Units, categories & brands done |
 | **3** | Inventory & warehouses | Planned |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |

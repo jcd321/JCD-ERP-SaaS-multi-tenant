@@ -27,6 +27,10 @@ public static class PermissionCatalog
         ("categories", "create", "Create product categories"),
         ("categories", "update", "Update product categories"),
         ("categories", "delete", "Delete product categories"),
+        ("brands", "view", "View brands"),
+        ("brands", "create", "Create brands"),
+        ("brands", "update", "Update brands"),
+        ("brands", "delete", "Delete brands"),
     ];
 
     public static IEnumerable<Permission> CreatePermissions() =>

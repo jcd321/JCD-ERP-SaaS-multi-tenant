@@ -37,7 +37,8 @@
     "roles": "Roles",
     "settings": "Settings",
     "units": "Units of measure",
-    "categories": "Categories"
+    "categories": "Categories",
+    "brands": "Brands"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -233,6 +234,35 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "brands": {
+    "title": "Brands",
+    "subtitle": "Manage your product brand catalog.",
+    "newBrand": "New brand",
+    "createTitle": "Create brand",
+    "editTitle": "Edit brand",
+    "deleteTitle": "Delete brand",
+    "deleteMessage": "Delete brand \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading brands...",
+    "code": "Code",
+    "codePlaceholder": "e.g. NIKE",
+    "name": "Name",
+    "description": "Description",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by code, name or description...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableCode": "Code",
+    "tableName": "Name",
+    "tableDescription": "Description",
+    "tableStatus": "Status",
+    "empty": "No brands registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
@@ -240,7 +270,8 @@
       "settings": "Settings",
       "audit": "Audit",
       "units": "Units of measure",
-      "categories": "Categories"
+      "categories": "Categories",
+      "brands": "Brands"
     },
     "codes": {
       "users.view": "View users",
@@ -261,7 +292,11 @@
       "categories.view": "View categories",
       "categories.create": "Create categories",
       "categories.update": "Edit categories",
-      "categories.delete": "Delete categories"
+      "categories.delete": "Delete categories",
+      "brands.view": "View brands",
+      "brands.create": "Create brands",
+      "brands.update": "Edit brands",
+      "brands.delete": "Delete brands"
     }
   },
   "errors": {
@@ -304,6 +339,14 @@
     "categoryParentNotFound": "Parent category does not exist.",
     "categoryCannotBeOwnParent": "A category cannot be its own parent.",
     "categoryHasChildren": "Cannot delete a category that has subcategories.",
+    "brandsLoadFailed": "Could not load brands.",
+    "brandsCreateFailed": "Could not create the brand.",
+    "brandsUpdateFailed": "Could not update the brand.",
+    "brandsDeleteFailed": "Could not delete the brand.",
+    "brandNotFound": "Brand not found.",
+    "brandCodeAlreadyExists": "A brand with that code already exists.",
+    "brandCodeRequired": "Brand code is required.",
+    "brandNameRequired": "Brand name is required.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

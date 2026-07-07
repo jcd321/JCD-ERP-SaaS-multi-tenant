@@ -19,6 +19,10 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Categories.UpdateFailed': 'errors.categoriesUpdateFailed',
   'Categories.DeleteFailed': 'errors.categoriesDeleteFailed',
   'Categories.ParentOptionsLoadFailed': 'errors.categoriesParentOptionsLoadFailed',
+  'Brands.LoadFailed': 'errors.brandsLoadFailed',
+  'Brands.CreateFailed': 'errors.brandsCreateFailed',
+  'Brands.UpdateFailed': 'errors.brandsUpdateFailed',
+  'Brands.DeleteFailed': 'errors.brandsDeleteFailed',
   'User.EmailAlreadyExists': 'errors.userEmailAlreadyExists',
   'User.NotFound': 'errors.userNotFound',
   'User.CannotDeleteSelf': 'errors.userCannotDeleteSelf',
@@ -36,6 +40,10 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Category.ParentNotFound': 'errors.categoryParentNotFound',
   'Category.CannotBeOwnParent': 'errors.categoryCannotBeOwnParent',
   'Category.HasChildren': 'errors.categoryHasChildren',
+  'Brand.NotFound': 'errors.brandNotFound',
+  'Brand.CodeAlreadyExists': 'errors.brandCodeAlreadyExists',
+  'Brand.CodeRequired': 'errors.brandCodeRequired',
+  'Brand.NameRequired': 'errors.brandNameRequired',
   'Permission.NotFound': 'errors.permissionNotFound',
   'Auth.TenantRequired': 'errors.tenantRequired',
 };
@@ -59,6 +67,10 @@ const FALLBACK_KEYS: Record<string, string> = {
   'Categories.UpdateFailed': 'errors.categoriesUpdateFailed',
   'Categories.DeleteFailed': 'errors.categoriesDeleteFailed',
   'Categories.ParentOptionsLoadFailed': 'errors.categoriesParentOptionsLoadFailed',
+  'Brands.LoadFailed': 'errors.brandsLoadFailed',
+  'Brands.CreateFailed': 'errors.brandsCreateFailed',
+  'Brands.UpdateFailed': 'errors.brandsUpdateFailed',
+  'Brands.DeleteFailed': 'errors.brandsDeleteFailed',
 };
 
 export function resolvePlatformErrorMessage(

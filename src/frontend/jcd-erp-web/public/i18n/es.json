@@ -37,7 +37,8 @@
     "roles": "Roles",
     "settings": "Configuración",
     "units": "Unidades de medida",
-    "categories": "Categorías"
+    "categories": "Categorías",
+    "brands": "Marcas"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -233,6 +234,35 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "brands": {
+    "title": "Marcas",
+    "subtitle": "Administra el catálogo de marcas de tus productos.",
+    "newBrand": "Nueva marca",
+    "createTitle": "Crear marca",
+    "editTitle": "Editar marca",
+    "deleteTitle": "Eliminar marca",
+    "deleteMessage": "¿Eliminar la marca \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando marcas...",
+    "code": "Código",
+    "codePlaceholder": "ej. NIKE",
+    "name": "Nombre",
+    "description": "Descripción",
+    "isActive": "Activa",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por código, nombre o descripción...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableCode": "Código",
+    "tableName": "Nombre",
+    "tableDescription": "Descripción",
+    "tableStatus": "Estado",
+    "empty": "No hay marcas registradas.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
@@ -240,7 +270,8 @@
       "settings": "Configuración",
       "audit": "Auditoría",
       "units": "Unidades de medida",
-      "categories": "Categorías"
+      "categories": "Categorías",
+      "brands": "Marcas"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -261,7 +292,11 @@
       "categories.view": "Ver categorías",
       "categories.create": "Crear categorías",
       "categories.update": "Editar categorías",
-      "categories.delete": "Eliminar categorías"
+      "categories.delete": "Eliminar categorías",
+      "brands.view": "Ver marcas",
+      "brands.create": "Crear marcas",
+      "brands.update": "Editar marcas",
+      "brands.delete": "Eliminar marcas"
     }
   },
   "errors": {
@@ -304,6 +339,14 @@
     "categoryParentNotFound": "La categoría padre no existe.",
     "categoryCannotBeOwnParent": "Una categoría no puede ser padre de sí misma.",
     "categoryHasChildren": "No se puede eliminar una categoría que tiene subcategorías.",
+    "brandsLoadFailed": "No se pudieron cargar las marcas.",
+    "brandsCreateFailed": "No se pudo crear la marca.",
+    "brandsUpdateFailed": "No se pudo actualizar la marca.",
+    "brandsDeleteFailed": "No se pudo eliminar la marca.",
+    "brandNotFound": "Marca no encontrada.",
+    "brandCodeAlreadyExists": "Ya existe una marca con ese código.",
+    "brandCodeRequired": "El código de la marca es obligatorio.",
+    "brandNameRequired": "El nombre de la marca es obligatorio.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }
