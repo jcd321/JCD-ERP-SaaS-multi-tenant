@@ -1,0 +1,166 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <a class="page__back" routerLink="/warehouses">{{ 'locations.backToWarehouses' | translate }}</a>
+      <h1>{{ 'locations.title' | translate }}</h1>
+      <p>{{ 'locations.subtitle' | translate:{ name: warehouseName } }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'locations.newLocation' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="code">{{ 'locations.code' | translate }}</label>
+          <input id="code" type="text" formControlName="code" [placeholder]="'locations.codePlaceholder' | translate" />
+        </div>
+        <div class="form-field">
+          <label for="name">{{ 'locations.name' | translate }}</label>
+          <input id="name" type="text" formControlName="name" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="description">{{ 'locations.description' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="description" type="text" formControlName="description" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="locationType">{{ 'locations.locationType' | translate }} ({{ 'common.optional' | translate }})</label>
+          <select id="locationType" formControlName="locationType">
+            <option value="">{{ 'locations.noType' | translate }}</option>
+            @for (type of locationTypes; track type) {
+              <option [value]="type">{{ locationTypeLabel(type) }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="parentId">{{ 'locations.parent' | translate }} ({{ 'common.optional' | translate }})</label>
+          <select id="parentId" formControlName="parentId">
+            <option value="">{{ 'locations.noParent' | translate }}</option>
+            @for (option of parentOptions(); track option.id) {
+              <option [value]="option.id">{{ option.code }} — {{ option.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if (formMode === 'edit') {
+        <label class="checkbox">
+          <input type="checkbox" formControlName="isActive" />
+          {{ 'locations.isActive' | translate }}
+        </label>
+      }
+    </form>
+  </app-form-modal>
+
+  <app-confirm-dialog
+    [open]="!!locationToDelete"
+    [title]="'locations.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+  @if (loading()) {
+    <p class="page__status">{{ 'locations.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applySearch()">
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'locations.searchPlaceholder' | translate"
+            />
+            <button type="submit" class="search-bar__submit">{{ 'locations.search' | translate }}</button>
+          </form>
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'locations.tableCode' | translate }}</th>
+              <th>{{ 'locations.tableName' | translate }}</th>
+              <th>{{ 'locations.tableType' | translate }}</th>
+              <th>{{ 'locations.tableParent' | translate }}</th>
+              <th>{{ 'locations.tableStatus' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (location of locations(); track location.id) {
+              <tr>
+                <td><code>{{ location.code }}</code></td>
+                <td>{{ location.name }}</td>
+                <td>
+                  @if (location.locationType) {
+                    {{ locationTypeLabel(location.locationType) }}
+                  } @else {
+                    {{ 'common.empty' | translate }}
+                  }
+                </td>
+                <td>{{ location.parentName || ('common.empty' | translate) }}</td>
+                <td>
+                  <span class="badge" [class.badge--info]="location.isActive" [class.badge--muted]="!location.isActive">
+                    {{ location.isActive ? ('common.active' | translate) : ('common.inactive' | translate) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(location)">
+                      {{ 'common.edit' | translate }}
+                    </button>
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(location)">
+                      {{ 'common.delete' | translate }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="data-table__empty">{{ 'locations.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button type="button" class="btn btn--secondary btn--sm" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+          {{ 'locations.prevPage' | translate }}
+        </button>
+        <span class="pagination__info">{{ pageInfoLabel }}</span>
+        <button type="button" class="btn btn--secondary btn--sm" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+          {{ 'locations.nextPage' | translate }}
+        </button>
+      </div>
+    }
+  }
+</section>

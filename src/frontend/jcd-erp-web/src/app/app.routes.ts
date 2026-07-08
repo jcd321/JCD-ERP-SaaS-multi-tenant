@@ -80,6 +80,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/suppliers/suppliers.routes').then((m) => m.SUPPLIERS_ROUTES),
       },
+      {
+        path: 'warehouses',
+        canActivate: [permissionGuard('warehouses.view')],
+        loadChildren: () =>
+          import('./features/warehouses/warehouses.routes').then((m) => m.WAREHOUSES_ROUTES),
+      },
     ],
   },
   {

@@ -119,6 +119,14 @@ export class MainLayoutComponent {
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v10H3z"/><path d="M7 7V5h10v2"/><path d="M9 11h6M9 15h4"/></svg>',
       ),
     },
+    {
+      labelKey: 'nav.warehouses',
+      route: '/warehouses',
+      permission: 'warehouses.view',
+      icon: this.icon(
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-5 9 5v11H3z"/><path d="M9 22V12h6v10"/></svg>',
+      ),
+    },
   ];
 
   readonly navItems = computed(() => {

@@ -9,6 +9,7 @@ using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
 using Jcd.Erp.Domain.Partners.Customers;
 using Jcd.Erp.Domain.Partners.Suppliers;
+using Jcd.Erp.Domain.Inventory.Warehouses;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,8 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<Supplier> Suppliers => Set<Supplier>();
+    public DbSet<Warehouse> Warehouses => Set<Warehouse>();
+    public DbSet<StorageLocation> StorageLocations => Set<StorageLocation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

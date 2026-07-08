@@ -15,6 +15,10 @@ import { customersReducer } from './customers/customers.reducer';
 import { CustomersEffects } from './customers/customers.effects';
 import { suppliersReducer } from './suppliers/suppliers.reducer';
 import { SuppliersEffects } from './suppliers/suppliers.effects';
+import { warehousesReducer } from './warehouses/warehouses.reducer';
+import { WarehousesEffects } from './warehouses/warehouses.effects';
+import { locationsReducer } from './locations/locations.reducer';
+import { LocationsEffects } from './locations/locations.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -37,7 +41,9 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('products', productsReducer),
     provideState('customers', customersReducer),
     provideState('suppliers', suppliersReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects),
+    provideState('warehouses', warehousesReducer),
+    provideState('locations', locationsReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

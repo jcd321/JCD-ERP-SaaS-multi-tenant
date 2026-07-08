@@ -1,0 +1,193 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'warehouses.title' | translate }}</h1>
+      <p>{{ 'warehouses.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'warehouses.newWarehouse' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    size="lg"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="code">{{ 'warehouses.code' | translate }}</label>
+          <input id="code" type="text" formControlName="code" [placeholder]="'warehouses.codePlaceholder' | translate" />
+        </div>
+        <div class="form-field">
+          <label for="name">{{ 'warehouses.name' | translate }}</label>
+          <input id="name" type="text" formControlName="name" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="description">{{ 'warehouses.description' | translate }} ({{ 'common.optional' | translate }})</label>
+        <textarea id="description" rows="2" formControlName="description"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="addressLine1">{{ 'warehouses.address' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="addressLine1" type="text" formControlName="addressLine1" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="city">{{ 'warehouses.city' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="city" type="text" formControlName="city" />
+        </div>
+        <div class="form-field">
+          <label for="stateOrProvince">{{ 'warehouses.stateOrProvince' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="stateOrProvince" type="text" formControlName="stateOrProvince" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="countryCode">{{ 'warehouses.countryCode' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="countryCode" type="text" formControlName="countryCode" maxlength="2" [placeholder]="'warehouses.countryCodePlaceholder' | translate" />
+      </div>
+
+      <label class="checkbox">
+        <input type="checkbox" formControlName="isDefault" />
+        {{ 'warehouses.isDefault' | translate }}
+      </label>
+
+      @if (formMode === 'edit') {
+        <label class="checkbox">
+          <input type="checkbox" formControlName="isActive" />
+          {{ 'warehouses.isActive' | translate }}
+        </label>
+      }
+    </form>
+  </app-form-modal>
+
+  <app-confirm-dialog
+    [open]="!!warehouseToDelete"
+    [title]="'warehouses.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+  @if (loading()) {
+    <p class="page__status">{{ 'warehouses.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applySearch()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'warehouses.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button type="button" class="search-bar__clear" (click)="clearSearch()">×</button>
+            }
+            <button type="submit" class="search-bar__submit">{{ 'warehouses.search' | translate }}</button>
+          </form>
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button type="button" class="search-chip__clear" (click)="clearSearch()">×</button>
+            </span>
+          }
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'warehouses.tableCode' | translate }}</th>
+              <th>{{ 'warehouses.tableName' | translate }}</th>
+              <th>{{ 'warehouses.tableCity' | translate }}</th>
+              <th>{{ 'warehouses.tableDefault' | translate }}</th>
+              <th>{{ 'warehouses.tableStatus' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (warehouse of warehouses(); track warehouse.id) {
+              <tr>
+                <td><code>{{ warehouse.code }}</code></td>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.city || ('common.empty' | translate) }}</td>
+                <td>
+                  @if (warehouse.isDefault) {
+                    <span class="badge badge--info">{{ 'warehouses.defaultBadge' | translate }}</span>
+                  } @else {
+                    {{ 'common.empty' | translate }}
+                  }
+                </td>
+                <td>
+                  <span class="badge" [class.badge--info]="warehouse.isActive" [class.badge--muted]="!warehouse.isActive">
+                    {{ warehouse.isActive ? ('common.active' | translate) : ('common.inactive' | translate) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <a
+                      class="btn btn--secondary btn--sm"
+                      [routerLink]="['/warehouses', warehouse.id, 'locations']"
+                      [state]="{ warehouseName: warehouse.name }"
+                    >
+                      {{ 'warehouses.manageLocations' | translate }}
+                    </a>
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="openEditForm(warehouse)">
+                      {{ 'common.edit' | translate }}
+                    </button>
+                    <button type="button" class="btn btn--ghost btn--sm" (click)="openDeleteDialog(warehouse)">
+                      {{ 'common.delete' | translate }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="data-table__empty">{{ 'warehouses.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button type="button" class="btn btn--secondary btn--sm" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+          {{ 'warehouses.prevPage' | translate }}
+        </button>
+        <span class="pagination__info">{{ pageInfoLabel }}</span>
+        <button type="button" class="btn btn--secondary btn--sm" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+          {{ 'warehouses.nextPage' | translate }}
+        </button>
+      </div>
+    }
+  }
+</section>
