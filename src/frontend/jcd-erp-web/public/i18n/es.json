@@ -42,7 +42,8 @@
     "categories": "Categorías",
     "brands": "Marcas",
     "products": "Productos",
-    "customers": "Clientes"
+    "customers": "Clientes",
+    "suppliers": "Proveedores"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -349,6 +350,48 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "suppliers": {
+    "title": "Proveedores",
+    "subtitle": "Administra el directorio de proveedores de tu empresa.",
+    "newSupplier": "Nuevo proveedor",
+    "createTitle": "Crear proveedor",
+    "editTitle": "Editar proveedor",
+    "deleteTitle": "Eliminar proveedor",
+    "deleteMessage": "¿Eliminar el proveedor \"{{name}}\"? Esta acción no se puede deshacer.",
+    "loading": "Cargando proveedores...",
+    "code": "Código",
+    "codePlaceholder": "ej. PROV-001",
+    "legalName": "Razón social",
+    "tradeName": "Nombre comercial",
+    "taxId": "Identificación fiscal",
+    "taxIdPlaceholder": "RUC, NIT, RFC...",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "mobilePhone": "Celular",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "stateOrProvince": "Departamento / Estado",
+    "countryCode": "País",
+    "countryCodePlaceholder": "PE, CO, MX...",
+    "notes": "Notas",
+    "isActive": "Activo",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por código, razón social, NIT, correo o teléfono...",
+    "clearSearch": "Limpiar",
+    "clearSearchAria": "Quitar búsqueda",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableCode": "Código",
+    "tableLegalName": "Razón social",
+    "tableTaxId": "ID fiscal",
+    "tableEmail": "Correo",
+    "tablePhone": "Teléfono",
+    "tableStatus": "Estado",
+    "empty": "No hay proveedores registrados.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "permissions": {
     "modules": {
       "users": "Usuarios",
@@ -359,7 +402,8 @@
       "categories": "Categorías",
       "brands": "Marcas",
       "products": "Productos",
-      "customers": "Clientes"
+      "customers": "Clientes",
+      "suppliers": "Proveedores"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -392,7 +436,11 @@
       "customers.view": "Ver clientes",
       "customers.create": "Crear clientes",
       "customers.update": "Editar clientes",
-      "customers.delete": "Eliminar clientes"
+      "customers.delete": "Eliminar clientes",
+      "suppliers.view": "Ver proveedores",
+      "suppliers.create": "Crear proveedores",
+      "suppliers.update": "Editar proveedores",
+      "suppliers.delete": "Eliminar proveedores"
     }
   },
   "errors": {
@@ -467,6 +515,15 @@
     "customerTaxIdAlreadyExists": "Ya existe un cliente con esa identificación fiscal.",
     "customerCodeRequired": "El código del cliente es obligatorio.",
     "customerLegalNameRequired": "La razón social es obligatoria.",
+    "suppliersLoadFailed": "No se pudieron cargar los proveedores.",
+    "suppliersCreateFailed": "No se pudo crear el proveedor.",
+    "suppliersUpdateFailed": "No se pudo actualizar el proveedor.",
+    "suppliersDeleteFailed": "No se pudo eliminar el proveedor.",
+    "supplierNotFound": "Proveedor no encontrado.",
+    "supplierCodeAlreadyExists": "Ya existe un proveedor con ese código.",
+    "supplierTaxIdAlreadyExists": "Ya existe un proveedor con esa identificación fiscal.",
+    "supplierCodeRequired": "El código del proveedor es obligatorio.",
+    "supplierLegalNameRequired": "La razón social es obligatoria.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

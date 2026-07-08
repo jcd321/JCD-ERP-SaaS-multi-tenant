@@ -42,7 +42,8 @@
     "categories": "Categories",
     "brands": "Brands",
     "products": "Products",
-    "customers": "Customers"
+    "customers": "Customers",
+    "suppliers": "Suppliers"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -349,6 +350,48 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "suppliers": {
+    "title": "Suppliers",
+    "subtitle": "Manage your company's supplier directory.",
+    "newSupplier": "New supplier",
+    "createTitle": "Create supplier",
+    "editTitle": "Edit supplier",
+    "deleteTitle": "Delete supplier",
+    "deleteMessage": "Delete supplier \"{{name}}\"? This action cannot be undone.",
+    "loading": "Loading suppliers...",
+    "code": "Code",
+    "codePlaceholder": "e.g. SUP-001",
+    "legalName": "Legal name",
+    "tradeName": "Trade name",
+    "taxId": "Tax ID",
+    "taxIdPlaceholder": "RUC, NIT, RFC...",
+    "email": "Email",
+    "phone": "Phone",
+    "mobilePhone": "Mobile",
+    "address": "Address",
+    "city": "City",
+    "stateOrProvince": "State / Province",
+    "countryCode": "Country",
+    "countryCodePlaceholder": "PE, CO, MX...",
+    "notes": "Notes",
+    "isActive": "Active",
+    "search": "Search",
+    "searchPlaceholder": "Search by code, legal name, tax ID, email or phone...",
+    "clearSearch": "Clear",
+    "clearSearchAria": "Clear search",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableCode": "Code",
+    "tableLegalName": "Legal name",
+    "tableTaxId": "Tax ID",
+    "tableEmail": "Email",
+    "tablePhone": "Phone",
+    "tableStatus": "Status",
+    "empty": "No suppliers registered.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "permissions": {
     "modules": {
       "users": "Users",
@@ -359,7 +402,8 @@
       "categories": "Categories",
       "brands": "Brands",
       "products": "Products",
-      "customers": "Customers"
+      "customers": "Customers",
+      "suppliers": "Suppliers"
     },
     "codes": {
       "users.view": "View users",
@@ -392,7 +436,11 @@
       "customers.view": "View customers",
       "customers.create": "Create customers",
       "customers.update": "Edit customers",
-      "customers.delete": "Delete customers"
+      "customers.delete": "Delete customers",
+      "suppliers.view": "View suppliers",
+      "suppliers.create": "Create suppliers",
+      "suppliers.update": "Edit suppliers",
+      "suppliers.delete": "Delete suppliers"
     }
   },
   "errors": {
@@ -467,6 +515,15 @@
     "customerTaxIdAlreadyExists": "A customer with this tax ID already exists.",
     "customerCodeRequired": "Customer code is required.",
     "customerLegalNameRequired": "Legal name is required.",
+    "suppliersLoadFailed": "Could not load suppliers.",
+    "suppliersCreateFailed": "Could not create the supplier.",
+    "suppliersUpdateFailed": "Could not update the supplier.",
+    "suppliersDeleteFailed": "Could not delete the supplier.",
+    "supplierNotFound": "Supplier not found.",
+    "supplierCodeAlreadyExists": "A supplier with this code already exists.",
+    "supplierTaxIdAlreadyExists": "A supplier with this tax ID already exists.",
+    "supplierCodeRequired": "Supplier code is required.",
+    "supplierLegalNameRequired": "Legal name is required.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }
