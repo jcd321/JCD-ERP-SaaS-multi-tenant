@@ -23,6 +23,8 @@ import { stockReducer } from './stock/stock.reducer';
 import { StockEffects } from './stock/stock.effects';
 import { movementsReducer } from './movements/movements.reducer';
 import { MovementsEffects } from './movements/movements.effects';
+import { kardexReducer } from './kardex/kardex.reducer';
+import { KardexEffects } from './kardex/kardex.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -49,7 +51,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('locations', locationsReducer),
     provideState('stock', stockReducer),
     provideState('movements', movementsReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects),
+    provideState('kardex', kardexReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects, KardexEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

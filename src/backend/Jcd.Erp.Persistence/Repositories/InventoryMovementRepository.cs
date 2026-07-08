@@ -98,6 +98,42 @@ public sealed class InventoryMovementRepository : IInventoryMovementRepository
         return (items, totalCount);
     }
 
+    public async Task<(IReadOnlyList<InventoryMovement> Items, int TotalCount)> GetKardexPagedAsync(
+        Guid productId,
+        int page,
+        int pageSize,
+        Guid? warehouseId,
+        DateTime? fromDate,
+        DateTime? toDate,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.InventoryMovements
+            .Include(m => m.Product)
+                .ThenInclude(p => p.Unit)
+            .Include(m => m.Warehouse)
+            .Where(m => m.ProductId == productId);
+
+        if (warehouseId.HasValue)
+            query = query.Where(m => m.WarehouseId == warehouseId.Value);
+
+        if (fromDate.HasValue)
+            query = query.Where(m => m.MovementDate >= fromDate.Value);
+
+        if (toDate.HasValue)
+            query = query.Where(m => m.MovementDate <= toDate.Value);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .OrderBy(m => m.MovementDate)
+            .ThenBy(m => m.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public async Task AddAsync(InventoryMovement movement, CancellationToken cancellationToken = default) =>
         await _context.InventoryMovements.AddAsync(movement, cancellationToken);
 }

@@ -46,7 +46,8 @@
     "suppliers": "Suppliers",
     "warehouses": "Warehouses",
     "stock": "Stock",
-    "movements": "Movements"
+    "movements": "Movements",
+    "kardex": "Kardex"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -504,6 +505,29 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "kardex": {
+    "title": "Kardex",
+    "subtitle": "Chronological movement history per product. Review receipts, issues, and running balances.",
+    "selectProduct": "Select product",
+    "selectProductHint": "Select a product and click Search to view its kardex.",
+    "allWarehouses": "All warehouses",
+    "search": "Search",
+    "loading": "Loading kardex...",
+    "typeIn": "Receipt",
+    "typeOut": "Issue",
+    "resultsCount": "{{count}} movements",
+    "tableDate": "Date",
+    "tableDocument": "Document",
+    "tableType": "Type",
+    "tableWarehouse": "Warehouse",
+    "tableQuantity": "Quantity",
+    "tableBalance": "Balance",
+    "tableReference": "Reference",
+    "empty": "No movements found for this product with the selected filters.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "locations": {
     "title": "Locations",
     "subtitle": "Locations in warehouse {{name}}.",
@@ -558,7 +582,8 @@
       "warehouses": "Warehouses",
       "locations": "Locations",
       "stock": "Stock",
-      "movements": "Movements"
+      "movements": "Movements",
+      "kardex": "Kardex"
     },
     "codes": {
       "users.view": "View users",
@@ -609,7 +634,8 @@
       "stock.update": "Update stock",
       "stock.delete": "Delete stock",
       "movements.view": "View movements",
-      "movements.create": "Record movements"
+      "movements.create": "Record movements",
+      "kardex.view": "View kardex"
     }
   },
   "errors": {
@@ -746,6 +772,9 @@
     "movementStockNotFound": "No stock is registered for that product in the selected warehouse.",
     "movementQuantityInvalid": "Quantity must be greater than zero.",
     "stockLevelInsufficientQuantity": "Insufficient quantity to record the issue.",
+    "kardexLoadFailed": "Could not load kardex.",
+    "kardexLookupsLoadFailed": "Could not load form options.",
+    "kardexProductRequired": "You must select a product.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

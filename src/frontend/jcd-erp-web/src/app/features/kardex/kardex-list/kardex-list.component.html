@@ -1,0 +1,106 @@
+<section class="page">
+  <header class="page__header">
+    <h1>{{ 'kardex.title' | translate }}</h1>
+    <p>{{ 'kardex.subtitle' | translate }}</p>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <div class="list-panel">
+    <div class="list-panel__toolbar">
+      <form class="kardex-filters" (ngSubmit)="applyFilters()">
+        <select
+          class="filter-select"
+          [formControl]="productFilterControl"
+          [disabled]="lookupsLoading()"
+          required
+        >
+          <option value="">{{ 'kardex.selectProduct' | translate }}</option>
+          @for (option of productOptions(); track option.id) {
+            <option [value]="option.id">{{ option.label }}</option>
+          }
+        </select>
+
+        <select class="filter-select" [formControl]="warehouseFilterControl" [disabled]="lookupsLoading()">
+          <option value="">{{ 'kardex.allWarehouses' | translate }}</option>
+          @for (option of warehouseOptions(); track option.id) {
+            <option [value]="option.id">{{ option.label }}</option>
+          }
+        </select>
+
+        <input class="filter-date" type="date" [formControl]="fromDateControl" />
+        <input class="filter-date" type="date" [formControl]="toDateControl" />
+
+        <button type="submit" class="btn btn--primary">{{ 'kardex.search' | translate }}</button>
+      </form>
+
+      @if (totalCount() > 0) {
+        <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+      }
+    </div>
+
+    @if (loading()) {
+      <p class="page__status">{{ 'kardex.loading' | translate }}</p>
+    } @else if (!selectedProductId()) {
+      <p class="page__status">{{ selectProductHint }}</p>
+    } @else {
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'kardex.tableDate' | translate }}</th>
+              <th>{{ 'kardex.tableDocument' | translate }}</th>
+              <th>{{ 'kardex.tableType' | translate }}</th>
+              <th>{{ 'kardex.tableWarehouse' | translate }}</th>
+              <th>{{ 'kardex.tableQuantity' | translate }}</th>
+              <th>{{ 'kardex.tableBalance' | translate }}</th>
+              <th>{{ 'kardex.tableReference' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of entries(); track item.id) {
+              <tr>
+                <td>{{ formatDate(item.movementDate) }}</td>
+                <td><code>{{ item.documentNumber }}</code></td>
+                <td>
+                  <span class="badge" [class.badge--in]="item.movementType === 'IN'" [class.badge--out]="item.movementType === 'OUT'">
+                    {{ movementTypeLabel(item.movementType) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="cell-primary">{{ item.warehouseCode }}</span>
+                  <span class="cell-secondary">{{ item.warehouseName }}</span>
+                </td>
+                <td>{{ formatQuantity(item.quantity, item.unitSymbol) }}</td>
+                <td>
+                  {{ formatQuantity(item.quantityBefore, item.unitSymbol) }}
+                  →
+                  {{ formatQuantity(item.quantityAfter, item.unitSymbol) }}
+                </td>
+                <td>{{ item.reference || '—' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="data-table__empty">{{ 'kardex.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button type="button" class="btn btn--ghost" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+            {{ 'kardex.prevPage' | translate }}
+          </button>
+          <span class="pagination__info">{{ pageInfoLabel }}</span>
+          <button type="button" class="btn btn--ghost" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+            {{ 'kardex.nextPage' | translate }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+</section>

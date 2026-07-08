@@ -143,6 +143,14 @@ export class MainLayoutComponent {
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10H7z"/><path d="M7 12h10"/><path d="M12 7v10"/><path d="M4 4h4M16 4h4M4 20h4M16 20h4"/></svg>',
       ),
     },
+    {
+      labelKey: 'nav.kardex',
+      route: '/kardex',
+      permission: 'kardex.view',
+      icon: this.icon(
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>',
+      ),
+    },
   ];
 
   readonly navItems = computed(() => {

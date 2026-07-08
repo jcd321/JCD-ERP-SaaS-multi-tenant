@@ -98,6 +98,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/movements/movements.routes').then((m) => m.MOVEMENTS_ROUTES),
       },
+      {
+        path: 'kardex',
+        canActivate: [permissionGuard('kardex.view')],
+        loadChildren: () =>
+          import('./features/kardex/kardex.routes').then((m) => m.KARDEX_ROUTES),
+      },
     ],
   },
   {

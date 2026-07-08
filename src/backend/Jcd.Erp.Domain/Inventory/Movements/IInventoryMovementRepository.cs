@@ -17,5 +17,14 @@ public interface IInventoryMovementRepository
         DateTime? toDate,
         CancellationToken cancellationToken = default);
 
+    Task<(IReadOnlyList<InventoryMovement> Items, int TotalCount)> GetKardexPagedAsync(
+        Guid productId,
+        int page,
+        int pageSize,
+        Guid? warehouseId,
+        DateTime? fromDate,
+        DateTime? toDate,
+        CancellationToken cancellationToken = default);
+
     Task AddAsync(InventoryMovement movement, CancellationToken cancellationToken = default);
 }

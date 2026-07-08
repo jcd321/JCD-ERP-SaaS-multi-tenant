@@ -57,6 +57,7 @@ public static class PermissionCatalog
         ("stock", "delete", "Delete stock levels"),
         ("movements", "view", "View inventory movements"),
         ("movements", "create", "Create inventory movements"),
+        ("kardex", "view", "View inventory kardex"),
     ];
 
     public static IEnumerable<Permission> CreatePermissions() =>

@@ -1,0 +1,41 @@
+.kardex-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.filter-select,
+.filter-date {
+  min-width: 11rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+}
+
+.filter-date {
+  min-width: 9rem;
+}
+
+.cell-primary {
+  display: block;
+  font-weight: 600;
+}
+
+.cell-secondary {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.badge--in {
+  background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  color: var(--color-success-strong, #15803d);
+}
+
+.badge--out {
+  background: color-mix(in srgb, var(--color-danger, #ef4444) 18%, transparent);
+  color: var(--color-danger-strong, #dc2626);
+}

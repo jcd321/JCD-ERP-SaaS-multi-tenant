@@ -46,7 +46,8 @@
     "suppliers": "Proveedores",
     "warehouses": "Bodegas",
     "stock": "Stock",
-    "movements": "Movimientos"
+    "movements": "Movimientos",
+    "kardex": "Kardex"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -504,6 +505,29 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "kardex": {
+    "title": "Kardex",
+    "subtitle": "Historial cronológico de movimientos por producto. Consulta entradas, salidas y saldos.",
+    "selectProduct": "Seleccionar producto",
+    "selectProductHint": "Selecciona un producto y pulsa Buscar para ver su kardex.",
+    "allWarehouses": "Todas las bodegas",
+    "search": "Buscar",
+    "loading": "Cargando kardex...",
+    "typeIn": "Entrada",
+    "typeOut": "Salida",
+    "resultsCount": "{{count}} movimientos",
+    "tableDate": "Fecha",
+    "tableDocument": "Documento",
+    "tableType": "Tipo",
+    "tableWarehouse": "Bodega",
+    "tableQuantity": "Cantidad",
+    "tableBalance": "Saldo",
+    "tableReference": "Referencia",
+    "empty": "No hay movimientos para este producto con los filtros seleccionados.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "locations": {
     "title": "Ubicaciones",
     "subtitle": "Ubicaciones de la bodega {{name}}.",
@@ -558,7 +582,8 @@
       "warehouses": "Bodegas",
       "locations": "Ubicaciones",
       "stock": "Stock",
-      "movements": "Movimientos"
+      "movements": "Movimientos",
+      "kardex": "Kardex"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -609,7 +634,8 @@
       "stock.update": "Editar stock",
       "stock.delete": "Eliminar stock",
       "movements.view": "Ver movimientos",
-      "movements.create": "Registrar movimientos"
+      "movements.create": "Registrar movimientos",
+      "kardex.view": "Ver kardex"
     }
   },
   "errors": {
@@ -746,6 +772,9 @@
     "movementStockNotFound": "No hay stock registrado para ese producto en la bodega seleccionada.",
     "movementQuantityInvalid": "La cantidad debe ser mayor a cero.",
     "stockLevelInsufficientQuantity": "No hay cantidad suficiente para registrar la salida.",
+    "kardexLoadFailed": "No se pudo cargar el kardex.",
+    "kardexLookupsLoadFailed": "No se pudieron cargar las opciones del formulario.",
+    "kardexProductRequired": "Debes seleccionar un producto.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }
