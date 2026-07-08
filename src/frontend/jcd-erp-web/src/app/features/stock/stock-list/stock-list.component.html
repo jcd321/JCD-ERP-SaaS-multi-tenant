@@ -1,0 +1,201 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'stock.title' | translate }}</h1>
+      <p>{{ 'stock.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'stock.newStockLevel' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    size="lg"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      @if (formMode === 'create') {
+        <div class="form-row">
+          <div class="form-field">
+            <label for="productId">{{ 'stock.product' | translate }}</label>
+            <select id="productId" formControlName="productId" [disabled]="lookupsLoading()">
+              <option value="">{{ 'stock.selectProduct' | translate }}</option>
+              @for (option of productOptions(); track option.id) {
+                <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="warehouseId">{{ 'stock.warehouse' | translate }}</label>
+            <select id="warehouseId" formControlName="warehouseId" [disabled]="lookupsLoading()">
+              <option value="">{{ 'stock.selectWarehouse' | translate }}</option>
+              @for (option of warehouseOptions(); track option.id) {
+                <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      } @else if (editingStockLevel) {
+        <div class="form-row">
+          <div class="form-field">
+            <label>{{ 'stock.product' | translate }}</label>
+            <p class="form-readonly">{{ editingStockLevel.productSku }} — {{ editingStockLevel.productName }}</p>
+          </div>
+          <div class="form-field">
+            <label>{{ 'stock.warehouse' | translate }}</label>
+            <p class="form-readonly">{{ editingStockLevel.warehouseCode }} — {{ editingStockLevel.warehouseName }}</p>
+          </div>
+        </div>
+      }
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="quantityOnHand">{{ 'stock.quantityOnHand' | translate }}</label>
+          <input id="quantityOnHand" type="number" min="0" step="0.0001" formControlName="quantityOnHand" />
+        </div>
+        <div class="form-field">
+          <label for="minQuantity">{{ 'stock.minQuantity' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="minQuantity" type="number" min="0" step="0.0001" formControlName="minQuantity" />
+        </div>
+        <div class="form-field">
+          <label for="maxQuantity">{{ 'stock.maxQuantity' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="maxQuantity" type="number" min="0" step="0.0001" formControlName="maxQuantity" />
+        </div>
+      </div>
+    </form>
+  </app-form-modal>
+
+  <app-confirm-dialog
+    [open]="!!stockLevelToDelete"
+    [title]="'stock.deleteTitle' | translate"
+    [message]="deleteMessage"
+    [confirmLabel]="'common.delete' | translate"
+    [loading]="saving()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+  @if (loading()) {
+    <p class="page__status">{{ 'stock.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applyFilters()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'stock.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button type="button" class="search-bar__clear" (click)="clearSearch()">×</button>
+            }
+            <button type="submit" class="search-bar__submit">{{ 'stock.search' | translate }}</button>
+          </form>
+
+          <select class="filter-select" [formControl]="warehouseFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'stock.allWarehouses' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+
+          <label class="checkbox filter-checkbox">
+            <input type="checkbox" [formControl]="belowMinimumControl" (change)="toggleBelowMinimum()" />
+            {{ 'stock.belowMinimumOnly' | translate }}
+          </label>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button type="button" class="search-chip__clear" (click)="clearSearch()">×</button>
+            </span>
+          }
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'stock.tableProduct' | translate }}</th>
+              <th>{{ 'stock.tableWarehouse' | translate }}</th>
+              <th>{{ 'stock.tableQuantity' | translate }}</th>
+              <th>{{ 'stock.tableMin' | translate }}</th>
+              <th>{{ 'stock.tableMax' | translate }}</th>
+              <th>{{ 'stock.tableStatus' | translate }}</th>
+              <th class="data-table__actions-col">{{ 'common.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of stockLevels(); track item.id) {
+              <tr [class.row--warning]="item.isBelowMinimum">
+                <td>
+                  <span class="cell-primary">{{ item.productSku }}</span>
+                  <span class="cell-secondary">{{ item.productName }}</span>
+                </td>
+                <td>
+                  <span class="cell-primary">{{ item.warehouseCode }}</span>
+                  <span class="cell-secondary">{{ item.warehouseName }}</span>
+                </td>
+                <td>{{ formatQuantity(item.quantityOnHand, item.unitSymbol) }}</td>
+                <td>{{ item.minQuantity ?? '—' }}</td>
+                <td>{{ item.maxQuantity ?? '—' }}</td>
+                <td>
+                  @if (item.isBelowMinimum) {
+                    <span class="badge badge--warning">{{ 'stock.belowMinimumBadge' | translate }}</span>
+                  } @else {
+                    <span class="badge badge--success">{{ 'stock.okBadge' | translate }}</span>
+                  }
+                </td>
+                <td class="data-table__actions">
+                  <button type="button" class="btn btn--ghost btn--sm" (click)="openEditForm(item)">
+                    {{ 'common.edit' | translate }}
+                  </button>
+                  <button type="button" class="btn btn--ghost btn--sm btn--danger" (click)="openDeleteDialog(item)">
+                    {{ 'common.delete' | translate }}
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="data-table__empty">{{ 'stock.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button type="button" class="btn btn--ghost" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+            {{ 'stock.prevPage' | translate }}
+          </button>
+          <span class="pagination__info">{{ pageInfoLabel }}</span>
+          <button type="button" class="btn btn--ghost" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+            {{ 'stock.nextPage' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

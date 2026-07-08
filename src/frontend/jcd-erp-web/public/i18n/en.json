@@ -44,7 +44,8 @@
     "products": "Products",
     "customers": "Customers",
     "suppliers": "Suppliers",
-    "warehouses": "Warehouses"
+    "warehouses": "Warehouses",
+    "stock": "Stock"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -429,6 +430,41 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "stock": {
+    "title": "Stock",
+    "subtitle": "View on-hand quantities per product and warehouse, and set min/max levels.",
+    "newStockLevel": "Register stock",
+    "createTitle": "Register stock",
+    "editTitle": "Edit stock levels",
+    "deleteTitle": "Delete stock record",
+    "deleteMessage": "Delete stock for \"{{product}}\" in \"{{warehouse}}\"? Only allowed when quantity is zero.",
+    "loading": "Loading stock...",
+    "product": "Product",
+    "warehouse": "Warehouse",
+    "selectProduct": "Select product",
+    "selectWarehouse": "Select warehouse",
+    "quantityOnHand": "Quantity on hand",
+    "minQuantity": "Minimum stock",
+    "maxQuantity": "Maximum stock",
+    "allWarehouses": "All warehouses",
+    "belowMinimumOnly": "Below minimum only",
+    "belowMinimumBadge": "Below minimum",
+    "okBadge": "OK",
+    "search": "Search",
+    "searchPlaceholder": "Search by SKU, product or warehouse...",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableProduct": "Product",
+    "tableWarehouse": "Warehouse",
+    "tableQuantity": "Quantity",
+    "tableMin": "Min",
+    "tableMax": "Max",
+    "tableStatus": "Status",
+    "empty": "No stock records found.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "locations": {
     "title": "Locations",
     "subtitle": "Locations in warehouse {{name}}.",
@@ -481,7 +517,8 @@
       "customers": "Customers",
       "suppliers": "Suppliers",
       "warehouses": "Warehouses",
-      "locations": "Locations"
+      "locations": "Locations",
+      "stock": "Stock"
     },
     "codes": {
       "users.view": "View users",
@@ -526,7 +563,11 @@
       "locations.view": "View locations",
       "locations.create": "Create locations",
       "locations.update": "Update locations",
-      "locations.delete": "Delete locations"
+      "locations.delete": "Delete locations",
+      "stock.view": "View stock",
+      "stock.create": "Register stock",
+      "stock.update": "Update stock",
+      "stock.delete": "Delete stock"
     }
   },
   "errors": {
@@ -634,6 +675,24 @@
     "locationParentWarehouseMismatch": "Parent location must belong to the same warehouse.",
     "locationCannotBeOwnParent": "A location cannot be its own parent.",
     "locationHasChildren": "Cannot delete a location that has child locations.",
+    "stockLoadFailed": "Could not load stock.",
+    "stockLookupsLoadFailed": "Could not load form options.",
+    "stockCreateFailed": "Could not register stock.",
+    "stockUpdateFailed": "Could not update stock.",
+    "stockDeleteFailed": "Could not delete stock record.",
+    "stockLevelNotFound": "Stock record not found.",
+    "stockLevelAlreadyExists": "Stock for this product in this warehouse already exists.",
+    "stockLevelProductNotFound": "Product not found.",
+    "stockLevelProductInactive": "Product is inactive.",
+    "stockLevelProductRequired": "You must select a product.",
+    "stockLevelWarehouseNotFound": "Warehouse not found.",
+    "stockLevelWarehouseInactive": "Warehouse is inactive.",
+    "stockLevelWarehouseRequired": "You must select a warehouse.",
+    "stockLevelQuantityNegative": "Quantity cannot be negative.",
+    "stockLevelMinQuantityNegative": "Minimum stock cannot be negative.",
+    "stockLevelMaxQuantityNegative": "Maximum stock cannot be negative.",
+    "stockLevelMinGreaterThanMax": "Minimum stock cannot be greater than maximum.",
+    "stockLevelHasQuantity": "Cannot delete a record with quantity greater than zero.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

@@ -1,0 +1,43 @@
+.filter-select {
+  min-width: 12rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+}
+
+.filter-checkbox {
+  white-space: nowrap;
+}
+
+.form-readonly {
+  margin: 0;
+  padding: 0.55rem 0;
+  color: var(--text-secondary);
+}
+
+.row--warning {
+  background: color-mix(in srgb, var(--color-warning) 8%, transparent);
+}
+
+.badge--warning {
+  background: color-mix(in srgb, var(--color-warning) 18%, transparent);
+  color: var(--color-warning-strong, #b45309);
+}
+
+.badge--success {
+  background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  color: var(--color-success-strong, #15803d);
+}
+
+.cell-primary {
+  display: block;
+  font-weight: 600;
+}
+
+.cell-secondary {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}

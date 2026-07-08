@@ -19,6 +19,8 @@ import { warehousesReducer } from './warehouses/warehouses.reducer';
 import { WarehousesEffects } from './warehouses/warehouses.effects';
 import { locationsReducer } from './locations/locations.reducer';
 import { LocationsEffects } from './locations/locations.effects';
+import { stockReducer } from './stock/stock.reducer';
+import { StockEffects } from './stock/stock.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -43,7 +45,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('suppliers', suppliersReducer),
     provideState('warehouses', warehousesReducer),
     provideState('locations', locationsReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects),
+    provideState('stock', stockReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

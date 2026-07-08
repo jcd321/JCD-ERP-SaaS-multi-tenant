@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 2 complete — Master data catalogs. Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
+> **Status:** Phase 3 in progress — Warehouses, storage locations, and stock levels delivered. Phase 2 complete (master data catalogs). Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -252,6 +252,24 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `POST` | `/api/v1/customers` | Yes | `customers.create` | Create customer |
 | `PUT` | `/api/v1/customers/{id}` | Yes | `customers.update` | Update customer |
 | `DELETE` | `/api/v1/customers/{id}` | Yes | `customers.delete` | Soft-delete customer |
+| `GET` | `/api/v1/suppliers` | Yes | `suppliers.view` | List suppliers (paginated, search) |
+| `POST` | `/api/v1/suppliers` | Yes | `suppliers.create` | Create supplier |
+| `PUT` | `/api/v1/suppliers/{id}` | Yes | `suppliers.update` | Update supplier |
+| `DELETE` | `/api/v1/suppliers/{id}` | Yes | `suppliers.delete` | Soft-delete supplier |
+| `GET` | `/api/v1/warehouses` | Yes | `warehouses.view` | List warehouses (paginated, search) |
+| `POST` | `/api/v1/warehouses` | Yes | `warehouses.create` | Create warehouse |
+| `PUT` | `/api/v1/warehouses/{id}` | Yes | `warehouses.update` | Update warehouse |
+| `DELETE` | `/api/v1/warehouses/{id}` | Yes | `warehouses.delete` | Soft-delete warehouse |
+| `GET` | `/api/v1/locations` | Yes | `locations.view` | List locations by warehouse (paginated) |
+| `GET` | `/api/v1/locations/parent-options` | Yes | `locations.view` | Parent location options for hierarchy |
+| `POST` | `/api/v1/locations` | Yes | `locations.create` | Create storage location |
+| `PUT` | `/api/v1/locations/{id}` | Yes | `locations.update` | Update storage location |
+| `DELETE` | `/api/v1/locations/{id}` | Yes | `locations.delete` | Soft-delete storage location |
+| `GET` | `/api/v1/stock` | Yes | `stock.view` | List stock levels (filters: warehouse, below-min) |
+| `GET` | `/api/v1/stock/lookups` | Yes | `stock.view` | Product and warehouse options for forms |
+| `POST` | `/api/v1/stock` | Yes | `stock.create` | Register stock for product + warehouse |
+| `PUT` | `/api/v1/stock/{id}` | Yes | `stock.update` | Update quantity and min/max levels |
+| `DELETE` | `/api/v1/stock/{id}` | Yes | `stock.delete` | Delete stock record (quantity must be zero) |
 
 ---
 
@@ -261,8 +279,8 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 |-------|-------|--------|
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
-| **2** | Master data (units, categories, brands, products, customers, suppliers) | **In progress** — Customers done; suppliers next |
-| **3** | Inventory & warehouses | Planned |
+| **2** | Master data (units, categories, brands, products, customers, suppliers) | **Done** |
+| **3** | Inventory & warehouses | **In progress** — Warehouses, locations, stock levels done |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
 | **6** | Finance (cash, banks) | Planned |
@@ -300,6 +318,16 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Suppliers | CRUD + tax ID uniqueness per tenant | List panel + modal CRUD with contact/address fields (NgRx) |
 
 **API convention:** `PUT` endpoints use request DTOs in `Jcd.Erp.Api/Requests/` (`Update*Request`), mapped to Application commands in controllers.
+
+### Phase 3 — in progress
+
+| Module | Backend | Frontend |
+|--------|---------|----------|
+| Warehouses | CRUD + default warehouse + pagination | List panel + modal CRUD (NgRx) |
+| Storage locations | CRUD per warehouse + parent hierarchy (zone/aisle/shelf/bin) | List scoped by warehouse route (NgRx) |
+| Stock levels | CRUD per product/warehouse + min/max + below-minimum filter | List with filters, alerts badge (NgRx) |
+
+**Next in Phase 3:** Inventory movements, kardex, transfers, lot/serial tracking.
 
 ---
 

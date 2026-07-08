@@ -8,6 +8,7 @@ using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
 using Jcd.Erp.Domain.Partners.Customers;
 using Jcd.Erp.Domain.Partners.Suppliers;
+using Jcd.Erp.Domain.Inventory.Stock;
 using Jcd.Erp.Domain.Inventory.Warehouses;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
@@ -65,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IWarehouseRepository, WarehouseRepository>();
         services.AddScoped<IStorageLocationRepository, StorageLocationRepository>();
+        services.AddScoped<IStockLevelRepository, StockLevelRepository>();
 
         services.AddScoped<DatabaseSeeder>();
 

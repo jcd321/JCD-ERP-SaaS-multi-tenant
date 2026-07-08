@@ -44,7 +44,8 @@
     "products": "Productos",
     "customers": "Clientes",
     "suppliers": "Proveedores",
-    "warehouses": "Bodegas"
+    "warehouses": "Bodegas",
+    "stock": "Stock"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -429,6 +430,41 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "stock": {
+    "title": "Stock",
+    "subtitle": "Consulta existencias por producto y bodega, y define niveles mínimos y máximos.",
+    "newStockLevel": "Registrar stock",
+    "createTitle": "Registrar stock",
+    "editTitle": "Editar niveles de stock",
+    "deleteTitle": "Eliminar registro de stock",
+    "deleteMessage": "¿Eliminar el stock de \"{{product}}\" en \"{{warehouse}}\"? Solo se permite si la cantidad es cero.",
+    "loading": "Cargando stock...",
+    "product": "Producto",
+    "warehouse": "Bodega",
+    "selectProduct": "Seleccionar producto",
+    "selectWarehouse": "Seleccionar bodega",
+    "quantityOnHand": "Cantidad disponible",
+    "minQuantity": "Stock mínimo",
+    "maxQuantity": "Stock máximo",
+    "allWarehouses": "Todas las bodegas",
+    "belowMinimumOnly": "Solo bajo mínimo",
+    "belowMinimumBadge": "Bajo mínimo",
+    "okBadge": "OK",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por SKU, producto o bodega...",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableProduct": "Producto",
+    "tableWarehouse": "Bodega",
+    "tableQuantity": "Cantidad",
+    "tableMin": "Mín.",
+    "tableMax": "Máx.",
+    "tableStatus": "Estado",
+    "empty": "No hay registros de stock.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "locations": {
     "title": "Ubicaciones",
     "subtitle": "Ubicaciones de la bodega {{name}}.",
@@ -481,7 +517,8 @@
       "customers": "Clientes",
       "suppliers": "Proveedores",
       "warehouses": "Bodegas",
-      "locations": "Ubicaciones"
+      "locations": "Ubicaciones",
+      "stock": "Stock"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -526,7 +563,11 @@
       "locations.view": "Ver ubicaciones",
       "locations.create": "Crear ubicaciones",
       "locations.update": "Editar ubicaciones",
-      "locations.delete": "Eliminar ubicaciones"
+      "locations.delete": "Eliminar ubicaciones",
+      "stock.view": "Ver stock",
+      "stock.create": "Registrar stock",
+      "stock.update": "Editar stock",
+      "stock.delete": "Eliminar stock"
     }
   },
   "errors": {
@@ -634,6 +675,24 @@
     "locationParentWarehouseMismatch": "La ubicación padre debe pertenecer a la misma bodega.",
     "locationCannotBeOwnParent": "Una ubicación no puede ser su propio padre.",
     "locationHasChildren": "No se puede eliminar una ubicación con sub-ubicaciones.",
+    "stockLoadFailed": "No se pudo cargar el stock.",
+    "stockLookupsLoadFailed": "No se pudieron cargar las opciones del formulario.",
+    "stockCreateFailed": "No se pudo registrar el stock.",
+    "stockUpdateFailed": "No se pudo actualizar el stock.",
+    "stockDeleteFailed": "No se pudo eliminar el registro de stock.",
+    "stockLevelNotFound": "El registro de stock no existe.",
+    "stockLevelAlreadyExists": "Ya existe stock de ese producto en esa bodega.",
+    "stockLevelProductNotFound": "El producto no existe.",
+    "stockLevelProductInactive": "El producto está inactivo.",
+    "stockLevelProductRequired": "Debes seleccionar un producto.",
+    "stockLevelWarehouseNotFound": "La bodega no existe.",
+    "stockLevelWarehouseInactive": "La bodega está inactiva.",
+    "stockLevelWarehouseRequired": "Debes seleccionar una bodega.",
+    "stockLevelQuantityNegative": "La cantidad no puede ser negativa.",
+    "stockLevelMinQuantityNegative": "El stock mínimo no puede ser negativo.",
+    "stockLevelMaxQuantityNegative": "El stock máximo no puede ser negativo.",
+    "stockLevelMinGreaterThanMax": "El stock mínimo no puede ser mayor que el máximo.",
+    "stockLevelHasQuantity": "No se puede eliminar un registro con cantidad mayor a cero.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

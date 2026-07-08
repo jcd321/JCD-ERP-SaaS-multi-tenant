@@ -51,6 +51,10 @@ public static class PermissionCatalog
         ("locations", "create", "Create storage locations"),
         ("locations", "update", "Update storage locations"),
         ("locations", "delete", "Delete storage locations"),
+        ("stock", "view", "View stock levels"),
+        ("stock", "create", "Create stock levels"),
+        ("stock", "update", "Update stock levels"),
+        ("stock", "delete", "Delete stock levels"),
     ];
 
     public static IEnumerable<Permission> CreatePermissions() =>
