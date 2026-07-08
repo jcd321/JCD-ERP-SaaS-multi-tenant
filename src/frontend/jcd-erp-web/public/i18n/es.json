@@ -45,7 +45,8 @@
     "customers": "Clientes",
     "suppliers": "Proveedores",
     "warehouses": "Bodegas",
-    "stock": "Stock"
+    "stock": "Stock",
+    "movements": "Movimientos"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -468,6 +469,41 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "movements": {
+    "title": "Movimientos de inventario",
+    "subtitle": "Registra entradas y salidas de stock. Cada movimiento queda en el historial y actualiza las existencias.",
+    "newMovement": "Nuevo movimiento",
+    "createTitle": "Registrar movimiento",
+    "loading": "Cargando movimientos...",
+    "movementType": "Tipo",
+    "typeIn": "Entrada",
+    "typeOut": "Salida",
+    "movementDate": "Fecha",
+    "product": "Producto",
+    "warehouse": "Bodega",
+    "selectProduct": "Seleccionar producto",
+    "selectWarehouse": "Seleccionar bodega",
+    "quantity": "Cantidad",
+    "reference": "Referencia",
+    "notes": "Notas",
+    "allWarehouses": "Todas las bodegas",
+    "allTypes": "Todos los tipos",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por documento, SKU, producto o bodega...",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableDocument": "Documento",
+    "tableDate": "Fecha",
+    "tableType": "Tipo",
+    "tableProduct": "Producto",
+    "tableWarehouse": "Bodega",
+    "tableQuantity": "Cantidad",
+    "tableBalance": "Saldo",
+    "empty": "No hay movimientos registrados.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
+  },
   "locations": {
     "title": "Ubicaciones",
     "subtitle": "Ubicaciones de la bodega {{name}}.",
@@ -521,7 +557,8 @@
       "suppliers": "Proveedores",
       "warehouses": "Bodegas",
       "locations": "Ubicaciones",
-      "stock": "Stock"
+      "stock": "Stock",
+      "movements": "Movimientos"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -570,7 +607,9 @@
       "stock.view": "Ver stock",
       "stock.create": "Registrar stock",
       "stock.update": "Editar stock",
-      "stock.delete": "Eliminar stock"
+      "stock.delete": "Eliminar stock",
+      "movements.view": "Ver movimientos",
+      "movements.create": "Registrar movimientos"
     }
   },
   "errors": {
@@ -696,6 +735,17 @@
     "stockLevelMaxQuantityNegative": "El stock máximo no puede ser negativo.",
     "stockLevelMinGreaterThanMax": "El stock mínimo no puede ser mayor que el máximo.",
     "stockLevelHasQuantity": "No se puede eliminar un registro con cantidad mayor a cero.",
+    "movementsLoadFailed": "No se pudieron cargar los movimientos.",
+    "movementsLookupsLoadFailed": "No se pudieron cargar las opciones del formulario.",
+    "movementsCreateFailed": "No se pudo registrar el movimiento.",
+    "movementTypeInvalid": "El tipo de movimiento no es válido.",
+    "movementProductNotFound": "El producto no existe.",
+    "movementProductInactive": "El producto está inactivo.",
+    "movementWarehouseNotFound": "La bodega no existe.",
+    "movementWarehouseInactive": "La bodega está inactiva.",
+    "movementStockNotFound": "No hay stock registrado para ese producto en la bodega seleccionada.",
+    "movementQuantityInvalid": "La cantidad debe ser mayor a cero.",
+    "stockLevelInsufficientQuantity": "No hay cantidad suficiente para registrar la salida.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

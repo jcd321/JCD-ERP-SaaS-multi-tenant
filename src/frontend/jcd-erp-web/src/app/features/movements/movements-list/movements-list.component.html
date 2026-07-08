@@ -1,0 +1,191 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'movements.title' | translate }}</h1>
+      <p>{{ 'movements.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'movements.newMovement' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    size="lg"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="movementType">{{ 'movements.movementType' | translate }}</label>
+          <select id="movementType" formControlName="movementType">
+            @for (type of movementTypes; track type) {
+              <option [value]="type">{{ movementTypeLabel(type) }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="movementDate">{{ 'movements.movementDate' | translate }}</label>
+          <input id="movementDate" type="datetime-local" formControlName="movementDate" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="productId">{{ 'movements.product' | translate }}</label>
+          <select id="productId" formControlName="productId" [disabled]="lookupsLoading()">
+            <option value="">{{ 'movements.selectProduct' | translate }}</option>
+            @for (option of productOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="warehouseId">{{ 'movements.warehouse' | translate }}</label>
+          <select id="warehouseId" formControlName="warehouseId" [disabled]="lookupsLoading()">
+            <option value="">{{ 'movements.selectWarehouse' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="quantity">{{ 'movements.quantity' | translate }}</label>
+          <input id="quantity" type="number" min="0.0001" step="0.0001" formControlName="quantity" />
+        </div>
+        <div class="form-field">
+          <label for="reference">{{ 'movements.reference' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="reference" type="text" formControlName="reference" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="notes">{{ 'movements.notes' | translate }} ({{ 'common.optional' | translate }})</label>
+        <textarea id="notes" rows="2" formControlName="notes"></textarea>
+      </div>
+    </form>
+  </app-form-modal>
+
+  @if (loading()) {
+    <p class="page__status">{{ 'movements.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applyFilters()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'movements.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button type="button" class="search-bar__clear" (click)="clearSearch()">×</button>
+            }
+            <button type="submit" class="search-bar__submit">{{ 'movements.search' | translate }}</button>
+          </form>
+
+          <select class="filter-select" [formControl]="warehouseFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'movements.allWarehouses' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+
+          <select class="filter-select" [formControl]="movementTypeFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'movements.allTypes' | translate }}</option>
+            @for (type of movementTypes; track type) {
+              <option [value]="type">{{ movementTypeLabel(type) }}</option>
+            }
+          </select>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button type="button" class="search-chip__clear" (click)="clearSearch()">×</button>
+            </span>
+          }
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'movements.tableDocument' | translate }}</th>
+              <th>{{ 'movements.tableDate' | translate }}</th>
+              <th>{{ 'movements.tableType' | translate }}</th>
+              <th>{{ 'movements.tableProduct' | translate }}</th>
+              <th>{{ 'movements.tableWarehouse' | translate }}</th>
+              <th>{{ 'movements.tableQuantity' | translate }}</th>
+              <th>{{ 'movements.tableBalance' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of movements(); track item.id) {
+              <tr>
+                <td><code>{{ item.documentNumber }}</code></td>
+                <td>{{ formatDate(item.movementDate) }}</td>
+                <td>
+                  <span class="badge" [class.badge--in]="item.movementType === 'IN'" [class.badge--out]="item.movementType === 'OUT'">
+                    {{ movementTypeLabel(item.movementType) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="cell-primary">{{ item.productSku }}</span>
+                  <span class="cell-secondary">{{ item.productName }}</span>
+                </td>
+                <td>
+                  <span class="cell-primary">{{ item.warehouseCode }}</span>
+                  <span class="cell-secondary">{{ item.warehouseName }}</span>
+                </td>
+                <td>{{ formatQuantity(item.quantity, item.unitSymbol) }}</td>
+                <td>
+                  {{ formatQuantity(item.quantityBefore, item.unitSymbol) }}
+                  →
+                  {{ formatQuantity(item.quantityAfter, item.unitSymbol) }}
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="data-table__empty">{{ 'movements.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button type="button" class="btn btn--ghost" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+            {{ 'movements.prevPage' | translate }}
+          </button>
+          <span class="pagination__info">{{ pageInfoLabel }}</span>
+          <button type="button" class="btn btn--ghost" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+            {{ 'movements.nextPage' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

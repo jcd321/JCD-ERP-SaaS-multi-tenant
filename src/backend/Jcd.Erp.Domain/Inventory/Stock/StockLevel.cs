@@ -73,6 +73,18 @@ public class StockLevel : BaseAuditableEntity
     public bool IsBelowMinimum =>
         MinQuantity.HasValue && QuantityOnHand < MinQuantity.Value;
 
+    public Result ApplyQuantityChange(decimal quantityChange)
+    {
+        var newQuantity = QuantityOnHand + quantityChange;
+        if (newQuantity < 0)
+            return Result.Failure("StockLevel.InsufficientQuantity");
+
+        QuantityOnHand = newQuantity;
+        UpdatedAt = DateTime.UtcNow;
+
+        return Result.Success();
+    }
+
     private static Result ValidateQuantityRange(decimal? minQuantity, decimal? maxQuantity)
     {
         if (minQuantity is < 0)

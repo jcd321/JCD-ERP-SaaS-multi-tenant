@@ -92,6 +92,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/stock/stock.routes').then((m) => m.STOCK_ROUTES),
       },
+      {
+        path: 'movements',
+        canActivate: [permissionGuard('movements.view')],
+        loadChildren: () =>
+          import('./features/movements/movements.routes').then((m) => m.MOVEMENTS_ROUTES),
+      },
     ],
   },
   {

@@ -45,7 +45,8 @@
     "customers": "Customers",
     "suppliers": "Suppliers",
     "warehouses": "Warehouses",
-    "stock": "Stock"
+    "stock": "Stock",
+    "movements": "Movements"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -468,6 +469,41 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "movements": {
+    "title": "Inventory movements",
+    "subtitle": "Record stock receipts and issues. Each movement is logged and updates on-hand quantities.",
+    "newMovement": "New movement",
+    "createTitle": "Record movement",
+    "loading": "Loading movements...",
+    "movementType": "Type",
+    "typeIn": "Receipt",
+    "typeOut": "Issue",
+    "movementDate": "Date",
+    "product": "Product",
+    "warehouse": "Warehouse",
+    "selectProduct": "Select product",
+    "selectWarehouse": "Select warehouse",
+    "quantity": "Quantity",
+    "reference": "Reference",
+    "notes": "Notes",
+    "allWarehouses": "All warehouses",
+    "allTypes": "All types",
+    "search": "Search",
+    "searchPlaceholder": "Search by document, SKU, product or warehouse...",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableDocument": "Document",
+    "tableDate": "Date",
+    "tableType": "Type",
+    "tableProduct": "Product",
+    "tableWarehouse": "Warehouse",
+    "tableQuantity": "Quantity",
+    "tableBalance": "Balance",
+    "empty": "No movements recorded yet.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
+  },
   "locations": {
     "title": "Locations",
     "subtitle": "Locations in warehouse {{name}}.",
@@ -521,7 +557,8 @@
       "suppliers": "Suppliers",
       "warehouses": "Warehouses",
       "locations": "Locations",
-      "stock": "Stock"
+      "stock": "Stock",
+      "movements": "Movements"
     },
     "codes": {
       "users.view": "View users",
@@ -570,7 +607,9 @@
       "stock.view": "View stock",
       "stock.create": "Register stock",
       "stock.update": "Update stock",
-      "stock.delete": "Delete stock"
+      "stock.delete": "Delete stock",
+      "movements.view": "View movements",
+      "movements.create": "Record movements"
     }
   },
   "errors": {
@@ -696,6 +735,17 @@
     "stockLevelMaxQuantityNegative": "Maximum stock cannot be negative.",
     "stockLevelMinGreaterThanMax": "Minimum stock cannot be greater than maximum.",
     "stockLevelHasQuantity": "Cannot delete a record with quantity greater than zero.",
+    "movementsLoadFailed": "Could not load movements.",
+    "movementsLookupsLoadFailed": "Could not load form options.",
+    "movementsCreateFailed": "Could not record the movement.",
+    "movementTypeInvalid": "The movement type is not valid.",
+    "movementProductNotFound": "The product does not exist.",
+    "movementProductInactive": "The product is inactive.",
+    "movementWarehouseNotFound": "The warehouse does not exist.",
+    "movementWarehouseInactive": "The warehouse is inactive.",
+    "movementStockNotFound": "No stock is registered for that product in the selected warehouse.",
+    "movementQuantityInvalid": "Quantity must be greater than zero.",
+    "stockLevelInsufficientQuantity": "Insufficient quantity to record the issue.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

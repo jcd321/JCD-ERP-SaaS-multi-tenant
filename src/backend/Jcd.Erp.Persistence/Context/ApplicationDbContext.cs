@@ -9,6 +9,7 @@ using Jcd.Erp.Domain.Configuration;
 using Jcd.Erp.Domain.Identity;
 using Jcd.Erp.Domain.Partners.Customers;
 using Jcd.Erp.Domain.Partners.Suppliers;
+using Jcd.Erp.Domain.Inventory.Movements;
 using Jcd.Erp.Domain.Inventory.Stock;
 using Jcd.Erp.Domain.Inventory.Warehouses;
 using Jcd.Erp.Domain.Tenancy;
@@ -59,6 +60,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Warehouse> Warehouses => Set<Warehouse>();
     public DbSet<StorageLocation> StorageLocations => Set<StorageLocation>();
     public DbSet<StockLevel> StockLevels => Set<StockLevel>();
+    public DbSet<InventoryMovement> InventoryMovements => Set<InventoryMovement>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
