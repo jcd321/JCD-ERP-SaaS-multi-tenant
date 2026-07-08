@@ -20,7 +20,7 @@
     "appTitle": "JCD ERP",
     "appName": "JCD ERP",
     "brandSubtitle": "Enterprise Suite",
-    "phase": "v0.2 · Fase 2",
+    "phase": "v0.3 · Fase 3",
     "mainNav": "Navegación principal",
     "darkMode": "Oscuro",
     "lightMode": "Claro",
@@ -56,7 +56,10 @@
     "alerts": "Alertas",
     "phaseSales": "Fase 5 · Ventas",
     "phaseStock": "Fase 3 · Stock",
-    "phaseIntelligence": "Fase 7 · Inteligencia"
+    "phaseIntelligence": "Fase 7 · Inteligencia",
+    "loading": "Cargando indicadores...",
+    "inventoryHint": "Productos activos en catálogo",
+    "alertsHint": "Referencias bajo stock mínimo"
   },
   "auth": {
     "login": {

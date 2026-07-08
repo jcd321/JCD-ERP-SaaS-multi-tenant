@@ -4,50 +4,66 @@
     <p>{{ 'dashboard.subtitle' | translate }}</p>
   </header>
 
-  <div class="kpi-grid">
-    <article class="kpi-card">
-      <div class="kpi-card__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
-        </svg>
-      </div>
-      <p class="kpi-card__label">{{ 'dashboard.revenue' | translate }}</p>
-      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
-      <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
-    </article>
+  @if (loading()) {
+    <p class="page__status">{{ 'dashboard.loading' | translate }}</p>
+  } @else {
+    <div class="kpi-grid">
+      <article class="kpi-card">
+        <div class="kpi-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+        </div>
+        <p class="kpi-card__label">{{ 'dashboard.revenue' | translate }}</p>
+        <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+        <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
+      </article>
 
-    <article class="kpi-card">
-      <div class="kpi-card__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M6 2h12v6H6zM4 8h16v14H4z" />
-        </svg>
-      </div>
-      <p class="kpi-card__label">{{ 'dashboard.orders' | translate }}</p>
-      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
-      <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
-    </article>
+      <article class="kpi-card">
+        <div class="kpi-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2h12v6H6zM4 8h16v14H4z" />
+          </svg>
+        </div>
+        <p class="kpi-card__label">{{ 'dashboard.orders' | translate }}</p>
+        <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
+        <p class="kpi-card__hint">{{ 'dashboard.phaseSales' | translate }}</p>
+      </article>
 
-    <article class="kpi-card">
-      <div class="kpi-card__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-        </svg>
-      </div>
-      <p class="kpi-card__label">{{ 'dashboard.inventory' | translate }}</p>
-      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
-      <p class="kpi-card__hint">{{ 'dashboard.phaseStock' | translate }}</p>
-    </article>
+      <article class="kpi-card">
+        <div class="kpi-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          </svg>
+        </div>
+        <p class="kpi-card__label">{{ 'dashboard.inventory' | translate }}</p>
+        <p class="kpi-card__value">
+          @if (kpis(); as data) {
+            {{ formatInventoryValue(data) }}
+          } @else {
+            {{ 'common.empty' | translate }}
+          }
+        </p>
+        <p class="kpi-card__hint">{{ 'dashboard.inventoryHint' | translate }}</p>
+      </article>
 
-    <article class="kpi-card">
-      <div class="kpi-card__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-          <path d="M12 9v4M12 17h.01" />
-        </svg>
-      </div>
-      <p class="kpi-card__label">{{ 'dashboard.alerts' | translate }}</p>
-      <p class="kpi-card__value">{{ 'common.empty' | translate }}</p>
-      <p class="kpi-card__hint">{{ 'dashboard.phaseIntelligence' | translate }}</p>
-    </article>
-  </div>
+      <article class="kpi-card" [class.kpi-card--warning]="(kpis()?.belowMinimumCount ?? 0) > 0">
+        <div class="kpi-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <path d="M12 9v4M12 17h.01" />
+          </svg>
+        </div>
+        <p class="kpi-card__label">{{ 'dashboard.alerts' | translate }}</p>
+        <p class="kpi-card__value">
+          @if (kpis(); as data) {
+            {{ formatAlertsValue(data) }}
+          } @else {
+            {{ 'common.empty' | translate }}
+          }
+        </p>
+        <p class="kpi-card__hint">{{ 'dashboard.alertsHint' | translate }}</p>
+      </article>
+    </div>
+  }
 </section>
