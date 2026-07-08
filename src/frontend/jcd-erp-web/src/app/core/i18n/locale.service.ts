@@ -1,6 +1,6 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { ApplicationRef, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import {
@@ -16,6 +16,7 @@ export class LocaleService {
   private readonly http = inject(HttpClient);
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly appRef = inject(ApplicationRef);
 
   private readonly _locale = signal<LocaleId>(DEFAULT_LOCALE);
   private readonly _translations = signal<TranslationDictionary>({});
@@ -36,6 +37,10 @@ export class LocaleService {
     }
 
     await this.loadLocale(locale);
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.appRef.tick();
+    }
   }
 
   t(key: string, params?: Record<string, string>): string {
@@ -63,6 +68,7 @@ export class LocaleService {
     this._locale.set(locale);
     this.persistLocale(locale);
     this.updateDocumentLocale(locale);
+    this.updateDocumentTitle();
   }
 
   private resolveInitialLocale(): LocaleId {
@@ -99,13 +105,56 @@ export class LocaleService {
     this.document.documentElement.lang = locale;
   }
 
+  private updateDocumentTitle(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.document.title = this.t('layout.appTitle');
+  }
+
   private lookup(key: string, dictionary: TranslationDictionary): unknown {
-    return key.split('.').reduce<unknown>((current, segment) => {
-      if (current && typeof current === 'object' && segment in current) {
-        return (current as TranslationDictionary)[segment];
+    const parts = key.split('.');
+    let current: unknown = dictionary;
+    let index = 0;
+
+    while (index < parts.length) {
+      if (!current || typeof current !== 'object') {
+        return undefined;
       }
 
-      return undefined;
-    }, dictionary);
+      const obj = current as TranslationDictionary;
+      const segment = parts[index];
+
+      if (segment in obj) {
+        current = obj[segment];
+        index++;
+        continue;
+      }
+
+      let matched = false;
+      for (let end = parts.length; end > index + 1; end--) {
+        const compoundKey = parts.slice(index, end).join('.');
+        if (!(compoundKey in obj)) {
+          continue;
+        }
+
+        const value = obj[compoundKey];
+        if (end === parts.length) {
+          return value;
+        }
+
+        current = value;
+        index = end;
+        matched = true;
+        break;
+      }
+
+      if (!matched) {
+        return undefined;
+      }
+    }
+
+    return current;
   }
 }

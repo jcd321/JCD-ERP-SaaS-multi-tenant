@@ -73,6 +73,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 
         _tenantScope.SetTenant(tenant.Id);
 
+        await _userPermissions.InvalidateUserAsync(tenant.Id, user.Id, cancellationToken);
         var permissions = await _userPermissions.GetPermissionCodesAsync(tenant.Id, user.Id, cancellationToken);
         var accessExpires = _dateTime.UtcNow.AddMinutes(15);
         var refreshExpires = request.RememberMe

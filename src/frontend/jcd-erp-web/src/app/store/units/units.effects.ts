@@ -3,8 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { UnitsService } from '../../features/units/units.service';
 import { UnitsActions } from './units.actions';
 import { selectUnitsPage, selectUnitsPageSize, selectUnitsSearch } from './units.selectors';
@@ -13,7 +12,6 @@ import { selectUnitsPage, selectUnitsPageSize, selectUnitsSearch } from './units
 export class UnitsEffects {
   private readonly actions$ = inject(Actions);
   private readonly unitsService = inject(UnitsService);
-  private readonly locale = inject(LocaleService);
   private readonly store = inject(Store);
 
   readonly loadUnits$ = createEffect(() =>
@@ -41,7 +39,7 @@ export class UnitsEffects {
           ),
           catchError((error) =>
             of(UnitsActions.loadUnitsFailure({
-              error: resolvePlatformErrorMessage(error, 'Units.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Units.LoadFailed'),
             })),
           ),
         );
@@ -57,7 +55,7 @@ export class UnitsEffects {
           map(() => UnitsActions.createUnitSuccess()),
           catchError((error) =>
             of(UnitsActions.createUnitFailure({
-              error: resolvePlatformErrorMessage(error, 'Units.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Units.CreateFailed'),
             })),
           ),
         ),
@@ -73,7 +71,7 @@ export class UnitsEffects {
           map(() => UnitsActions.updateUnitSuccess()),
           catchError((error) =>
             of(UnitsActions.updateUnitFailure({
-              error: resolvePlatformErrorMessage(error, 'Units.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Units.UpdateFailed'),
             })),
           ),
         ),
@@ -89,7 +87,7 @@ export class UnitsEffects {
           map(() => UnitsActions.deleteUnitSuccess()),
           catchError((error) =>
             of(UnitsActions.deleteUnitFailure({
-              error: resolvePlatformErrorMessage(error, 'Units.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Units.DeleteFailed'),
             })),
           ),
         ),

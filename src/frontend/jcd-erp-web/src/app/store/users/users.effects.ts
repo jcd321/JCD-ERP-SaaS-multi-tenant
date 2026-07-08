@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, map, of } from 'rxjs';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { UsersService } from '../../features/users/users.service';
 import { UsersActions } from './users.actions';
 
@@ -11,7 +10,6 @@ import { UsersActions } from './users.actions';
 export class UsersEffects {
   private readonly actions$ = inject(Actions);
   private readonly usersService = inject(UsersService);
-  private readonly locale = inject(LocaleService);
 
   readonly loadUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -21,7 +19,7 @@ export class UsersEffects {
           map((users) => UsersActions.loadUsersSuccess({ users })),
           catchError((error) =>
             of(UsersActions.loadUsersFailure({
-              error: resolvePlatformErrorMessage(error, 'Users.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Users.LoadFailed'),
             })),
           ),
         ),
@@ -37,7 +35,7 @@ export class UsersEffects {
           map(() => UsersActions.createUserSuccess()),
           catchError((error) =>
             of(UsersActions.createUserFailure({
-              error: resolvePlatformErrorMessage(error, 'Users.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Users.CreateFailed'),
             })),
           ),
         ),
@@ -53,7 +51,7 @@ export class UsersEffects {
           map(() => UsersActions.updateUserSuccess()),
           catchError((error) =>
             of(UsersActions.updateUserFailure({
-              error: resolvePlatformErrorMessage(error, 'Users.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Users.UpdateFailed'),
             })),
           ),
         ),
@@ -76,7 +74,7 @@ export class UsersEffects {
           map(() => UsersActions.deleteUserSuccess()),
           catchError((error) =>
             of(UsersActions.deleteUserFailure({
-              error: resolvePlatformErrorMessage(error, 'Users.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Users.DeleteFailed'),
             })),
           ),
         ),

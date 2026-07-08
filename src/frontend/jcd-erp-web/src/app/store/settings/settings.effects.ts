@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { SettingsService } from '../../features/settings/settings.service';
 import { SettingsActions } from './settings.actions';
 
@@ -19,7 +20,7 @@ export class SettingsEffects {
           catchError((error) =>
             of(
               SettingsActions.loadSettingsFailure({
-                error: error.error?.error ?? 'Settings.LoadFailed',
+                error: extractPlatformErrorCode(error, 'Settings.LoadFailed'),
               }),
             ),
           ),

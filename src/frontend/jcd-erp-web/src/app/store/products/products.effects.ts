@@ -3,8 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { ProductsService } from '../../features/products/products.service';
 import { ProductsActions } from './products.actions';
 import {
@@ -17,7 +16,6 @@ import {
 export class ProductsEffects {
   private readonly actions$ = inject(Actions);
   private readonly productsService = inject(ProductsService);
-  private readonly locale = inject(LocaleService);
   private readonly store = inject(Store);
 
   readonly loadProducts$ = createEffect(() =>
@@ -42,7 +40,7 @@ export class ProductsEffects {
           ),
           catchError((error) =>
             of(ProductsActions.loadProductsFailure({
-              error: resolvePlatformErrorMessage(error, 'Products.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Products.LoadFailed'),
             })),
           ),
         );
@@ -58,7 +56,7 @@ export class ProductsEffects {
           map((lookups) => ProductsActions.loadLookupsSuccess({ lookups })),
           catchError((error) =>
             of(ProductsActions.loadLookupsFailure({
-              error: resolvePlatformErrorMessage(error, 'Products.LookupsLoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Products.LookupsLoadFailed'),
             })),
           ),
         ),
@@ -74,7 +72,7 @@ export class ProductsEffects {
           map(() => ProductsActions.createProductSuccess()),
           catchError((error) =>
             of(ProductsActions.createProductFailure({
-              error: resolvePlatformErrorMessage(error, 'Products.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Products.CreateFailed'),
             })),
           ),
         ),
@@ -90,7 +88,7 @@ export class ProductsEffects {
           map(() => ProductsActions.updateProductSuccess()),
           catchError((error) =>
             of(ProductsActions.updateProductFailure({
-              error: resolvePlatformErrorMessage(error, 'Products.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Products.UpdateFailed'),
             })),
           ),
         ),
@@ -106,7 +104,7 @@ export class ProductsEffects {
           map(() => ProductsActions.deleteProductSuccess()),
           catchError((error) =>
             of(ProductsActions.deleteProductFailure({
-              error: resolvePlatformErrorMessage(error, 'Products.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Products.DeleteFailed'),
             })),
           ),
         ),

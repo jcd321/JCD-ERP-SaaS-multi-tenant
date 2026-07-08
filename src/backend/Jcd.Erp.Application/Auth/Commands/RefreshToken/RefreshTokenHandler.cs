@@ -49,6 +49,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, Result<R
         if (user is null || !user.IsActive)
             return Result.Failure<RefreshTokenResponse>("Auth.InvalidRefreshToken");
 
+        await _userPermissions.InvalidateUserAsync(storedToken.TenantId, user.Id, cancellationToken);
         var permissions = await _userPermissions.GetPermissionCodesAsync(
             storedToken.TenantId,
             user.Id,

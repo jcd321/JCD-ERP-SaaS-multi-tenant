@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 
+import { createLocalizedError } from '../../core/i18n';
+import { translatePlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { CreateUserRequest, UpdateUserRequest } from '../../features/users/users.models';
 import { UsersActions } from './users.actions';
 import { selectAllUsers, selectUsersError, selectUsersLoading, selectUsersSaving } from './users.selectors';
@@ -13,7 +15,8 @@ export class UsersFacade {
   readonly users = toSignal(this.store.select(selectAllUsers), { initialValue: [] });
   readonly loading = toSignal(this.store.select(selectUsersLoading), { initialValue: false });
   readonly saving = toSignal(this.store.select(selectUsersSaving), { initialValue: false });
-  readonly error = toSignal(this.store.select(selectUsersError), { initialValue: null });
+  private readonly errorCode = toSignal(this.store.select(selectUsersError), { initialValue: null });
+  readonly error = createLocalizedError(this.errorCode, translatePlatformErrorCode);
 
   loadUsers(): void {
     this.store.dispatch(UsersActions.loadUsers());

@@ -17,6 +17,8 @@
     "english": "English"
   },
   "layout": {
+    "appTitle": "JCD ERP",
+    "appName": "JCD ERP",
     "brandSubtitle": "Enterprise Suite",
     "phase": "v0.2 · Fase 2",
     "mainNav": "Navegación principal",
@@ -117,7 +119,9 @@
       "forgotPasswordFailed": "No se pudo enviar el enlace de recuperación. Intenta de nuevo.",
       "resetPasswordFailed": "No se pudo restablecer la contraseña. Intenta de nuevo.",
       "invalidResetToken": "El enlace de recuperación no es válido o ya expiró. Solicita uno nuevo.",
-      "slugAlreadyExists": "Ese slug de empresa ya existe. Usa otro nombre o slug."
+      "slugAlreadyExists": "Ese slug de empresa ya existe. Usa otro nombre o slug.",
+      "noRefreshToken": "Tu sesión expiró. Inicia sesión de nuevo.",
+      "refreshFailed": "No se pudo renovar la sesión. Inicia sesión de nuevo."
     }
   },
   "validation": {
@@ -162,6 +166,7 @@
     "name": "Nombre del rol",
     "description": "Descripción",
     "permissions": "Permisos",
+    "selectAllInModule": "Seleccionar todas",
     "tableName": "Nombre",
     "tableDescription": "Descripción",
     "tableType": "Tipo",
@@ -404,6 +409,7 @@
     "rolesUpdateFailed": "No se pudo actualizar el rol.",
     "rolesDeleteFailed": "No se pudo eliminar el rol.",
     "rolesPermissionsLoadFailed": "No se pudieron cargar los permisos.",
+    "settingsLoadFailed": "No se pudo cargar la configuración.",
     "userEmailAlreadyExists": "Ya existe un usuario con ese correo en tu empresa.",
     "userNotFound": "Usuario no encontrado.",
     "userCannotDeleteSelf": "No puedes eliminar tu propia cuenta.",

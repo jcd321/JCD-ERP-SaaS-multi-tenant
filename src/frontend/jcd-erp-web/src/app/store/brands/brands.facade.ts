@@ -1,4 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { createLocalizedError } from '../../core/i18n';
+import { translatePlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 
@@ -28,7 +30,8 @@ export class BrandsFacade {
   readonly search = toSignal(this.store.select(selectBrandsSearch), { initialValue: '' });
   readonly loading = toSignal(this.store.select(selectBrandsLoading), { initialValue: false });
   readonly saving = toSignal(this.store.select(selectBrandsSaving), { initialValue: false });
-  readonly error = toSignal(this.store.select(selectBrandsError), { initialValue: null });
+  private readonly errorCode = toSignal(this.store.select(selectBrandsError), { initialValue: null });
+  readonly error = createLocalizedError(this.errorCode, translatePlatformErrorCode);
 
   loadBrands(params?: BrandsQueryParams): void {
     this.store.dispatch(BrandsActions.loadBrands({ params }));

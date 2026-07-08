@@ -17,6 +17,8 @@
     "english": "English"
   },
   "layout": {
+    "appTitle": "JCD ERP",
+    "appName": "JCD ERP",
     "brandSubtitle": "Enterprise Suite",
     "phase": "v0.2 · Phase 2",
     "mainNav": "Main navigation",
@@ -117,7 +119,9 @@
       "forgotPasswordFailed": "Could not send the recovery link. Please try again.",
       "resetPasswordFailed": "Could not reset the password. Please try again.",
       "invalidResetToken": "The recovery link is invalid or has expired. Request a new one.",
-      "slugAlreadyExists": "That company slug already exists. Use another name or slug."
+      "slugAlreadyExists": "That company slug already exists. Use another name or slug.",
+      "noRefreshToken": "Your session expired. Please sign in again.",
+      "refreshFailed": "Could not refresh your session. Please sign in again."
     }
   },
   "validation": {
@@ -162,6 +166,7 @@
     "name": "Role name",
     "description": "Description",
     "permissions": "Permissions",
+    "selectAllInModule": "Select all",
     "tableName": "Name",
     "tableDescription": "Description",
     "tableType": "Type",
@@ -404,6 +409,7 @@
     "rolesUpdateFailed": "Could not update the role.",
     "rolesDeleteFailed": "Could not delete the role.",
     "rolesPermissionsLoadFailed": "Could not load permissions.",
+    "settingsLoadFailed": "Could not load settings.",
     "userEmailAlreadyExists": "A user with that email already exists in your company.",
     "userNotFound": "User not found.",
     "userCannotDeleteSelf": "You cannot delete your own account.",

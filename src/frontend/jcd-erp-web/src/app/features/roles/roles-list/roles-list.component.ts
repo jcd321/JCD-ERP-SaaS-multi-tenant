@@ -35,10 +35,14 @@ export class RolesListComponent implements OnInit {
   readonly errorMessage = this.rolesFacade.error;
 
   readonly groupPermissionsByModule = groupPermissionsByModule;
-  readonly getPermissionLabel = (permission: Parameters<typeof resolvePermissionLabel>[0]) =>
-    resolvePermissionLabel(permission, (key) => this.locale.t(key));
-  readonly getModuleLabel = (module: string) =>
-    resolveModuleLabel(module, (key) => this.locale.t(key));
+  readonly getPermissionLabel = (permission: Parameters<typeof resolvePermissionLabel>[0]) => {
+    this.locale.locale();
+    return resolvePermissionLabel(permission, (key) => this.locale.t(key));
+  };
+  readonly getModuleLabel = (module: string) => {
+    this.locale.locale();
+    return resolveModuleLabel(module, (key) => this.locale.t(key));
+  };
 
   formMode: RoleFormMode = null;
   editingRoleId: string | null = null;
@@ -114,6 +118,31 @@ export class RolesListComponent implements OnInit {
 
   isPermissionSelected(code: string): boolean {
     return this.form.controls.permissionCodes.value.includes(code);
+  }
+
+  isModuleFullySelected(items: { code: string }[]): boolean {
+    if (items.length === 0) {
+      return false;
+    }
+
+    const selected = this.form.controls.permissionCodes.value;
+    return items.every((item) => selected.includes(item.code));
+  }
+
+  isModulePartiallySelected(items: { code: string }[]): boolean {
+    const selected = this.form.controls.permissionCodes.value;
+    const selectedCount = items.filter((item) => selected.includes(item.code)).length;
+    return selectedCount > 0 && selectedCount < items.length;
+  }
+
+  toggleModulePermissions(items: { code: string }[], checked: boolean): void {
+    const codes = items.map((item) => item.code);
+    const current = this.form.controls.permissionCodes.value;
+    const next = checked
+      ? [...new Set([...current, ...codes])]
+      : current.filter((code) => !codes.includes(code));
+
+    this.form.controls.permissionCodes.setValue(next);
   }
 
   submit(): void {

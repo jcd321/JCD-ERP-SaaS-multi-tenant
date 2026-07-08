@@ -10,6 +10,7 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Roles.UpdateFailed': 'errors.rolesUpdateFailed',
   'Roles.DeleteFailed': 'errors.rolesDeleteFailed',
   'Roles.PermissionsLoadFailed': 'errors.rolesPermissionsLoadFailed',
+  'Settings.LoadFailed': 'errors.settingsLoadFailed',
   'Units.LoadFailed': 'errors.unitsLoadFailed',
   'Units.CreateFailed': 'errors.unitsCreateFailed',
   'Units.UpdateFailed': 'errors.unitsUpdateFailed',
@@ -33,6 +34,7 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Customers.UpdateFailed': 'errors.customersUpdateFailed',
   'Customers.DeleteFailed': 'errors.customersDeleteFailed',
   'User.NotFound': 'errors.userNotFound',
+  'User.EmailAlreadyExists': 'errors.userEmailAlreadyExists',
   'User.CannotDeleteSelf': 'errors.userCannotDeleteSelf',
   'Role.NotFound': 'errors.roleNotFound',
   'Role.NameAlreadyExists': 'errors.roleNameAlreadyExists',
@@ -68,58 +70,23 @@ const PLATFORM_ERROR_KEYS: Record<string, string> = {
   'Customer.LegalNameRequired': 'errors.customerLegalNameRequired',
   'Permission.NotFound': 'errors.permissionNotFound',
   'Auth.TenantRequired': 'errors.tenantRequired',
+  '__HTTP_FORBIDDEN__': 'errors.forbidden',
+  '__HTTP_NOT_FOUND__': 'errors.notFound',
+  '__HTTP_API_OUTDATED__': 'errors.apiOutdated',
 };
 
-const FALLBACK_KEYS: Record<string, string> = {
-  'Users.LoadFailed': 'errors.usersLoadFailed',
-  'Users.CreateFailed': 'errors.usersCreateFailed',
-  'Users.UpdateFailed': 'errors.usersUpdateFailed',
-  'Users.DeleteFailed': 'errors.usersDeleteFailed',
-  'Roles.LoadFailed': 'errors.rolesLoadFailed',
-  'Roles.CreateFailed': 'errors.rolesCreateFailed',
-  'Roles.UpdateFailed': 'errors.rolesUpdateFailed',
-  'Roles.DeleteFailed': 'errors.rolesDeleteFailed',
-  'Roles.PermissionsLoadFailed': 'errors.rolesPermissionsLoadFailed',
-  'Units.LoadFailed': 'errors.unitsLoadFailed',
-  'Units.CreateFailed': 'errors.unitsCreateFailed',
-  'Units.UpdateFailed': 'errors.unitsUpdateFailed',
-  'Units.DeleteFailed': 'errors.unitsDeleteFailed',
-  'Categories.LoadFailed': 'errors.categoriesLoadFailed',
-  'Categories.CreateFailed': 'errors.categoriesCreateFailed',
-  'Categories.UpdateFailed': 'errors.categoriesUpdateFailed',
-  'Categories.DeleteFailed': 'errors.categoriesDeleteFailed',
-  'Categories.ParentOptionsLoadFailed': 'errors.categoriesParentOptionsLoadFailed',
-  'Brands.LoadFailed': 'errors.brandsLoadFailed',
-  'Brands.CreateFailed': 'errors.brandsCreateFailed',
-  'Brands.UpdateFailed': 'errors.brandsUpdateFailed',
-  'Brands.DeleteFailed': 'errors.brandsDeleteFailed',
-  'Products.LoadFailed': 'errors.productsLoadFailed',
-  'Products.LookupsLoadFailed': 'errors.productsLookupsLoadFailed',
-  'Products.CreateFailed': 'errors.productsCreateFailed',
-  'Products.UpdateFailed': 'errors.productsUpdateFailed',
-  'Products.DeleteFailed': 'errors.productsDeleteFailed',
-  'Customers.LoadFailed': 'errors.customersLoadFailed',
-  'Customers.CreateFailed': 'errors.customersCreateFailed',
-  'Customers.UpdateFailed': 'errors.customersUpdateFailed',
-  'Customers.DeleteFailed': 'errors.customersDeleteFailed',
-};
-
-export function resolvePlatformErrorMessage(
-  error: unknown,
-  fallbackKey: string,
-  translate: (key: string) => string,
-): string {
+export function extractPlatformErrorCode(error: unknown, fallbackKey: string): string {
   if (error instanceof HttpErrorResponse) {
     if (error.status === 405) {
-      return translate('errors.apiOutdated');
+      return '__HTTP_API_OUTDATED__';
     }
 
     if (error.status === 403) {
-      return translate('errors.forbidden');
+      return '__HTTP_FORBIDDEN__';
     }
 
     if (error.status === 404) {
-      return translate('errors.notFound');
+      return '__HTTP_NOT_FOUND__';
     }
 
     const code = typeof error.error === 'object' && error.error !== null
@@ -127,15 +94,29 @@ export function resolvePlatformErrorMessage(
       : undefined;
 
     if (code) {
-      const key = PLATFORM_ERROR_KEYS[code];
-      if (key) {
-        return translate(key);
-      }
-
       return code;
     }
   }
 
-  const fallback = FALLBACK_KEYS[fallbackKey];
-  return fallback ? translate(fallback) : fallbackKey;
+  return fallbackKey;
+}
+
+export function translatePlatformErrorCode(
+  code: string,
+  translate: (key: string) => string,
+): string {
+  const key = PLATFORM_ERROR_KEYS[code];
+  if (key) {
+    return translate(key);
+  }
+
+  return translate('errors.unexpected');
+}
+
+export function resolvePlatformErrorMessage(
+  error: unknown,
+  fallbackKey: string,
+  translate: (key: string) => string,
+): string {
+  return translatePlatformErrorCode(extractPlatformErrorCode(error, fallbackKey), translate);
 }

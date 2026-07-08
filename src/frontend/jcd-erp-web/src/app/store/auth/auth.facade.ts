@@ -4,7 +4,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, Observable, of, switchMap, take, throwError } from 'rxjs';
 
+import { translateAuthErrorCode } from '../../core/auth/auth-error-messages';
 import { LoginRequest, RegisterRequest, ForgotPasswordRequest, ResetPasswordRequest } from '../../core/auth/auth.models';
+import { createLocalizedError } from '../../core/i18n';
 import { AuthActions } from './auth.actions';
 import {
   selectAccessToken,
@@ -23,7 +25,8 @@ export class AuthFacade {
   readonly accessToken = toSignal(this.store.select(selectAccessToken), { initialValue: null });
   readonly isAuthenticated = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
   readonly loading = toSignal(this.store.select(selectAuthLoading), { initialValue: false });
-  readonly error = toSignal(this.store.select(selectAuthError), { initialValue: null });
+  private readonly errorCode = toSignal(this.store.select(selectAuthError), { initialValue: null });
+  readonly error = createLocalizedError(this.errorCode, translateAuthErrorCode);
 
   login(request: LoginRequest): void {
     this.store.dispatch(AuthActions.login({ request }));

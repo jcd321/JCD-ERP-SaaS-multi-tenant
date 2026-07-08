@@ -1,20 +1,21 @@
 import { Component, inject } from '@angular/core';
 
 import { LocaleId } from '../../../core/i18n/locale.models';
-import { LocaleService } from '../../../core/i18n/locale.service';
+import { LocaleService, TranslatePipe } from '../../../core/i18n';
 
 @Component({
   selector: 'app-language-switcher',
   standalone: true,
+  imports: [TranslatePipe],
   template: `
-    <div class="language-switcher" role="group" [attr.aria-label]="locale.t('common.language')">
+    <div class="language-switcher" role="group" [attr.aria-label]="'common.language' | translate">
       <button
         type="button"
         class="language-switcher__btn"
         [class.language-switcher__btn--active]="locale.locale() === 'es'"
         (click)="setLocale('es')"
       >
-        ES
+        {{ 'common.spanish' | translate }}
       </button>
       <button
         type="button"
@@ -22,7 +23,7 @@ import { LocaleService } from '../../../core/i18n/locale.service';
         [class.language-switcher__btn--active]="locale.locale() === 'en'"
         (click)="setLocale('en')"
       >
-        EN
+        {{ 'common.english' | translate }}
       </button>
     </div>
   `,

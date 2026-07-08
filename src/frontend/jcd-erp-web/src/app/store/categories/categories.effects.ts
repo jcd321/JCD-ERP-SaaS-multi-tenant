@@ -3,8 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { CategoriesService } from '../../features/categories/categories.service';
 import { CategoriesActions } from './categories.actions';
 import {
@@ -17,7 +16,6 @@ import {
 export class CategoriesEffects {
   private readonly actions$ = inject(Actions);
   private readonly categoriesService = inject(CategoriesService);
-  private readonly locale = inject(LocaleService);
   private readonly store = inject(Store);
 
   readonly loadCategories$ = createEffect(() =>
@@ -42,7 +40,7 @@ export class CategoriesEffects {
           ),
           catchError((error) =>
             of(CategoriesActions.loadCategoriesFailure({
-              error: resolvePlatformErrorMessage(error, 'Categories.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Categories.LoadFailed'),
             })),
           ),
         );
@@ -58,9 +56,7 @@ export class CategoriesEffects {
           map((options) => CategoriesActions.loadParentOptionsSuccess({ options })),
           catchError((error) =>
             of(CategoriesActions.loadParentOptionsFailure({
-              error: resolvePlatformErrorMessage(error, 'Categories.ParentOptionsLoadFailed', (key) =>
-                this.locale.t(key),
-              ),
+              error: extractPlatformErrorCode(error, 'Categories.ParentOptionsLoadFailed'),
             })),
           ),
         ),
@@ -76,7 +72,7 @@ export class CategoriesEffects {
           map(() => CategoriesActions.createCategorySuccess()),
           catchError((error) =>
             of(CategoriesActions.createCategoryFailure({
-              error: resolvePlatformErrorMessage(error, 'Categories.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Categories.CreateFailed'),
             })),
           ),
         ),
@@ -92,7 +88,7 @@ export class CategoriesEffects {
           map(() => CategoriesActions.updateCategorySuccess()),
           catchError((error) =>
             of(CategoriesActions.updateCategoryFailure({
-              error: resolvePlatformErrorMessage(error, 'Categories.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Categories.UpdateFailed'),
             })),
           ),
         ),
@@ -108,7 +104,7 @@ export class CategoriesEffects {
           map(() => CategoriesActions.deleteCategorySuccess()),
           catchError((error) =>
             of(CategoriesActions.deleteCategoryFailure({
-              error: resolvePlatformErrorMessage(error, 'Categories.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Categories.DeleteFailed'),
             })),
           ),
         ),

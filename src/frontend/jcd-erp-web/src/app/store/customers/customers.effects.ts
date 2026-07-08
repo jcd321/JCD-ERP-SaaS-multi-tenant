@@ -3,8 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { CustomersService } from '../../features/customers/customers.service';
 import { CustomersActions } from './customers.actions';
 import {
@@ -17,7 +16,6 @@ import {
 export class CustomersEffects {
   private readonly actions$ = inject(Actions);
   private readonly customersService = inject(CustomersService);
-  private readonly locale = inject(LocaleService);
   private readonly store = inject(Store);
 
   readonly loadCustomers$ = createEffect(() =>
@@ -45,7 +43,7 @@ export class CustomersEffects {
           ),
           catchError((error) =>
             of(CustomersActions.loadCustomersFailure({
-              error: resolvePlatformErrorMessage(error, 'Customers.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Customers.LoadFailed'),
             })),
           ),
         );
@@ -61,7 +59,7 @@ export class CustomersEffects {
           map(() => CustomersActions.createCustomerSuccess()),
           catchError((error) =>
             of(CustomersActions.createCustomerFailure({
-              error: resolvePlatformErrorMessage(error, 'Customers.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Customers.CreateFailed'),
             })),
           ),
         ),
@@ -77,7 +75,7 @@ export class CustomersEffects {
           map(() => CustomersActions.updateCustomerSuccess()),
           catchError((error) =>
             of(CustomersActions.updateCustomerFailure({
-              error: resolvePlatformErrorMessage(error, 'Customers.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Customers.UpdateFailed'),
             })),
           ),
         ),
@@ -93,7 +91,7 @@ export class CustomersEffects {
           map(() => CustomersActions.deleteCustomerSuccess()),
           catchError((error) =>
             of(CustomersActions.deleteCustomerFailure({
-              error: resolvePlatformErrorMessage(error, 'Customers.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Customers.DeleteFailed'),
             })),
           ),
         ),

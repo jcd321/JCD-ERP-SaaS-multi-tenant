@@ -3,8 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { resolvePlatformErrorMessage } from '../../core/platform/platform-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractPlatformErrorCode } from '../../core/platform/platform-error-messages';
 import { BrandsService } from '../../features/brands/brands.service';
 import { BrandsActions } from './brands.actions';
 import { selectBrandsPage, selectBrandsPageSize, selectBrandsSearch } from './brands.selectors';
@@ -13,7 +12,6 @@ import { selectBrandsPage, selectBrandsPageSize, selectBrandsSearch } from './br
 export class BrandsEffects {
   private readonly actions$ = inject(Actions);
   private readonly brandsService = inject(BrandsService);
-  private readonly locale = inject(LocaleService);
   private readonly store = inject(Store);
 
   readonly loadBrands$ = createEffect(() =>
@@ -41,7 +39,7 @@ export class BrandsEffects {
           ),
           catchError((error) =>
             of(BrandsActions.loadBrandsFailure({
-              error: resolvePlatformErrorMessage(error, 'Brands.LoadFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Brands.LoadFailed'),
             })),
           ),
         );
@@ -57,7 +55,7 @@ export class BrandsEffects {
           map(() => BrandsActions.createBrandSuccess()),
           catchError((error) =>
             of(BrandsActions.createBrandFailure({
-              error: resolvePlatformErrorMessage(error, 'Brands.CreateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Brands.CreateFailed'),
             })),
           ),
         ),
@@ -73,7 +71,7 @@ export class BrandsEffects {
           map(() => BrandsActions.updateBrandSuccess()),
           catchError((error) =>
             of(BrandsActions.updateBrandFailure({
-              error: resolvePlatformErrorMessage(error, 'Brands.UpdateFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Brands.UpdateFailed'),
             })),
           ),
         ),
@@ -89,7 +87,7 @@ export class BrandsEffects {
           map(() => BrandsActions.deleteBrandSuccess()),
           catchError((error) =>
             of(BrandsActions.deleteBrandFailure({
-              error: resolvePlatformErrorMessage(error, 'Brands.DeleteFailed', (key) => this.locale.t(key)),
+              error: extractPlatformErrorCode(error, 'Brands.DeleteFailed'),
             })),
           ),
         ),

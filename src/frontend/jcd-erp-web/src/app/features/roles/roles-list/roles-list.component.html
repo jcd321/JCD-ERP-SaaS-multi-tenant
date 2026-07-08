@@ -37,7 +37,18 @@
         <label>{{ 'roles.permissions' | translate }}</label>
         @for (group of groupPermissionsByModule(permissions()); track group.module) {
           <div class="permission-group">
-            <h3 class="permission-group__title">{{ getModuleLabel(group.module) }}</h3>
+            <label class="permission-group__header checkbox">
+              <input
+                type="checkbox"
+                [checked]="isModuleFullySelected(group.items)"
+                [indeterminate]="isModulePartiallySelected(group.items)"
+                (change)="toggleModulePermissions(group.items, $any($event.target).checked)"
+              />
+              <span class="permission-group__header-text">
+                <span class="permission-group__title">{{ getModuleLabel(group.module) }}</span>
+                <span class="permission-group__select-all">{{ 'roles.selectAllInModule' | translate }}</span>
+              </span>
+            </label>
             <div class="role-checklist">
               @for (permission of group.items; track permission.id) {
                 <label class="checkbox">

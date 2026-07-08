@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
 import { AuthApiService } from '../../core/auth/auth-api.service';
-import { resolveAuthErrorMessage } from '../../core/auth/auth-error-messages';
-import { LocaleService } from '../../core/i18n';
+import { extractAuthErrorCode } from '../../core/auth/auth-error-messages';
 import { AuthActions } from './auth.actions';
 
 @Injectable()
@@ -14,8 +12,6 @@ export class AuthEffects {
   private readonly actions$ = inject(Actions);
   private readonly authApi = inject(AuthApiService);
   private readonly router = inject(Router);
-  private readonly store = inject(Store);
-  private readonly locale = inject(LocaleService);
 
   readonly login$ = createEffect(() =>
     this.actions$.pipe(
@@ -25,10 +21,7 @@ export class AuthEffects {
           map((response) => AuthActions.loginSuccess({ response })),
           catchError((error) =>
             of(AuthActions.loginFailure({
-              error: resolveAuthErrorMessage(
-                error.error?.error ?? 'Auth.LoginFailed',
-                (key) => this.locale.t(key),
-              ),
+              error: extractAuthErrorCode(error, 'Auth.LoginFailed'),
             })),
           ),
         ),
@@ -66,10 +59,7 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.registerFailure({
-                error: resolveAuthErrorMessage(
-                  error.error?.error ?? 'Auth.RegisterFailed',
-                  (key) => this.locale.t(key),
-                ),
+                error: extractAuthErrorCode(error, 'Auth.RegisterFailed'),
               }),
             ),
           ),
@@ -119,7 +109,7 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.refreshTokenFailure({
-                error: error.error?.error ?? 'Auth.RefreshFailed',
+                error: extractAuthErrorCode(error, 'Auth.RefreshFailed'),
               }),
             ),
           ),
@@ -136,10 +126,7 @@ export class AuthEffects {
           map(() => AuthActions.forgotPasswordSuccess()),
           catchError((error) =>
             of(AuthActions.forgotPasswordFailure({
-              error: resolveAuthErrorMessage(
-                error.error?.error ?? 'Auth.ForgotPasswordFailed',
-                (key) => this.locale.t(key),
-              ),
+              error: extractAuthErrorCode(error, 'Auth.ForgotPasswordFailed'),
             })),
           ),
         ),
@@ -155,10 +142,7 @@ export class AuthEffects {
           map(() => AuthActions.resetPasswordSuccess()),
           catchError((error) =>
             of(AuthActions.resetPasswordFailure({
-              error: resolveAuthErrorMessage(
-                error.error?.error ?? 'Auth.ResetPasswordFailed',
-                (key) => this.locale.t(key),
-              ),
+              error: extractAuthErrorCode(error, 'Auth.ResetPasswordFailed'),
             })),
           ),
         ),
