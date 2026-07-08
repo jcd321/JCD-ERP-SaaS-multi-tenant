@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 2 in progress — Master data catalogs. Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
+> **Status:** Phase 2 complete — Master data catalogs. Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -288,7 +288,7 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | SMTP email for production | Pending |
 | API container in Docker Compose | Pending |
 
-### Phase 2 — delivered so far
+### Phase 2 — complete
 
 | Module | Backend | Frontend |
 |--------|---------|----------|
@@ -297,10 +297,9 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Brands | CRUD + pagination | List panel + modal CRUD (NgRx) |
 | Products | CRUD + lookups endpoint | List panel + modal CRUD with category/brand/unit selects (NgRx) |
 | Customers | CRUD + tax ID uniqueness per tenant | List panel + modal CRUD with contact/address fields (NgRx) |
+| Suppliers | CRUD + tax ID uniqueness per tenant | List panel + modal CRUD with contact/address fields (NgRx) |
 
 **API convention:** `PUT` endpoints use request DTOs in `Jcd.Erp.Api/Requests/` (`Update*Request`), mapped to Application commands in controllers.
-
-**Next in Phase 2:** Suppliers.
 
 ---
 
