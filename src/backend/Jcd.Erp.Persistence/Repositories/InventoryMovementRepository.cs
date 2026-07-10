@@ -23,20 +23,34 @@ public sealed class InventoryMovementRepository : IInventoryMovementRepository
     public async Task<string> GetNextDocumentNumberAsync(CancellationToken cancellationToken = default)
     {
         var prefix = $"MOV-{DateTime.UtcNow:yyyyMMdd}-";
-        var latest = await _context.InventoryMovements
+
+        var persistedNumbers = await _context.InventoryMovements
             .Where(m => m.DocumentNumber.StartsWith(prefix))
-            .OrderByDescending(m => m.DocumentNumber)
             .Select(m => m.DocumentNumber)
-            .FirstOrDefaultAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
 
-        if (latest is null)
-            return $"{prefix}001";
+        var pendingNumbers = _context.ChangeTracker
+            .Entries<InventoryMovement>()
+            .Where(e => e.State == EntityState.Added)
+            .Select(e => e.Entity.DocumentNumber)
+            .Where(documentNumber => documentNumber.StartsWith(prefix));
 
-        var suffix = latest[prefix.Length..];
-        if (!int.TryParse(suffix, out var sequence))
-            return $"{prefix}001";
+        var maxSequence = persistedNumbers
+            .Concat(pendingNumbers)
+            .Select(documentNumber => ParseSequence(documentNumber, prefix))
+            .DefaultIfEmpty(0)
+            .Max();
 
-        return $"{prefix}{(sequence + 1):D3}";
+        return $"{prefix}{(maxSequence + 1):D3}";
+    }
+
+    private static int ParseSequence(string documentNumber, string prefix)
+    {
+        if (!documentNumber.StartsWith(prefix))
+            return 0;
+
+        var suffix = documentNumber[prefix.Length..];
+        return int.TryParse(suffix, out var sequence) ? sequence : 0;
     }
 
     public async Task<(IReadOnlyList<InventoryMovement> Items, int TotalCount)> GetPagedAsync(

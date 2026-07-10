@@ -1,0 +1,251 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'transfers.title' | translate }}</h1>
+      <p>{{ 'transfers.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'transfers.newTransfer' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    size="lg"
+    (closed)="closeForm()"
+    (submitted)="submit()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      @if (formSubmitError || errorMessage()) {
+        <div class="alert alert--error" role="alert">
+          {{ formSubmitError || errorMessage() }}
+        </div>
+      }
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="sourceWarehouseId">{{ 'transfers.sourceWarehouse' | translate }}</label>
+          <select id="sourceWarehouseId" formControlName="sourceWarehouseId" [disabled]="lookupsLoading()">
+            <option value="">{{ 'transfers.selectWarehouse' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+          @if (form.controls.sourceWarehouseId.touched && form.controls.sourceWarehouseId.invalid) {
+            <span class="form-field__error">{{ 'transfers.warehouseRequired' | translate }}</span>
+          }
+        </div>
+        <div class="form-field">
+          <label for="destinationWarehouseId">{{ 'transfers.destinationWarehouse' | translate }}</label>
+          <select id="destinationWarehouseId" formControlName="destinationWarehouseId" [disabled]="lookupsLoading()">
+            <option value="">{{ 'transfers.selectWarehouse' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+          @if (form.controls.destinationWarehouseId.touched && form.controls.destinationWarehouseId.invalid) {
+            <span class="form-field__error">{{ 'transfers.warehouseRequired' | translate }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="transferDate">{{ 'transfers.transferDate' | translate }}</label>
+          <input id="transferDate" type="datetime-local" formControlName="transferDate" />
+        </div>
+        <div class="form-field">
+          <label for="notes">{{ 'transfers.notes' | translate }} ({{ 'common.optional' | translate }})</label>
+          <input id="notes" type="text" formControlName="notes" />
+        </div>
+      </div>
+
+      <div class="lines-panel">
+        <div class="lines-panel__header">
+          <h3>{{ 'transfers.linesTitle' | translate }}</h3>
+          <button type="button" class="btn btn--ghost btn--sm" (click)="addLine()">
+            {{ 'transfers.addLine' | translate }}
+          </button>
+        </div>
+
+        <div formArrayName="lines" class="lines-panel__list">
+          @for (line of lineControls.controls; track line; let i = $index) {
+            <div class="line-row" [formGroupName]="i">
+              <div class="form-field">
+                <label [for]="'productId-' + i">{{ 'transfers.product' | translate }}</label>
+                <select [id]="'productId-' + i" formControlName="productId" [disabled]="lookupsLoading()">
+                  <option value="">{{ 'transfers.selectProduct' | translate }}</option>
+                  @for (option of productOptions(); track option.id) {
+                    <option [value]="option.id">{{ option.label }}</option>
+                  }
+                </select>
+                @if (line.get('productId')?.touched && line.get('productId')?.invalid) {
+                  <span class="form-field__error">{{ 'transfers.productRequired' | translate }}</span>
+                }
+              </div>
+              <div class="form-field">
+                <label [for]="'quantity-' + i">{{ 'transfers.quantity' | translate }}</label>
+                <input [id]="'quantity-' + i" type="number" min="1" step="1" formControlName="quantity" />
+                @if (line.get('quantity')?.touched && line.get('quantity')?.invalid) {
+                  <span class="form-field__error">{{ 'transfers.quantityRequired' | translate }}</span>
+                }
+                @if (getLineStockHint(i); as stockHint) {
+                  <span
+                    [class]="getLineAvailableStock(i) === 0 ? 'form-field__error' : 'form-field__hint'"
+                  >
+                    {{ stockHint }}
+                  </span>
+                }
+              </div>
+              @if (lineControls.length > 1) {
+                <button type="button" class="btn btn--ghost btn--sm line-row__remove" (click)="removeLine(i)">
+                  {{ 'transfers.removeLine' | translate }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </form>
+  </app-form-modal>
+
+  @if (loading()) {
+    <p class="page__status">{{ 'transfers.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applyFilters()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'transfers.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button type="button" class="search-bar__clear" (click)="clearSearch()">×</button>
+            }
+            <button type="submit" class="search-bar__submit">{{ 'transfers.search' | translate }}</button>
+          </form>
+
+          <select class="filter-select" [formControl]="sourceFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'transfers.allSourceWarehouses' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+
+          <select class="filter-select" [formControl]="destinationFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'transfers.allDestinationWarehouses' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button type="button" class="search-chip__clear" (click)="clearSearch()">×</button>
+            </span>
+          }
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'transfers.tableDocument' | translate }}</th>
+              <th>{{ 'transfers.tableDate' | translate }}</th>
+              <th>{{ 'transfers.tableSource' | translate }}</th>
+              <th>{{ 'transfers.tableDestination' | translate }}</th>
+              <th>{{ 'transfers.tableLines' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of transfers(); track item.id) {
+              <tr>
+                <td><code>{{ item.documentNumber }}</code></td>
+                <td>{{ formatDate(item.transferDate) }}</td>
+                <td>
+                  <span class="cell-primary">{{ item.sourceWarehouseCode }}</span>
+                  <span class="cell-secondary">{{ item.sourceWarehouseName }}</span>
+                </td>
+                <td>
+                  <span class="cell-primary">{{ item.destinationWarehouseCode }}</span>
+                  <span class="cell-secondary">{{ item.destinationWarehouseName }}</span>
+                </td>
+                <td>{{ item.lineCount }}</td>
+                <td>
+                  <button type="button" class="btn btn--ghost btn--sm" (click)="toggleDetails(item)">
+                    {{ isExpanded(item.id) ? ('transfers.hideDetails' | translate) : ('transfers.showDetails' | translate) }}
+                  </button>
+                </td>
+              </tr>
+              @if (isExpanded(item.id)) {
+                <tr class="details-row">
+                  <td colspan="6">
+                    <table class="data-table data-table--nested">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>{{ 'transfers.tableProduct' | translate }}</th>
+                          <th>{{ 'transfers.tableQuantity' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (line of item.lines; track line.id) {
+                          <tr>
+                            <td>{{ line.lineNumber }}</td>
+                            <td>
+                              <span class="cell-primary">{{ line.productSku }}</span>
+                              <span class="cell-secondary">{{ line.productName }}</span>
+                            </td>
+                            <td>{{ formatQuantity(line.quantity, line.unitSymbol) }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr>
+                <td colspan="6" class="data-table__empty">{{ 'transfers.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button type="button" class="btn btn--ghost" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+            {{ 'transfers.prevPage' | translate }}
+          </button>
+          <span class="pagination__info">{{ pageInfoLabel }}</span>
+          <button type="button" class="btn btn--ghost" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+            {{ 'transfers.nextPage' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

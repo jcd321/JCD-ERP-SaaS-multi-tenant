@@ -77,7 +77,14 @@ public sealed class StockLevelRepository : IStockLevelRepository
     public async Task AddAsync(StockLevel stockLevel, CancellationToken cancellationToken = default) =>
         await _context.StockLevels.AddAsync(stockLevel, cancellationToken);
 
-    public void Update(StockLevel stockLevel) => _context.StockLevels.Update(stockLevel);
+    public void Update(StockLevel stockLevel)
+    {
+        var entry = _context.Entry(stockLevel);
+        if (entry.State is EntityState.Added or EntityState.Modified or EntityState.Unchanged)
+            return;
+
+        _context.StockLevels.Update(stockLevel);
+    }
 
     public void Delete(StockLevel stockLevel)
     {

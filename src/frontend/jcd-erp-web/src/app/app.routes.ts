@@ -104,6 +104,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/kardex/kardex.routes').then((m) => m.KARDEX_ROUTES),
       },
+      {
+        path: 'transfers',
+        canActivate: [permissionGuard('transfers.view')],
+        loadChildren: () =>
+          import('./features/transfers/transfers.routes').then((m) => m.TRANSFERS_ROUTES),
+      },
     ],
   },
   {

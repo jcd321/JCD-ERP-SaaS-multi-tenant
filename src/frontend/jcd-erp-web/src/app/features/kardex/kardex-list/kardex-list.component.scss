@@ -1,22 +1,93 @@
 .kardex-filters {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.kardex-filters__grid {
+  display: grid;
+  grid-template-columns:
+    minmax(12rem, 2fr)
+    minmax(10rem, 1.25fr)
+    minmax(8.5rem, 1fr)
+    minmax(8.5rem, 1fr)
+    auto;
+  gap: var(--space-3);
+  align-items: end;
+  width: 100%;
+}
+
+.kardex-filters__field {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.kardex-filters__label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+}
+
+.kardex-filters__actions {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1px;
 }
 
 .filter-select,
 .filter-date {
-  min-width: 11rem;
+  width: 100%;
+  min-height: 2.375rem;
   padding: 0.45rem 0.65rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background: var(--surface-elevated);
-  color: var(--text-primary);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-border-strong);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: var(--shadow-focus);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
 }
 
-.filter-date {
-  min-width: 9rem;
+.kardex-panel__status {
+  margin: 0;
+  padding: var(--space-8) var(--space-5);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.kardex-qty {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kardex-balance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kardex-balance__arrow {
+  color: var(--color-text-muted);
 }
 
 .cell-primary {
@@ -27,7 +98,7 @@
 .cell-secondary {
   display: block;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .badge--in {
@@ -38,4 +109,29 @@
 .badge--out {
   background: color-mix(in srgb, var(--color-danger, #ef4444) 18%, transparent);
   color: var(--color-danger-strong, #dc2626);
+}
+
+@media (max-width: 1100px) {
+  .kardex-filters__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kardex-filters__field--product {
+    grid-column: 1 / -1;
+  }
+
+  .kardex-filters__actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .kardex-filters__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kardex-filters__field--product {
+    grid-column: auto;
+  }
 }

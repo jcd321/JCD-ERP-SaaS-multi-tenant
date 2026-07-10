@@ -151,6 +151,14 @@ export class MainLayoutComponent {
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>',
       ),
     },
+    {
+      labelKey: 'nav.transfers',
+      route: '/transfers',
+      permission: 'transfers.view',
+      icon: this.icon(
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h6l4 4v6H7z"/><path d="M13 7v4h4"/><path d="M5 17l4-4"/><path d="M15 13h4v4"/></svg>',
+      ),
+    },
   ];
 
   readonly navItems = computed(() => {

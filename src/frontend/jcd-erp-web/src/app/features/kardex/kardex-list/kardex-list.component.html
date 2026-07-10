@@ -11,29 +11,46 @@
   <div class="list-panel">
     <div class="list-panel__toolbar">
       <form class="kardex-filters" (ngSubmit)="applyFilters()">
-        <select
-          class="filter-select"
-          [formControl]="productFilterControl"
-          [disabled]="lookupsLoading()"
-          required
-        >
-          <option value="">{{ 'kardex.selectProduct' | translate }}</option>
-          @for (option of productOptions(); track option.id) {
-            <option [value]="option.id">{{ option.label }}</option>
-          }
-        </select>
+        <div class="kardex-filters__grid">
+          <label class="kardex-filters__field kardex-filters__field--product">
+            <span class="kardex-filters__label">{{ 'kardex.product' | translate }}</span>
+            <select
+              class="filter-select"
+              [formControl]="productFilterControl"
+              [disabled]="lookupsLoading()"
+              required
+            >
+              <option value="">{{ 'kardex.selectProduct' | translate }}</option>
+              @for (option of productOptions(); track option.id) {
+                <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </label>
 
-        <select class="filter-select" [formControl]="warehouseFilterControl" [disabled]="lookupsLoading()">
-          <option value="">{{ 'kardex.allWarehouses' | translate }}</option>
-          @for (option of warehouseOptions(); track option.id) {
-            <option [value]="option.id">{{ option.label }}</option>
-          }
-        </select>
+          <label class="kardex-filters__field">
+            <span class="kardex-filters__label">{{ 'kardex.warehouse' | translate }}</span>
+            <select class="filter-select" [formControl]="warehouseFilterControl" [disabled]="lookupsLoading()">
+              <option value="">{{ 'kardex.allWarehouses' | translate }}</option>
+              @for (option of warehouseOptions(); track option.id) {
+                <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </label>
 
-        <input class="filter-date" type="date" [formControl]="fromDateControl" />
-        <input class="filter-date" type="date" [formControl]="toDateControl" />
+          <label class="kardex-filters__field kardex-filters__field--date">
+            <span class="kardex-filters__label">{{ 'kardex.fromDate' | translate }}</span>
+            <input class="filter-date" type="date" [formControl]="fromDateControl" />
+          </label>
 
-        <button type="submit" class="btn btn--primary">{{ 'kardex.search' | translate }}</button>
+          <label class="kardex-filters__field kardex-filters__field--date">
+            <span class="kardex-filters__label">{{ 'kardex.toDate' | translate }}</span>
+            <input class="filter-date" type="date" [formControl]="toDateControl" />
+          </label>
+
+          <div class="kardex-filters__actions">
+            <button type="submit" class="btn btn--primary">{{ 'kardex.search' | translate }}</button>
+          </div>
+        </div>
       </form>
 
       @if (totalCount() > 0) {
@@ -42,9 +59,9 @@
     </div>
 
     @if (loading()) {
-      <p class="page__status">{{ 'kardex.loading' | translate }}</p>
+      <p class="kardex-panel__status">{{ 'kardex.loading' | translate }}</p>
     } @else if (!selectedProductId()) {
-      <p class="page__status">{{ selectProductHint }}</p>
+      <p class="kardex-panel__status">{{ selectProductHint }}</p>
     } @else {
       <div class="table-wrapper list-panel__table">
         <table class="data-table">
@@ -73,11 +90,11 @@
                   <span class="cell-primary">{{ item.warehouseCode }}</span>
                   <span class="cell-secondary">{{ item.warehouseName }}</span>
                 </td>
-                <td>{{ formatQuantity(item.quantity, item.unitSymbol) }}</td>
-                <td>
-                  {{ formatQuantity(item.quantityBefore, item.unitSymbol) }}
-                  →
-                  {{ formatQuantity(item.quantityAfter, item.unitSymbol) }}
+                <td class="kardex-qty">{{ formatQuantity(item.quantity, item.unitSymbol) }}</td>
+                <td class="kardex-balance">
+                  <span>{{ formatQuantity(item.quantityBefore, item.unitSymbol) }}</span>
+                  <span class="kardex-balance__arrow" aria-hidden="true">→</span>
+                  <span>{{ formatQuantity(item.quantityAfter, item.unitSymbol) }}</span>
                 </td>
                 <td>{{ item.reference || '—' }}</td>
               </tr>
