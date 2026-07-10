@@ -159,6 +159,14 @@ export class MainLayoutComponent {
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h6l4 4v6H7z"/><path d="M13 7v4h4"/><path d="M5 17l4-4"/><path d="M15 13h4v4"/></svg>',
       ),
     },
+    {
+      labelKey: 'nav.adjustments',
+      route: '/adjustments',
+      permission: 'adjustments.view',
+      icon: this.icon(
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 10h14"/><path d="M8 6h8M8 18h8"/></svg>',
+      ),
+    },
   ];
 
   readonly navItems = computed(() => {

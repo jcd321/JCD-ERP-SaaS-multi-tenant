@@ -1,59 +1,39 @@
-# JcdErpWeb
+# JCD ERP — Frontend (Angular 21)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.18.
+SPA del proyecto **JCD ERP**. Documentación general en la raíz del repositorio.
 
-## Development server
+| Recurso | Ubicación |
+|---------|-----------|
+| README principal | [../../README.md](../../README.md) |
+| Progreso del proyecto | [../../docs/PROJECT-PROGRESS.md](../../docs/PROJECT-PROGRESS.md) |
+| Sistema de diseño UI | [UI-DESIGN-SYSTEM.md](./UI-DESIGN-SYSTEM.md) |
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Desarrollo
 
 ```bash
-ng generate component component-name
+npm install
+npm start          # http://localhost:4200
+npm run build      # producción
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Requiere la API en `http://localhost:5000` (ver README principal).
 
-```bash
-ng generate --help
-```
+## Arquitectura frontend
 
-## Building
+- **Angular 21** — standalone components
+- **NgRx 21** — Actions → Effects → Service → Reducer → Facade
+- **Features** — `src/app/features/<module>/`
+- **Store** — `src/app/store/<module>/`
+- **i18n** — `public/i18n/es.json`, `public/i18n/en.json`
 
-To build the project run:
+### Módulos de inventario (Fase 3)
 
-```bash
-ng build
-```
+`stock` · `movements` · `kardex` · `transfers` · `adjustments`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Tras crear movimiento, transferencia o ajuste, `store/inventory/inventory-sync.effects.ts` recarga stock, movimientos y kardex.
 
-## Running unit tests
+## Convenciones
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Consultar `UI-DESIGN-SYSTEM.md` antes de crear pantallas nuevas
+- Rutas protegidas con `permissionGuard` en `app.routes.ts`
+- Errores de API mapeados en `core/platform/platform-error-messages.ts`

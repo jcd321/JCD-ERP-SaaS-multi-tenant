@@ -110,6 +110,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/transfers/transfers.routes').then((m) => m.TRANSFERS_ROUTES),
       },
+      {
+        path: 'adjustments',
+        canActivate: [permissionGuard('adjustments.view')],
+        loadChildren: () =>
+          import('./features/adjustments/adjustments.routes').then((m) => m.ADJUSTMENTS_ROUTES),
+      },
     ],
   },
   {

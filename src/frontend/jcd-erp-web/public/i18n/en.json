@@ -48,7 +48,8 @@
     "stock": "Stock",
     "movements": "Movements",
     "kardex": "Kardex",
-    "transfers": "Transfers"
+    "transfers": "Transfers",
+    "adjustments": "Adjustments"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -580,6 +581,60 @@
     "nextPage": "Next",
     "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)"
   },
+  "adjustments": {
+    "title": "Adjustments",
+    "subtitle": "Correct inventory quantities after physical counts, damage, or other discrepancies.",
+    "newAdjustment": "New adjustment",
+    "createTitle": "Record adjustment",
+    "loading": "Loading adjustments...",
+    "warehouse": "Warehouse",
+    "selectWarehouse": "Select warehouse",
+    "selectProduct": "Select product",
+    "selectReason": "Select reason",
+    "adjustmentDate": "Date",
+    "reason": "Reason",
+    "notes": "Notes",
+    "product": "Product",
+    "countedQuantity": "Counted quantity",
+    "linesTitle": "Adjustment lines",
+    "addLine": "Add line",
+    "removeLine": "Remove",
+    "allWarehouses": "All warehouses",
+    "search": "Search",
+    "searchPlaceholder": "Search by document or warehouse...",
+    "searchActive": "Filter: \"{{term}}\"",
+    "resultsCount": "{{count}} records",
+    "tableDocument": "Document",
+    "tableDate": "Date",
+    "tableWarehouse": "Warehouse",
+    "tableReason": "Reason",
+    "tableLines": "Lines",
+    "tableProduct": "Product",
+    "tableQuantityBefore": "Before",
+    "tableQuantityAfter": "After",
+    "showDetails": "Show details",
+    "hideDetails": "Hide details",
+    "empty": "No adjustments recorded yet.",
+    "formIncomplete": "Complete all required fields before saving.",
+    "duplicateProduct": "You cannot repeat the same product on multiple lines.",
+    "warehouseRequired": "Select a warehouse.",
+    "reasonRequired": "Select a reason.",
+    "productRequired": "Select a product.",
+    "countedQuantityRequired": "Enter a whole number zero or greater.",
+    "lineCurrentStock": "Current stock: {{count}}",
+    "noChange": "{{product}} already has {{quantity}} units in {{warehouse}}. Enter a different counted quantity.",
+    "insufficientStock": "Insufficient stock for {{product}} in {{warehouse}}. Available: {{available}}, counted: {{requested}}.",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageInfo": "Page {{page}} of {{totalPages}} ({{totalCount}} records)",
+    "reasons": {
+      "PHYSICAL_COUNT": "Physical count",
+      "DAMAGE": "Damage",
+      "CORRECTION": "Correction",
+      "EXPIRED": "Expired",
+      "OTHER": "Other"
+    }
+  },
   "locations": {
     "title": "Locations",
     "subtitle": "Locations in warehouse {{name}}.",
@@ -636,7 +691,8 @@
       "stock": "Stock",
       "movements": "Movements",
       "kardex": "Kardex",
-      "transfers": "Transfers"
+      "transfers": "Transfers",
+      "adjustments": "Adjustments"
     },
     "codes": {
       "users.view": "View users",
@@ -690,7 +746,9 @@
       "movements.create": "Record movements",
       "kardex.view": "View kardex",
       "transfers.view": "View transfers",
-      "transfers.create": "Record transfers"
+      "transfers.create": "Record transfers",
+      "adjustments.view": "View adjustments",
+      "adjustments.create": "Record adjustments"
     }
   },
   "errors": {
@@ -845,6 +903,20 @@
     "transferInsufficientStock": "Insufficient stock in the source warehouse.",
     "transferProductNotInWarehouse": "The product is not registered in the source warehouse.",
     "transferQuantityInvalid": "Quantity must be greater than zero.",
+    "adjustmentsLoadFailed": "Could not load adjustments.",
+    "adjustmentsLookupsLoadFailed": "Could not load form options.",
+    "adjustmentsCreateFailed": "Could not record the adjustment.",
+    "adjustmentWarehouseNotFound": "The warehouse does not exist.",
+    "adjustmentWarehouseInactive": "The warehouse is inactive.",
+    "adjustmentWarehouseRequired": "You must select a warehouse.",
+    "adjustmentReasonRequired": "You must select a reason.",
+    "adjustmentLinesRequired": "You must add at least one line.",
+    "adjustmentDuplicateProduct": "You cannot repeat the same product in an adjustment.",
+    "adjustmentProductNotFound": "The product does not exist.",
+    "adjustmentProductInactive": "The product is inactive.",
+    "adjustmentNoChange": "Counted quantity matches current stock. No adjustment needed.",
+    "adjustmentInsufficientStock": "Insufficient stock in the warehouse.",
+    "adjustmentQuantityInvalid": "Quantity must be zero or greater.",
     "permissionNotFound": "One or more selected permissions are invalid.",
     "tenantRequired": "Could not identify your company. Sign out and sign in again."
   }

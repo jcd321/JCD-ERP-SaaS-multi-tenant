@@ -11,6 +11,7 @@ using Jcd.Erp.Domain.Partners.Suppliers;
 using Jcd.Erp.Domain.Inventory.Movements;
 using Jcd.Erp.Domain.Inventory.Stock;
 using Jcd.Erp.Domain.Inventory.Transfers;
+using Jcd.Erp.Domain.Inventory.Adjustments;
 using Jcd.Erp.Domain.Inventory.Warehouses;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
@@ -71,6 +72,7 @@ public static class DependencyInjection
         services.AddScoped<IStockLevelRepository, StockLevelRepository>();
         services.AddScoped<IInventoryMovementRepository, InventoryMovementRepository>();
         services.AddScoped<IInventoryTransferRepository, InventoryTransferRepository>();
+        services.AddScoped<IInventoryAdjustmentRepository, InventoryAdjustmentRepository>();
 
         services.AddScoped<DatabaseSeeder>();
 

@@ -1,7 +1,7 @@
 # JCD ERP — Sistema de Diseño UI
 
 > **Documento oficial de interfaz.** Consultar antes de crear pantallas o componentes.  
-> **Implementación:** `src/styles/` · **Última actualización:** 2026-07-07
+> **Implementación:** `src/styles/` · **Última actualización:** 2026-07-10
 
 ---
 
@@ -12,7 +12,7 @@
 | **Estilo** | SaaS empresarial moderno, limpio, confiable |
 | **Referentes** | Stripe Dashboard, Linear, SAP Fiori (modernizado) |
 | **Tono** | Profesional, sobrio, sin decoración excesiva |
-| **Idioma UI** | Español (i18n EN pendiente) |
+| **Idioma UI** | Español e inglés (i18n en `public/i18n/`) |
 
 ### Principios
 
@@ -195,7 +195,7 @@
 | UI-01 | Usar variables CSS (`var(--token)`), no hex en componentes |
 | UI-02 | Estilos globales en `src/styles/`, no duplicar en features |
 | UI-03 | Component SCSS solo para layout específico del componente |
-| UI-04 | Textos de UI en español hasta implementar i18n |
+| UI-04 | Textos de UI vía i18n (`es.json` / `en.json`), no hardcodear en templates |
 | UI-05 | Toda pantalla nueva usa `.page` + `.page__header` |
 | UI-06 | Tablas siempre dentro de `.table-wrapper` |
 | UI-07 | Un solo botón primario por vista |
@@ -216,11 +216,28 @@ src/styles.scss       # Entry point (@use)
 
 ---
 
-## 12. Roadmap UI
+## 12. Módulos UI (Fase 3 inventario)
+
+Pantallas que siguen el patrón `.page` + tabla + modal:
+
+| Ruta | Componente | Notas |
+|------|------------|-------|
+| `/stock` | `stock-list` | Filtro bodega, bajo mínimo, badge alerta |
+| `/movements` | `movements-list` | Modal IN/OUT |
+| `/kardex` | `kardex-list` | Requiere producto; tabla cronológica |
+| `/transfers` | `transfers-list` | Formulario multi-línea, validación stock |
+| `/adjustments` | `adjustments-list` | Conteo físico, detalle expandible por documento |
+
+Sidebar: versión **v0.3 · Fase 3** en `main-layout`.
+
+---
+
+## 13. Roadmap UI
 
 - [ ] Componentes shared Angular (DataTable, Pagination)
 - [x] Modal de formulario (`app-form-modal`) y confirmación (`app-confirm-dialog`)
-- [ ] i18n ES/EN con ngx-translate
+- [x] i18n ES/EN
+- [x] Módulos inventario Fase 3 (stock, movimientos, kardex, transferencias, ajustes)
 - [ ] Icon set unificado (Lucide o similar)
 - [ ] Skeleton loaders
 - [ ] Toast / notificaciones

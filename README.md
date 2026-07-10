@@ -7,7 +7,8 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 3 in progress — Warehouses, storage locations, and stock levels delivered. Phase 2 complete (master data catalogs). Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
+> **Status:** Phase 3 in progress (~85%) — Warehouses, locations, stock, movements, kardex, transfers, and adjustments delivered. Dashboard KPIs wired to live inventory. Phase 2 complete (master data). Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
+> **UI version:** v0.3 · Phase 3
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
 ---
@@ -47,7 +48,7 @@
 | Technology | Purpose |
 |------------|---------|
 | Angular 21 | SPA (standalone components) |
-| NgRx 21 | Global state (auth, users, roles, settings) |
+| NgRx 21 | Global state (all feature modules + inventory sync) |
 | RxJS | Async flows in effects |
 | Reactive Forms | Form handling |
 | SCSS + CSS variables | Dark / light theme |
@@ -113,6 +114,10 @@ JCD-ERP-SaaS-multi-tenant/
 │   └── Jcd.Erp.Integration.Tests/
 ├── docker/
 │   └── docker-compose.yml
+├── docs/
+│   ├── README.md
+│   ├── PROJECT-PROGRESS.md
+│   └── BRAND-NAME-ANALYSIS.md
 └── README.md
 ```
 
@@ -271,6 +276,29 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `PUT` | `/api/v1/stock/{id}` | Yes | `stock.update` | Update quantity and min/max levels |
 | `DELETE` | `/api/v1/stock/{id}` | Yes | `stock.delete` | Delete stock record (quantity must be zero) |
 
+### Inventory (Phase 3)
+
+| Method | Endpoint | Auth | Permission | Description |
+|--------|----------|------|------------|-------------|
+| `GET` | `/api/v1/movements` | Yes | `movements.view` | List movements (filters: warehouse, product, type, dates) |
+| `GET` | `/api/v1/movements/lookups` | Yes | `movements.view` | Product and warehouse options for forms |
+| `POST` | `/api/v1/movements` | Yes | `movements.create` | Create IN/OUT movement (updates stock) |
+| `GET` | `/api/v1/kardex` | Yes | `kardex.view` | Kardex by product (filters: warehouse, dates) |
+| `GET` | `/api/v1/kardex/lookups` | Yes | `kardex.view` | Product and warehouse options |
+| `GET` | `/api/v1/transfers` | Yes | `transfers.view` | List warehouse transfers |
+| `GET` | `/api/v1/transfers/lookups` | Yes | `transfers.view` | Products, warehouses, stock levels for forms |
+| `POST` | `/api/v1/transfers` | Yes | `transfers.create` | Create multi-line transfer (OUT source + IN destination) |
+| `GET` | `/api/v1/adjustments` | Yes | `adjustments.view` | List inventory adjustments |
+| `GET` | `/api/v1/adjustments/lookups` | Yes | `adjustments.view` | Products, warehouses, stock levels for forms |
+| `POST` | `/api/v1/adjustments` | Yes | `adjustments.create` | Physical count / correction adjustment (updates stock) |
+| `GET` | `/api/v1/dashboard/kpis` | Yes | — | Live KPIs (products, stock alerts, warehouses) |
+
+**Document numbering:** `MOV-YYYYMMDD-###` · `TRF-YYYYMMDD-###` · `ADJ-YYYYMMDD-###`
+
+> **Tip:** After new inventory permissions are seeded, sign out and sign in again so the JWT and sidebar reflect `movements.*`, `transfers.*`, `adjustments.*`, etc.
+
+See [docs/PROJECT-PROGRESS.md](docs/PROJECT-PROGRESS.md) for detailed module status (Spanish).
+
 ---
 
 ## Roadmap
@@ -280,11 +308,11 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
 | **2** | Master data (units, categories, brands, products, customers, suppliers) | **Done** |
-| **3** | Inventory & warehouses | **In progress** — Warehouses, locations, stock levels done |
+| **3** | Inventory & warehouses | **In progress** — Warehouses, locations, stock, movements, kardex, transfers, adjustments done |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
 | **6** | Finance (cash, banks) | Planned |
-| **7** | Dashboard, reports, CI/CD | Planned |
+| **7** | Advanced reports & production CI/CD | Planned |
 
 ### Phase 1 — delivered so far
 
@@ -326,8 +354,17 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | Warehouses | CRUD + default warehouse + pagination | List panel + modal CRUD (NgRx) |
 | Storage locations | CRUD per warehouse + parent hierarchy (zone/aisle/shelf/bin) | List scoped by warehouse route (NgRx) |
 | Stock levels | CRUD per product/warehouse + min/max + below-minimum filter | List with filters, alerts badge (NgRx) |
+| Inventory movements | Create IN/OUT + list + stock update | List + modal create (NgRx) |
+| Kardex | Chronological query by product | Filters + table (NgRx) |
+| Transfers | Multi-line warehouse transfers + stock validation | List + modal create (NgRx) |
+| Adjustments | Physical count corrections + delta movements | List + modal create + line detail (NgRx) |
+| Dashboard KPIs | Products count + below-minimum stock alerts | Live cards on home (partial — sales KPIs in Phase 5) |
 
-**Next in Phase 3:** Inventory movements, kardex, transfers, lot/serial tracking.
+**Inventory sync (frontend):** creating a movement, transfer, or adjustment triggers `InventorySyncEffects` to reload stock, movements, and kardex stores.
+
+**Next in Phase 3:** Lot/serial tracking, physical inventory counts (workflow).
+
+**Pending commit:** Adjustments module (code complete as of 2026-07-10).
 
 ---
 

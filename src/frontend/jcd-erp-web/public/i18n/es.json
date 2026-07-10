@@ -48,7 +48,8 @@
     "stock": "Stock",
     "movements": "Movimientos",
     "kardex": "Kardex",
-    "transfers": "Transferencias"
+    "transfers": "Transferencias",
+    "adjustments": "Ajustes"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -580,6 +581,60 @@
     "nextPage": "Siguiente",
     "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)"
   },
+  "adjustments": {
+    "title": "Ajustes",
+    "subtitle": "Corrige cantidades de inventario tras conteos físicos, daños u otras discrepancias.",
+    "newAdjustment": "Nuevo ajuste",
+    "createTitle": "Registrar ajuste",
+    "loading": "Cargando ajustes...",
+    "warehouse": "Bodega",
+    "selectWarehouse": "Seleccionar bodega",
+    "selectProduct": "Seleccionar producto",
+    "selectReason": "Seleccionar motivo",
+    "adjustmentDate": "Fecha",
+    "reason": "Motivo",
+    "notes": "Notas",
+    "product": "Producto",
+    "countedQuantity": "Cantidad contada",
+    "linesTitle": "Líneas de ajuste",
+    "addLine": "Agregar línea",
+    "removeLine": "Quitar",
+    "allWarehouses": "Todas las bodegas",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por documento o bodega...",
+    "searchActive": "Filtro: \"{{term}}\"",
+    "resultsCount": "{{count}} registros",
+    "tableDocument": "Documento",
+    "tableDate": "Fecha",
+    "tableWarehouse": "Bodega",
+    "tableReason": "Motivo",
+    "tableLines": "Líneas",
+    "tableProduct": "Producto",
+    "tableQuantityBefore": "Antes",
+    "tableQuantityAfter": "Después",
+    "showDetails": "Ver detalle",
+    "hideDetails": "Ocultar detalle",
+    "empty": "No hay ajustes registrados.",
+    "formIncomplete": "Completa todos los campos obligatorios antes de guardar.",
+    "duplicateProduct": "No puedes repetir el mismo producto en varias líneas.",
+    "warehouseRequired": "Selecciona una bodega.",
+    "reasonRequired": "Selecciona un motivo.",
+    "productRequired": "Selecciona un producto.",
+    "countedQuantityRequired": "Ingresa un número entero mayor o igual a cero.",
+    "lineCurrentStock": "Stock actual: {{count}}",
+    "noChange": "{{product}} ya tiene {{quantity}} unidades en {{warehouse}}. Ingresa una cantidad contada diferente.",
+    "insufficientStock": "Stock insuficiente de {{product}} en {{warehouse}}. Disponible: {{available}}, contado: {{requested}}.",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageInfo": "Página {{page}} de {{totalPages}} ({{totalCount}} registros)",
+    "reasons": {
+      "PHYSICAL_COUNT": "Conteo físico",
+      "DAMAGE": "Daño",
+      "CORRECTION": "Corrección",
+      "EXPIRED": "Vencido",
+      "OTHER": "Otro"
+    }
+  },
   "locations": {
     "title": "Ubicaciones",
     "subtitle": "Ubicaciones de la bodega {{name}}.",
@@ -636,7 +691,8 @@
       "stock": "Stock",
       "movements": "Movimientos",
       "kardex": "Kardex",
-      "transfers": "Transferencias"
+      "transfers": "Transferencias",
+      "adjustments": "Ajustes"
     },
     "codes": {
       "users.view": "Ver usuarios",
@@ -690,7 +746,9 @@
       "movements.create": "Registrar movimientos",
       "kardex.view": "Ver kardex",
       "transfers.view": "Ver transferencias",
-      "transfers.create": "Registrar transferencias"
+      "transfers.create": "Registrar transferencias",
+      "adjustments.view": "Ver ajustes",
+      "adjustments.create": "Registrar ajustes"
     }
   },
   "errors": {
@@ -845,6 +903,20 @@
     "transferInsufficientStock": "No hay stock suficiente en la bodega origen.",
     "transferProductNotInWarehouse": "El producto no está registrado en la bodega origen.",
     "transferQuantityInvalid": "La cantidad debe ser mayor a cero.",
+    "adjustmentsLoadFailed": "No se pudieron cargar los ajustes.",
+    "adjustmentsLookupsLoadFailed": "No se pudieron cargar las opciones del formulario.",
+    "adjustmentsCreateFailed": "No se pudo registrar el ajuste.",
+    "adjustmentWarehouseNotFound": "La bodega no existe.",
+    "adjustmentWarehouseInactive": "La bodega está inactiva.",
+    "adjustmentWarehouseRequired": "Debes seleccionar una bodega.",
+    "adjustmentReasonRequired": "Debes seleccionar un motivo.",
+    "adjustmentLinesRequired": "Debes agregar al menos una línea.",
+    "adjustmentDuplicateProduct": "No puedes repetir el mismo producto en el ajuste.",
+    "adjustmentProductNotFound": "El producto no existe.",
+    "adjustmentProductInactive": "El producto está inactivo.",
+    "adjustmentNoChange": "La cantidad contada coincide con el stock actual. No se requiere ajuste.",
+    "adjustmentInsufficientStock": "No hay stock suficiente en la bodega.",
+    "adjustmentQuantityInvalid": "La cantidad debe ser mayor o igual a cero.",
     "permissionNotFound": "Uno o más permisos seleccionados no son válidos.",
     "tenantRequired": "No se pudo identificar tu empresa. Cierra sesión e ingresa de nuevo."
   }

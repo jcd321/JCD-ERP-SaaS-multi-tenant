@@ -27,6 +27,9 @@ import { kardexReducer } from './kardex/kardex.reducer';
 import { KardexEffects } from './kardex/kardex.effects';
 import { transfersReducer } from './transfers/transfers.reducer';
 import { TransfersEffects } from './transfers/transfers.effects';
+import { adjustmentsReducer } from './adjustments/adjustments.reducer';
+import { AdjustmentsEffects } from './adjustments/adjustments.effects';
+import { InventorySyncEffects } from './inventory/inventory-sync.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
 import { unitsReducer } from './units/units.reducer';
@@ -55,7 +58,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('movements', movementsReducer),
     provideState('kardex', kardexReducer),
     provideState('transfers', transfersReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects, KardexEffects, TransfersEffects),
+    provideState('adjustments', adjustmentsReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects, KardexEffects, TransfersEffects, AdjustmentsEffects, InventorySyncEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
