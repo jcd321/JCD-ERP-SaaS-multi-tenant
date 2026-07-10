@@ -116,6 +116,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/adjustments/adjustments.routes').then((m) => m.ADJUSTMENTS_ROUTES),
       },
+      {
+        path: 'physical-counts',
+        canActivate: [permissionGuard('physicalcounts.view')],
+        loadChildren: () =>
+          import('./features/physical-counts/physical-counts.routes').then((m) => m.PHYSICAL_COUNTS_ROUTES),
+      },
     ],
   },
   {

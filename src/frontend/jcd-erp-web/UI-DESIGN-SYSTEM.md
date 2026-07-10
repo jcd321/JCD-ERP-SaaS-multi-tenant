@@ -227,6 +227,7 @@ Pantallas que siguen el patrón `.page` + tabla + modal:
 | `/kardex` | `kardex-list` | Requiere producto; tabla cronológica |
 | `/transfers` | `transfers-list` | Formulario multi-línea, validación stock |
 | `/adjustments` | `adjustments-list` | Conteo físico, detalle expandible por documento |
+| `/physical-counts` | `physical-counts-list` | Workflow borrador → conteo → completar |
 
 Sidebar: versión **v0.3 · Fase 3** en `main-layout`.
 

@@ -1,0 +1,258 @@
+<section class="page">
+  <div class="page-header-row">
+    <header class="page__header">
+      <h1>{{ 'physicalCounts.title' | translate }}</h1>
+      <p>{{ 'physicalCounts.subtitle' | translate }}</p>
+    </header>
+
+    <button type="button" class="btn btn--primary" (click)="openCreateForm()">
+      {{ 'physicalCounts.newCount' | translate }}
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert--error" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (formSubmitError) {
+    <div class="alert alert--error" role="alert">{{ formSubmitError }}</div>
+  }
+
+  <app-form-modal
+    [open]="!!formMode"
+    [title]="modalTitle"
+    [saving]="saving()"
+    (closed)="closeForm()"
+    (submitted)="submitCreate()"
+  >
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submitCreate()">
+      @if (formSubmitError || errorMessage()) {
+        <div class="alert alert--error" role="alert">
+          {{ formSubmitError || errorMessage() }}
+        </div>
+      }
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="warehouseId">{{ 'physicalCounts.warehouse' | translate }}</label>
+          <select id="warehouseId" formControlName="warehouseId" [disabled]="lookupsLoading()">
+            <option value="">{{ 'physicalCounts.selectWarehouse' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+          @if (form.controls.warehouseId.touched && form.controls.warehouseId.invalid) {
+            <span class="form-field__error">{{ 'physicalCounts.warehouseRequired' | translate }}</span>
+          }
+        </div>
+        <div class="form-field">
+          <label for="countDate">{{ 'physicalCounts.countDate' | translate }}</label>
+          <input id="countDate" type="datetime-local" formControlName="countDate" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="notes">{{ 'physicalCounts.notes' | translate }} ({{ 'common.optional' | translate }})</label>
+        <input id="notes" type="text" formControlName="notes" />
+        <span class="form-field__hint">{{ 'physicalCounts.createHint' | translate }}</span>
+      </div>
+    </form>
+  </app-form-modal>
+
+  @if (loading()) {
+    <p class="page__status">{{ 'physicalCounts.loading' | translate }}</p>
+  } @else {
+    <div class="list-panel">
+      <div class="list-panel__toolbar">
+        <div class="list-panel__toolbar-start">
+          <form class="search-bar" (ngSubmit)="applyFilters()">
+            <span class="search-bar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M20 20l-3.5-3.5" />
+              </svg>
+            </span>
+            <input
+              class="search-bar__input"
+              type="search"
+              [formControl]="searchControl"
+              [placeholder]="'physicalCounts.searchPlaceholder' | translate"
+            />
+            @if (searchControl.value) {
+              <button type="button" class="search-bar__clear" (click)="clearSearch()">×</button>
+            }
+            <button type="submit" class="search-bar__submit">{{ 'physicalCounts.search' | translate }}</button>
+          </form>
+
+          <select class="filter-select" [formControl]="warehouseFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'physicalCounts.allWarehouses' | translate }}</option>
+            @for (option of warehouseOptions(); track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select>
+
+          <select class="filter-select" [formControl]="statusFilterControl" (change)="applyFilters()">
+            <option value="">{{ 'physicalCounts.allStatuses' | translate }}</option>
+            <option value="DRAFT">{{ 'physicalCounts.status.draft' | translate }}</option>
+            <option value="COMPLETED">{{ 'physicalCounts.status.completed' | translate }}</option>
+            <option value="CANCELLED">{{ 'physicalCounts.status.cancelled' | translate }}</option>
+          </select>
+
+          @if (activeSearch()) {
+            <span class="search-chip">
+              <span class="search-chip__label">{{ searchActiveLabel }}</span>
+              <button type="button" class="search-chip__clear" (click)="clearSearch()">×</button>
+            </span>
+          }
+        </div>
+        @if (totalCount() > 0) {
+          <span class="list-panel__meta">{{ resultsCountLabel }}</span>
+        }
+      </div>
+
+      <div class="table-wrapper list-panel__table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'physicalCounts.tableDocument' | translate }}</th>
+              <th>{{ 'physicalCounts.tableDate' | translate }}</th>
+              <th>{{ 'physicalCounts.tableWarehouse' | translate }}</th>
+              <th>{{ 'physicalCounts.tableStatus' | translate }}</th>
+              <th>{{ 'physicalCounts.tableProgress' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (count of physicalCounts(); track count.id) {
+              <tr>
+                <td><code>{{ count.documentNumber }}</code></td>
+                <td>{{ formatDate(count.countDate) }}</td>
+                <td>
+                  <span class="cell-primary">{{ count.warehouseCode }}</span>
+                  <span class="cell-secondary">{{ count.warehouseName }}</span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="statusBadgeClass(count.status)">
+                    {{ statusLabel(count.status) }}
+                  </span>
+                </td>
+                <td>{{ count.countedLineCount }} / {{ count.lineCount }}</td>
+                <td>
+                  <button type="button" class="btn btn--ghost btn--sm" (click)="toggleDetails(count)">
+                    {{ isExpanded(count.id) ? ('physicalCounts.hideDetails' | translate) : ('physicalCounts.showDetails' | translate) }}
+                  </button>
+                </td>
+              </tr>
+
+              @if (isExpanded(count.id)) {
+                <tr class="details-row">
+                  <td colspan="6">
+                    @if (detailLoading()) {
+                      <p class="page__status">{{ 'physicalCounts.loadingDetails' | translate }}</p>
+                    } @else if (selectedCount(); as detail) {
+                      @if (isDraft(detail)) {
+                        <div class="details-toolbar">
+                          <p class="details-toolbar__hint">{{ 'physicalCounts.saveBeforeCompleteHint' | translate }}</p>
+                          <button type="button" class="btn btn--secondary btn--sm" [disabled]="saving()" (click)="saveLines(detail)">
+                            {{ 'physicalCounts.saveLines' | translate }}
+                          </button>
+                          <button type="button" class="btn btn--primary btn--sm" [disabled]="saving()" (click)="requestComplete(detail)">
+                            {{ 'physicalCounts.complete' | translate }}
+                          </button>
+                          <button type="button" class="btn btn--ghost btn--sm" [disabled]="saving()" (click)="requestCancel(detail)">
+                            {{ 'physicalCounts.cancelCount' | translate }}
+                          </button>
+                        </div>
+                      }
+
+                      <table class="data-table data-table--nested">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>{{ 'physicalCounts.tableProduct' | translate }}</th>
+                            <th>{{ 'physicalCounts.tableSystemQty' | translate }}</th>
+                            <th>{{ 'physicalCounts.tableCountedQty' | translate }}</th>
+                            <th>{{ 'physicalCounts.tableVariance' | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (line of detail.lines; track line.id) {
+                            <tr [class.row--warning]="line.hasVariance">
+                              <td>{{ line.lineNumber }}</td>
+                              <td>
+                                <span class="cell-primary">{{ line.productSku }}</span>
+                                <span class="cell-secondary">{{ line.productName }}</span>
+                              </td>
+                              <td>{{ formatQuantity(line.systemQuantity, line.unitSymbol) }}</td>
+                              <td>
+                                @if (isDraft(detail)) {
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    class="qty-input"
+                                    [value]="getLineDraft(line.id, line.countedQuantity)"
+                                    (input)="setLineDraft(line.id, $any($event.target).value)"
+                                  />
+                                } @else {
+                                  {{ formatQuantity(line.countedQuantity, line.unitSymbol) }}
+                                }
+                              </td>
+                              <td>
+                                @if (line.hasVariance) {
+                                  <span class="badge badge--warning">
+                                    {{ formatQuantity((line.countedQuantity ?? 0) - line.systemQuantity, line.unitSymbol) }}
+                                  </span>
+                                } @else {
+                                  —
+                                }
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    }
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr>
+                <td colspan="6" class="data-table__empty">{{ 'physicalCounts.empty' | translate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button type="button" class="btn btn--ghost" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+            {{ 'physicalCounts.prevPage' | translate }}
+          </button>
+          <span class="pagination__info">{{ pageInfoLabel }}</span>
+          <button type="button" class="btn btn--ghost" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+            {{ 'physicalCounts.nextPage' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <app-confirm-dialog
+    [open]="!!countToComplete"
+    [title]="'physicalCounts.completeTitle' | translate"
+    [message]="'physicalCounts.completeMessage' | translate"
+    [confirmLabel]="'physicalCounts.complete' | translate"
+    (confirmed)="confirmComplete()"
+    (cancelled)="countToComplete = null"
+  />
+
+  <app-confirm-dialog
+    [open]="!!countToCancel"
+    [title]="'physicalCounts.cancelTitle' | translate"
+    [message]="'physicalCounts.cancelMessage' | translate"
+    [confirmLabel]="'physicalCounts.cancelCount' | translate"
+    (confirmed)="confirmCancel()"
+    (cancelled)="countToCancel = null"
+  />
+</section>

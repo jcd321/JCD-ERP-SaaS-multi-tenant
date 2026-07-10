@@ -18,6 +18,7 @@
               class="filter-select"
               [formControl]="productFilterControl"
               [disabled]="lookupsLoading()"
+              (change)="onProductFilterChange()"
               required
             >
               <option value="">{{ 'kardex.selectProduct' | translate }}</option>
@@ -29,7 +30,12 @@
 
           <label class="kardex-filters__field">
             <span class="kardex-filters__label">{{ 'kardex.warehouse' | translate }}</span>
-            <select class="filter-select" [formControl]="warehouseFilterControl" [disabled]="lookupsLoading()">
+            <select
+              class="filter-select"
+              [formControl]="warehouseFilterControl"
+              [disabled]="lookupsLoading()"
+              (change)="onWarehouseFilterChange()"
+            >
               <option value="">{{ 'kardex.allWarehouses' | translate }}</option>
               @for (option of warehouseOptions(); track option.id) {
                 <option [value]="option.id">{{ option.label }}</option>

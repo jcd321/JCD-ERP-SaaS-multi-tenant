@@ -36,8 +36,36 @@ export class KardexListComponent implements OnInit {
     const productId = this.selectedProductId();
     if (productId) this.productFilterControl.setValue(productId);
 
+    const warehouseId = this.kardexFacade.warehouseFilter();
+    if (warehouseId) this.warehouseFilterControl.setValue(warehouseId);
+
+    const fromDate = this.kardexFacade.fromDateFilter();
+    if (fromDate) this.fromDateControl.setValue(this.toDateInputValue(fromDate));
+
+    const toDate = this.kardexFacade.toDateFilter();
+    if (toDate) this.toDateControl.setValue(this.toDateInputValue(toDate));
+
     this.kardexFacade.loadLookups();
-    this.kardexFacade.loadKardex();
+    if (productId) this.kardexFacade.loadKardex();
+  }
+
+  onProductFilterChange(): void {
+    if (this.productFilterControl.value) {
+      this.applyFilters();
+      return;
+    }
+
+    this.kardexFacade.loadKardex({
+      page: 1,
+      productId: null,
+      warehouseId: null,
+      fromDate: null,
+      toDate: null,
+    });
+  }
+
+  onWarehouseFilterChange(): void {
+    if (this.productFilterControl.value) this.applyFilters();
   }
 
   applyFilters(): void {
@@ -100,5 +128,9 @@ export class KardexListComponent implements OnInit {
     const date = new Date(value);
     if (endOfDay) date.setHours(23, 59, 59, 999);
     return date.toISOString();
+  }
+
+  private toDateInputValue(iso: string): string {
+    return iso.slice(0, 10);
   }
 }

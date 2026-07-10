@@ -167,6 +167,14 @@ export class MainLayoutComponent {
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 10h14"/><path d="M8 6h8M8 18h8"/></svg>',
       ),
     },
+    {
+      labelKey: 'nav.physicalCounts',
+      route: '/physical-counts',
+      permission: 'physicalcounts.view',
+      icon: this.icon(
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+      ),
+    },
   ];
 
   readonly navItems = computed(() => {

@@ -7,7 +7,7 @@
 
 **JCD ERP** is a commercial **multi-tenant ERP SaaS platform** built for SMBs and mid-market companies in Latin America. It centralizes sales, inventory, purchasing, finance, and administration in a single modern system with enterprise-grade architecture.
 
-> **Status:** Phase 3 in progress (~85%) — Warehouses, locations, stock, movements, kardex, transfers, and adjustments delivered. Dashboard KPIs wired to live inventory. Phase 2 complete (master data). Phase 1 complete (auth, users, roles, settings, Redis, i18n, CI).  
+> **Status:** Phase 3 near complete — Warehouses, locations, stock, movements, kardex, transfers, adjustments, and physical inventory counts delivered. Dashboard KPIs wired to live inventory. Phase 2 complete. Phase 1 complete.
 > **UI version:** v0.3 · Phase 3
 > **Architecture:** Modular Monolith · Clean Architecture · DDD · CQRS · NgRx
 
@@ -291,9 +291,16 @@ curl -X POST http://localhost:5000/api/v1/auth/register \
 | `GET` | `/api/v1/adjustments` | Yes | `adjustments.view` | List inventory adjustments |
 | `GET` | `/api/v1/adjustments/lookups` | Yes | `adjustments.view` | Products, warehouses, stock levels for forms |
 | `POST` | `/api/v1/adjustments` | Yes | `adjustments.create` | Physical count / correction adjustment (updates stock) |
+| `GET` | `/api/v1/physical-counts` | Yes | `physicalcounts.view` | List physical inventory counts |
+| `GET` | `/api/v1/physical-counts/{id}` | Yes | `physicalcounts.view` | Get count with lines |
+| `GET` | `/api/v1/physical-counts/lookups` | Yes | `physicalcounts.view` | Warehouse options |
+| `POST` | `/api/v1/physical-counts` | Yes | `physicalcounts.create` | Start count (snapshot stock lines) |
+| `PUT` | `/api/v1/physical-counts/{id}/lines` | Yes | `physicalcounts.update` | Save counted quantities |
+| `POST` | `/api/v1/physical-counts/{id}/complete` | Yes | `physicalcounts.complete` | Apply variances to stock |
+| `POST` | `/api/v1/physical-counts/{id}/cancel` | Yes | `physicalcounts.update` | Cancel draft count |
 | `GET` | `/api/v1/dashboard/kpis` | Yes | — | Live KPIs (products, stock alerts, warehouses) |
 
-**Document numbering:** `MOV-YYYYMMDD-###` · `TRF-YYYYMMDD-###` · `ADJ-YYYYMMDD-###`
+**Document numbering:** `MOV-YYYYMMDD-###` · `TRF-YYYYMMDD-###` · `ADJ-YYYYMMDD-###` · `PIC-YYYYMMDD-###`
 
 > **Tip:** After new inventory permissions are seeded, sign out and sign in again so the JWT and sidebar reflect `movements.*`, `transfers.*`, `adjustments.*`, etc.
 
@@ -308,7 +315,7 @@ See [docs/PROJECT-PROGRESS.md](docs/PROJECT-PROGRESS.md) for detailed module sta
 | **0** | Architecture & planning | Done |
 | **1** | Auth, multi-tenant, users, roles, settings | **Done** |
 | **2** | Master data (units, categories, brands, products, customers, suppliers) | **Done** |
-| **3** | Inventory & warehouses | **In progress** — Warehouses, locations, stock, movements, kardex, transfers, adjustments done |
+| **3** | Inventory & warehouses | **Near complete** — Physical inventory workflow added; lot/serial tracking pending |
 | **4** | Purchasing | Planned |
 | **5** | Sales & invoicing | Planned |
 | **6** | Finance (cash, banks) | Planned |
@@ -358,13 +365,12 @@ See [docs/PROJECT-PROGRESS.md](docs/PROJECT-PROGRESS.md) for detailed module sta
 | Kardex | Chronological query by product | Filters + table (NgRx) |
 | Transfers | Multi-line warehouse transfers + stock validation | List + modal create (NgRx) |
 | Adjustments | Physical count corrections + delta movements | List + modal create + line detail (NgRx) |
+| Physical inventory | Draft → count → complete workflow | List + expandable lines + complete/cancel (NgRx) |
 | Dashboard KPIs | Products count + below-minimum stock alerts | Live cards on home (partial — sales KPIs in Phase 5) |
 
-**Inventory sync (frontend):** creating a movement, transfer, or adjustment triggers `InventorySyncEffects` to reload stock, movements, and kardex stores.
+**Inventory sync (frontend):** creating a movement, transfer, adjustment, or completing a physical count triggers `InventorySyncEffects` to reload stock, movements, and kardex stores.
 
-**Next in Phase 3:** Lot/serial tracking, physical inventory counts (workflow).
-
-**Pending commit:** Adjustments module (code complete as of 2026-07-10).
+**Next in Phase 3:** Lot/serial tracking.
 
 ---
 

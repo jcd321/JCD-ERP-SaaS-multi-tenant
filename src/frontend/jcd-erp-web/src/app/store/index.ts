@@ -29,6 +29,8 @@ import { transfersReducer } from './transfers/transfers.reducer';
 import { TransfersEffects } from './transfers/transfers.effects';
 import { adjustmentsReducer } from './adjustments/adjustments.reducer';
 import { AdjustmentsEffects } from './adjustments/adjustments.effects';
+import { PhysicalCountsEffects } from './physical-counts/physical-counts.effects';
+import { physicalCountsReducer } from './physical-counts/physical-counts.reducer';
 import { InventorySyncEffects } from './inventory/inventory-sync.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CategoriesEffects } from './categories/categories.effects';
@@ -59,7 +61,8 @@ export function provideAppStore(): EnvironmentProviders[] {
     provideState('kardex', kardexReducer),
     provideState('transfers', transfersReducer),
     provideState('adjustments', adjustmentsReducer),
-    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects, KardexEffects, TransfersEffects, AdjustmentsEffects, InventorySyncEffects),
+    provideState('physicalCounts', physicalCountsReducer),
+    provideEffects(AuthEffects, UsersEffects, RolesEffects, SettingsEffects, UnitsEffects, CategoriesEffects, BrandsEffects, ProductsEffects, CustomersEffects, SuppliersEffects, WarehousesEffects, LocationsEffects, StockEffects, MovementsEffects, KardexEffects, TransfersEffects, AdjustmentsEffects, PhysicalCountsEffects, InventorySyncEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

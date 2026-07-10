@@ -13,6 +13,7 @@ using Jcd.Erp.Domain.Inventory.Movements;
 using Jcd.Erp.Domain.Inventory.Stock;
 using Jcd.Erp.Domain.Inventory.Transfers;
 using Jcd.Erp.Domain.Inventory.Adjustments;
+using Jcd.Erp.Domain.Inventory.PhysicalCounts;
 using Jcd.Erp.Domain.Inventory.Warehouses;
 using Jcd.Erp.Domain.Tenancy;
 using Jcd.Erp.Persistence.Context;
@@ -65,6 +66,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<InventoryMovement> InventoryMovements => Set<InventoryMovement>();
     public DbSet<InventoryTransfer> InventoryTransfers => Set<InventoryTransfer>();
     public DbSet<InventoryAdjustment> InventoryAdjustments => Set<InventoryAdjustment>();
+    public DbSet<PhysicalInventoryCount> PhysicalInventoryCounts => Set<PhysicalInventoryCount>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
